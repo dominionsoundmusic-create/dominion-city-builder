@@ -1,0 +1,11 @@
+services:
+  - type: cron
+    name: dominion-city-builder
+    runtime: python
+    schedule: "0 6 * * *"   # 6 AM UTC daily
+    buildCommand: pip install requests
+    startCommand: python build_cities_daily.py
+    rootDir: .
+    envVars:
+      - key: PYTHONUNBUFFERED
+        value: "1"
