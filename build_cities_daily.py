@@ -14,7 +14,7 @@ from datetime import datetime
 GITHUB_TOKEN = "GITHUB_TOKEN_HERE"
 GITHUB_REPO = "dominionsoundmusic-create/dominionlocalbusinessdirectory-site"
 REPO_URL = f"https://{GITHUB_TOKEN}@github.com/{GITHUB_REPO}.git"
-CITIES_PER_DAY = 50
+CITIES_PER_DAY = 100
 WORK_DIR = "/opt/render/project/src"
 STATE_FILE = "/opt/render/project/src/build_state.json"
 
