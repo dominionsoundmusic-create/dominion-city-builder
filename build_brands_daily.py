@@ -14,7 +14,7 @@ from datetime import datetime
 # CONFIG
 # ============================================================
 GITHUB_TOKEN = "GITHUB_TOKEN_HERE"
-CITIES_PER_DAY = 50
+CITIES_PER_DAY = 100
 BASE_DIR = "/opt/render/project/src"
 
 BRANDS = {
