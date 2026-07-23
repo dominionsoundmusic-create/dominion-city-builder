@@ -182,6 +182,29 @@ BRANDS = {
             ("wordpress-web-design", "WordPress Web Design"),
         ],
     },
+    "hardmoney": {
+        "repo": "dominionsoundmusic-create/dominion-hard-money",
+        "work_dir": "/opt/render/project/src/dominion-hard-money",
+        "domain": "dominionhardmoney.com",
+        "name": "Dominion Hard Money",
+        "tagline": "Private Money for Real Estate Investors",
+        "cta": "Apply Now",
+        "phone": "nine zero three, six three six, seven five one one",
+        "colors": {"primary": "#0a1628", "accent": "#c9a84c", "text": "#ffffff", "bg": "#f8f6f0"},
+        "starting_price": "$50,000",
+        "pitch": "Fast private money loans for fix and flip, DSCR rental, and bridge financing.",
+        "favicon": "💰",
+        "service_folders": [
+            ("texas/hard-money-loans", "Hard Money Loans"),
+            ("texas/fix-and-flip-loans", "Fix and Flip Loans"),
+            ("texas/bridge-loans", "Bridge Loans"),
+            ("texas/dscr-loans", "DSCR Rental Loans"),
+            ("texas/private-money-lender", "Private Money Lender"),
+            ("texas/rehab-loans", "Rehab Loans"),
+            ("texas/real-estate-investor-loans", "Real Estate Investor Loans"),
+            ("texas/hard-money-lender", "Hard Money Lender"),
+        ],
+    },
 }
 
 # ============================================================
@@ -1101,13 +1124,31 @@ footer a:hover{{color:#60A5FA}}
 </footer>
 </body>
 </html>'''
-
+def build_hardmoney_page(city, state, abbr, region, county, lat, lng, folder_slug, folder_name):
+    slug = make_slug(city, abbr)
+    state_info = get_state_info(abbr)
+    title = folder_name + ' in ' + city + ', ' + state + ' | Dominion Hard Money'
+    desc = 'Need a ' + folder_name.lower() + ' in ' + city + ', ' + state + '? Dominion Hard Money funds fix and flip, DSCR rental, and bridge loans fast. Apply today.'
+    html = '<!DOCTYPE html>'
+    html += '<html lang=en><head>'
+    html += '<meta charset=UTF-8>'
+    html += '<title>' + title + '</title>'
+    html += '<meta name=description content=' + desc + '>'
+    html += '</head><body>'
+    html += '<h1>' + folder_name + ' in ' + city + ', ' + state + '</h1>'
+    html += '<p>' + desc + '</p>'
+    html += '<p>Call us: 903-636-8811</p>'
+    html += '<p>Serving ' + city + ', ' + county + ' County, ' + state + '</p>'
+    html += '<p>' + state_info['emoji'] + ' ' + state_info['fact'] + '</p>'
+    html += '</body></html>'
+    return html
 
 PAGE_BUILDERS = {
     "aivoice": build_aivoice_page,
     "reviewpro": build_reviewpro_page,
     "aiagency": build_aiagency_page,
     "webdesign": build_webdesign_page,
+    "hardmoney": build_hardmoney_page,
 }
 
 # ============================================================
