@@ -13,7 +13,7 @@ from datetime import datetime
 # ============================================================
 # CONFIG
 # ============================================================
-GITHUB_TOKEN = "GITHUB_TOKEN_HERE"
+GITHUB_TOKEN = os.environ.get('GITHUB_TOKEN', '')
 CITIES_PER_DAY = 100
 BASE_DIR = "/opt/render/project/src"
 
@@ -1255,18 +1255,18 @@ def build_houstonwash_page(city, state, abbr, region, county, lat, lng, folder_s
     state_info = get_state_info(abbr)
     title = folder_name + ' in ' + city + ', ' + state + ' | Houston Power Washing Pro'
     desc = 'Professional ' + folder_name.lower() + ' in ' + city + ', ' + state + '. Houston Power Washing Pro serves Houston and all surrounding communities. Free quotes. Same-week service.'
-    html = '<!DOCTYPE html><html lang=en><head><meta charset=UTF-8>'
-    html += '<meta name=viewport content=width=device-width,initial-scale=1.0>'
-    html += '<title>' + title + '</title>'
-    html += '<meta name=description content=' + desc + '>'
-    html += '</head><body>'
-    html += '<h1>' + folder_name + ' in ' + city + ', ' + state + '</h1>'
-    html += '<p>' + desc + '</p>'
-    html += '<p>Call us: 832-662-4107</p>'
-    html += '<p>Serving ' + city + ', ' + county + ' County, ' + state + '</p>'
-    html += '<p>' + state_info['emoji'] + ' ' + state_info['fact'] + '</p>'
-    html += '<p><a href=https://join.servicetitan.com/mzWepOS target=_blank>Home Service Business? Try ServiceTitan Free</a></p>'
-    html += '</body></html>'
+    html = ''
+    html += ''
+    html += '' + title + ''
+    html += ''
+    html += ''
+    html += '' + folder_name + ' in ' + city + ', ' + state + ''
+    html += '' + desc + ''
+    html += 'Call us: 832-662-4107'
+    html += 'Serving ' + city + ', ' + county + ' County, ' + state + ''
+    html += '' + state_info['emoji'] + ' ' + state_info['fact'] + ''
+    html += 'Home Service Business? Try ServiceTitan Free'
+    html += ''
     return html
 
 def build_houstonhvac_page(city, state, abbr, region, county, lat, lng, folder_slug, folder_name):
@@ -1274,18 +1274,18 @@ def build_houstonhvac_page(city, state, abbr, region, county, lat, lng, folder_s
     state_info = get_state_info(abbr)
     title = folder_name + ' in ' + city + ', ' + state + ' | Houston HVAC Pro'
     desc = 'Fast ' + folder_name.lower() + ' in ' + city + ', ' + state + '. Houston HVAC Pro offers same-day AC repair and 24/7 emergency HVAC service across Houston and surrounding communities.'
-    html = '<!DOCTYPE html><html lang=en><head><meta charset=UTF-8>'
-    html += '<meta name=viewport content=width=device-width,initial-scale=1.0>'
-    html += '<title>' + title + '</title>'
-    html += '<meta name=description content=' + desc + '>'
-    html += '</head><body>'
-    html += '<h1>' + folder_name + ' in ' + city + ', ' + state + '</h1>'
-    html += '<p>' + desc + '</p>'
-    html += '<p>Call us: 832-662-4107</p>'
-    html += '<p>Serving ' + city + ', ' + county + ' County, ' + state + '</p>'
-    html += '<p>' + state_info['emoji'] + ' ' + state_info['fact'] + '</p>'
-    html += '<p><a href=https://join.servicetitan.com/mzWepOS target=_blank>HVAC Business Owner? Try ServiceTitan Free</a></p>'
-    html += '</body></html>'
+    html = ''
+    html += ''
+    html += '' + title + ''
+    html += ''
+    html += ''
+    html += '' + folder_name + ' in ' + city + ', ' + state + ''
+    html += '' + desc + ''
+    html += 'Call us: 832-662-4107'
+    html += 'Serving ' + city + ', ' + county + ' County, ' + state + ''
+    html += '' + state_info['emoji'] + ' ' + state_info['fact'] + ''
+    html += 'HVAC Business Owner? Try ServiceTitan Free'
+    html += ''
     return html
 
 def build_houstonroofing_page(city, state, abbr, region, county, lat, lng, folder_slug, folder_name):
@@ -1293,18 +1293,18 @@ def build_houstonroofing_page(city, state, abbr, region, county, lat, lng, folde
     state_info = get_state_info(abbr)
     title = folder_name + ' in ' + city + ', ' + state + ' | Houston Roofing Pro'
     desc = 'Expert ' + folder_name.lower() + ' in ' + city + ', ' + state + '. Houston Roofing Pro offers free inspections, storm damage repair, and 25-year warranty on all roofing work across Houston.'
-    html = '<!DOCTYPE html><html lang=en><head><meta charset=UTF-8>'
-    html += '<meta name=viewport content=width=device-width,initial-scale=1.0>'
-    html += '<title>' + title + '</title>'
-    html += '<meta name=description content=' + desc + '>'
-    html += '</head><body>'
-    html += '<h1>' + folder_name + ' in ' + city + ', ' + state + '</h1>'
-    html += '<p>' + desc + '</p>'
-    html += '<p>Call us: 832-662-4107</p>'
-    html += '<p>Serving ' + city + ', ' + county + ' County, ' + state + '</p>'
-    html += '<p>' + state_info['emoji'] + ' ' + state_info['fact'] + '</p>'
-    html += '<p><a href=https://join.servicetitan.com/mzWepOS target=_blank>Roofing Business Owner? Try ServiceTitan Free</a></p>'
-    html += '</body></html>'
+    html = ''
+    html += ''
+    html += '' + title + ''
+    html += ''
+    html += ''
+    html += '' + folder_name + ' in ' + city + ', ' + state + ''
+    html += '' + desc + ''
+    html += 'Call us: 832-662-4107'
+    html += 'Serving ' + city + ', ' + county + ' County, ' + state + ''
+    html += '' + state_info['emoji'] + ' ' + state_info['fact'] + ''
+    html += 'Roofing Business Owner? Try ServiceTitan Free'
+    html += ''
     return html
 
 def build_dallaswash_page(city, state, abbr, region, county, lat, lng, folder_slug, folder_name):
@@ -1312,18 +1312,18 @@ def build_dallaswash_page(city, state, abbr, region, county, lat, lng, folder_sl
     state_info = get_state_info(abbr)
     title = folder_name + ' in ' + city + ', ' + state + ' | Dallas Metro Power Washing Pro'
     desc = 'Professional ' + folder_name.lower() + ' in ' + city + ', ' + state + '. Dallas Metro Power Washing Pro serves Dallas-Fort Worth and all surrounding communities. Free quotes.'
-    html = '<!DOCTYPE html><html lang=en><head><meta charset=UTF-8>'
-    html += '<meta name=viewport content=width=device-width,initial-scale=1.0>'
-    html += '<title>' + title + '</title>'
-    html += '<meta name=description content=' + desc + '>'
-    html += '</head><body>'
-    html += '<h1>' + folder_name + ' in ' + city + ', ' + state + '</h1>'
-    html += '<p>' + desc + '</p>'
-    html += '<p>Call us: 214-555-0199</p>'
-    html += '<p>Serving ' + city + ', ' + county + ' County, ' + state + '</p>'
-    html += '<p>' + state_info['emoji'] + ' ' + state_info['fact'] + '</p>'
-    html += '<p><a href=https://join.servicetitan.com/mzWepOS target=_blank>Home Service Business? Try ServiceTitan Free</a></p>'
-    html += '</body></html>'
+    html = ''
+    html += ''
+    html += '' + title + ''
+    html += ''
+    html += ''
+    html += '' + folder_name + ' in ' + city + ', ' + state + ''
+    html += '' + desc + ''
+    html += 'Call us: 214-555-0199'
+    html += 'Serving ' + city + ', ' + county + ' County, ' + state + ''
+    html += '' + state_info['emoji'] + ' ' + state_info['fact'] + ''
+    html += 'Home Service Business? Try ServiceTitan Free'
+    html += ''
     return html
 
 def build_dallashvac_page(city, state, abbr, region, county, lat, lng, folder_slug, folder_name):
@@ -1331,18 +1331,18 @@ def build_dallashvac_page(city, state, abbr, region, county, lat, lng, folder_sl
     state_info = get_state_info(abbr)
     title = folder_name + ' in ' + city + ', ' + state + ' | Dallas Metro HVAC Pro'
     desc = 'Fast ' + folder_name.lower() + ' in ' + city + ', ' + state + '. Dallas Metro HVAC Pro offers same-day AC repair and 24/7 emergency HVAC service across Dallas-Fort Worth.'
-    html = '<!DOCTYPE html><html lang=en><head><meta charset=UTF-8>'
-    html += '<meta name=viewport content=width=device-width,initial-scale=1.0>'
-    html += '<title>' + title + '</title>'
-    html += '<meta name=description content=' + desc + '>'
-    html += '</head><body>'
-    html += '<h1>' + folder_name + ' in ' + city + ', ' + state + '</h1>'
-    html += '<p>' + desc + '</p>'
-    html += '<p>Call us: 214-555-0199</p>'
-    html += '<p>Serving ' + city + ', ' + county + ' County, ' + state + '</p>'
-    html += '<p>' + state_info['emoji'] + ' ' + state_info['fact'] + '</p>'
-    html += '<p><a href=https://join.servicetitan.com/mzWepOS target=_blank>HVAC Business Owner? Try ServiceTitan Free</a></p>'
-    html += '</body></html>'
+    html = ''
+    html += ''
+    html += '' + title + ''
+    html += ''
+    html += ''
+    html += '' + folder_name + ' in ' + city + ', ' + state + ''
+    html += '' + desc + ''
+    html += 'Call us: 214-555-0199'
+    html += 'Serving ' + city + ', ' + county + ' County, ' + state + ''
+    html += '' + state_info['emoji'] + ' ' + state_info['fact'] + ''
+    html += 'HVAC Business Owner? Try ServiceTitan Free'
+    html += ''
     return html
 
 def build_dallasroofing_page(city, state, abbr, region, county, lat, lng, folder_slug, folder_name):
@@ -1350,18 +1350,18 @@ def build_dallasroofing_page(city, state, abbr, region, county, lat, lng, folder
     state_info = get_state_info(abbr)
     title = folder_name + ' in ' + city + ', ' + state + ' | Dallas Metro Roofing Pro'
     desc = 'Expert ' + folder_name.lower() + ' in ' + city + ', ' + state + '. Dallas Metro Roofing Pro offers free inspections, hail damage repair, and 25-year warranty across Dallas-Fort Worth.'
-    html = '<!DOCTYPE html><html lang=en><head><meta charset=UTF-8>'
-    html += '<meta name=viewport content=width=device-width,initial-scale=1.0>'
-    html += '<title>' + title + '</title>'
-    html += '<meta name=description content=' + desc + '>'
-    html += '</head><body>'
-    html += '<h1>' + folder_name + ' in ' + city + ', ' + state + '</h1>'
-    html += '<p>' + desc + '</p>'
-    html += '<p>Call us: 214-555-0199</p>'
-    html += '<p>Serving ' + city + ', ' + county + ' County, ' + state + '</p>'
-    html += '<p>' + state_info['emoji'] + ' ' + state_info['fact'] + '</p>'
-    html += '<p><a href=https://join.servicetitan.com/mzWepOS target=_blank>Roofing Business Owner? Try ServiceTitan Free</a></p>'
-    html += '</body></html>'
+    html = ''
+    html += ''
+    html += '' + title + ''
+    html += ''
+    html += ''
+    html += '' + folder_name + ' in ' + city + ', ' + state + ''
+    html += '' + desc + ''
+    html += 'Call us: 214-555-0199'
+    html += 'Serving ' + city + ', ' + county + ' County, ' + state + ''
+    html += '' + state_info['emoji'] + ' ' + state_info['fact'] + ''
+    html += 'Roofing Business Owner? Try ServiceTitan Free'
+    html += ''
     return html
 
 def build_hardmoney_page(city, state, abbr, region, county, lat, lng, folder_slug, folder_name):
