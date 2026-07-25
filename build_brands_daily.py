@@ -1444,6 +1444,9 @@ def git_push(brand_key, count_built, total):
 
 def build_brand(brand_key):
     brand = BRANDS[brand_key]
+    if not os.path.exists(brand['work_dir']):
+        repo_url = f'https://{GITHUB_TOKEN}@github.com/{brand["repo"]}.git'
+        subprocess.run(['git', 'clone', repo_url, brand['work_dir']])
     builder = PAGE_BUILDERS[brand_key]
     existing = get_existing_slugs(brand_key)
     seen = set()
