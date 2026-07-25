@@ -1439,7 +1439,7 @@ def git_push(brand_key, count_built, total):
     if 'nothing to commit' in result.stdout:
         print(f"  {brand['name']}: nothing new")
         return
-    subprocess.run(['git','push', repo_url,'main'])
+    subprocess.run(['git','push', '--force', repo_url,'main'])
     print(f"  ✅ {brand['name']}: +{count_built} cities pushed ({total} total)")
 
 def build_brand(brand_key):
