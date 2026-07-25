@@ -11,7 +11,7 @@ from datetime import datetime
 # ============================================================
 # CONFIG
 # ============================================================
-GITHUB_TOKEN = "GITHUB_TOKEN_HERE"
+GITHUB_TOKEN = os.environ.get('GITHUB_TOKEN', '')
 GITHUB_REPO = "dominionsoundmusic-create/dominionlocalbusinessdirectory-site"
 REPO_URL = f"https://{GITHUB_TOKEN}@github.com/{GITHUB_REPO}.git"
 CITIES_PER_DAY = 100
@@ -947,36 +947,36 @@ def build_page(city, state, abbr, region, county, tier, lat, lng):
         {"@context":"https://schema.org","@type":"LocalBusiness","name":"AI Voice Agent Pros","url":"https://aivoiceagentpros.com","telephone":"","address":{"@type":"PostalAddress","addressLocality":city,"addressRegion":abbr,"addressCountry":"US"},"geo":{"@type":"GeoCoordinates","latitude":lat,"longitude":lng},"aggregateRating":{"@type":"AggregateRating","ratingValue":"5.0","reviewCount":"98"},"description":f"AI voice agents that answer every call for {city} businesses 24 hours a day, 7 days a week. Never miss a lead again. From $297/month.","priceRange":"$$"}
     ], separators=(',',':'))
 
-    return f'''<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{city} Business Directory | Local Businesses in {city}, {state} | Dominion</title>
-<meta name="description" content="Find trusted local businesses in {city}, {state}. Browse HVAC, plumbing, restaurants, web design, AI services, and 50+ categories. Claim your free listing today at Dominion Local Business Directory.">
-<meta name="keywords" content="{city} businesses, {city} {state} directory, local businesses {city}, HVAC {city}, restaurants {city}, web design {city}">
-<link rel="icon" type="image/svg+xml" href="../favicon.svg">
-<link rel="canonical" href="{page_url}">
-<meta property="og:title" content="{city}, {state} Business Directory | Dominion Local Business Directory">
-<meta property="og:description" content="Find trusted local businesses in {city}, {state}. 50+ categories. Claim your free listing today.">
-<meta property="og:url" content="{page_url}">
-<meta property="og:type" content="website">
-<meta property="og:image" content="{base_url}/og-image.png">
-<meta name="geo.region" content="US-{abbr}">
-<meta name="geo.placename" content="{city}, {state}">
-<meta name="geo.position" content="{lat};{lng}">
-<meta name="ICBM" content="{lat}, {lng}">
-<script type="application/ld+json">
+    return f'''
+
+
+
+
+{city} Business Directory | Local Businesses in {city}, {state} | Dominion
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 {{"@context":"https://schema.org","@type":"CollectionPage","name":"{city} Business Directory","description":"Find trusted local businesses in {city}, {state} across 50+ categories","url":"{page_url}","breadcrumb":{{"@type":"BreadcrumbList","itemListElement":[{{"@type":"ListItem","position":1,"name":"Home","item":"{base_url}"}},{{"@type":"ListItem","position":2,"name":"{state} Directory","item":"{base_url}/states/{state_slug}.html"}},{{"@type":"ListItem","position":3,"name":"{city}","item":"{page_url}"}}]}},"isPartOf":{{"@type":"WebSite","name":"Dominion Local Business Directory","url":"{base_url}"}}}}
-</script>
-<script type="application/ld+json">
+
+
 {{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{{"@type":"Question","name":"How do I list my {city} business in the directory?","acceptedAnswer":{{"@type":"Answer","text":"Claiming your free listing in {city} is fast, easy, and completely free. Visit DominionLocalBusinessDirectory.com, click Claim Your Listing, and fill out your business info. No credit card required. Featured upgrades available from $97/month."}}}},{{"@type":"Question","name":"What local businesses are listed in {city}, {state}?","acceptedAnswer":{{"@type":"Answer","text":"We list HVAC contractors, plumbers, electricians, roofers, restaurants, auto repair shops, dentists, law firms, real estate agents, web designers, AI services, solar companies, and 50+ more local business categories in {city}, {state}."}}}},{{"@type":"Question","name":"How do I find the best HVAC company in {city}?","acceptedAnswer":{{"@type":"Answer","text":"Search the {city} directory for HVAC companies, review ratings and customer reviews, and claim your free listing if you own an HVAC business in {city}, {state}."}}}}]}}
-</script>
-<script type="application/ld+json">
+
+
 {lb_schema}
-</script>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
+
+
+
 *{{margin:0;padding:0;box-sizing:border-box}}
 :root{{--navy:#0A1628;--navy2:#0F1E35;--gold:#C9A84C;--gold-light:#E8C97A;--gold-dark:#A8832A;--text:#F5F0E8;--muted:#8B9AB0;--border:#1E3050}}
 body{{font-family:'Inter',system-ui,sans-serif;background:var(--navy);color:var(--text);line-height:1.6}}
@@ -1036,185 +1036,185 @@ footer{{background:var(--navy2);border-top:1px solid var(--border);padding:36px 
 .footer-col a{{display:block;color:var(--muted);font-size:.82rem;margin-bottom:7px}}
 .footer-col a:hover{{color:var(--gold)}}
 .footer-bottom{{border-top:1px solid var(--border);padding-top:14px;font-size:.76rem;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}}
-</style>
-</head>
-<body>
-<nav>
-  <div class="nav-inner">
-    <a href="../index.html"><span class="logo-text">👑 Dominion Local Business Directory</span></a>
-    <a href="../claim.html" class="nav-cta">List Your Business Free</a>
-  </div>
-</nav>
-<div class="hero">
-  <div class="breadcrumb"><a href="../index.html">Home</a> → <a href="../states/{state_slug}.html">{state}</a> → {city}</div>
-  <h1>{info['emoji']} {city}, <span>{state}</span></h1>
-  <p class="hero-sub">{region} · {county} · Local Business Directory</p>
-  <p class="hero-coords">Latitude {lat:.4f} · Longitude {lng:.4f}</p>
-</div>
-<div class="section">
-  <div class="sec-title">Browse <span>{city}</span> by Category</div>
-  <div class="divider"></div>
-  <div class="cat-grid">
-    <div class="cat-card"><span class="cat-icon">🌡️</span><div class="cat-name">HVAC</div></div>
-    <div class="cat-card"><span class="cat-icon">🔧</span><div class="cat-name">Plumbing</div></div>
-    <div class="cat-card"><span class="cat-icon">⚡</span><div class="cat-name">Electrical</div></div>
-    <div class="cat-card"><span class="cat-icon">🏠</span><div class="cat-name">Roofing</div></div>
-    <div class="cat-card"><span class="cat-icon">🍽️</span><div class="cat-name">Restaurants</div></div>
-    <div class="cat-card"><span class="cat-icon">🚗</span><div class="cat-name">Auto Repair</div></div>
-    <div class="cat-card"><span class="cat-icon">🦷</span><div class="cat-name">Dentists</div></div>
-    <div class="cat-card"><span class="cat-icon">⚖️</span><div class="cat-name">Law Firms</div></div>
-    <div class="cat-card"><span class="cat-icon">🏡</span><div class="cat-name">Real Estate</div></div>
-    <div class="cat-card"><span class="cat-icon">🌐</span><div class="cat-name">Web Design</div></div>
-    <div class="cat-card"><span class="cat-icon">🤖</span><div class="cat-name">AI Services</div></div>
-    <div class="cat-card"><span class="cat-icon">☀️</span><div class="cat-name">Solar</div></div>
-    <div class="cat-card"><span class="cat-icon">💇</span><div class="cat-name">Salons</div></div>
-    <div class="cat-card"><span class="cat-icon">🏥</span><div class="cat-name">Medical</div></div>
-    <div class="cat-card"><span class="cat-icon">🐾</span><div class="cat-name">Veterinary</div></div>
-    <div class="cat-card"><span class="cat-icon">🏋️</span><div class="cat-name">Fitness</div></div>
-  </div>
-  <div class="sec-title">Featured Businesses <span>in {city}</span></div>
-  <div class="divider"></div>
-  <div class="biz-grid">
-    <div class="biz-card premium">
-      <div class="premium-tag">⭐ PREMIUM MEMBER</div>
-      <div class="biz-category">🌐 Web Design & Development</div>
-      <div class="biz-name">Dominion Web Design Pro</div>
-      <div class="biz-location">📍 Serving {city}, {abbr} & All 50 States</div>
-      <div class="rating-row"><span class="stars">★★★★★</span><span class="rating-num">5.0</span><span class="review-count">(127 reviews)</span></div>
-      <div class="biz-desc">Professional business websites from $497. We build your custom site first — you only pay when you love it. SEO ready, mobile first, AI chat included. Serving {city} businesses nationwide.</div>
-      <a href="https://dominionwebdesignpro.com" target="_blank" rel="noopener" class="biz-btn">Visit Website →</a>
-    </div>
-    <div class="biz-card premium">
-      <div class="premium-tag">⭐ PREMIUM MEMBER</div>
-      <div class="biz-category">🤖 AI Automation Agency</div>
-      <div class="biz-name">Dominion AI Agency</div>
-      <div class="biz-location">📍 Serving {city}, {abbr} & All 50 States</div>
-      <div class="rating-row"><span class="stars">★★★★★</span><span class="rating-num">5.0</span><span class="review-count">(143 reviews)</span></div>
-      <div class="biz-desc">Full AI automation for {city} businesses — AI voice agents, CRM integration, automated lead generation, and reputation management. Everything from $497/month.</div>
-      <a href="https://dominionaiagency.com" target="_blank" rel="noopener" class="biz-btn">Visit Website →</a>
-    </div>
-    <div class="biz-card premium">
-      <div class="premium-tag">⭐ PREMIUM MEMBER</div>
-      <div class="biz-category">📞 AI Voice Agents</div>
-      <div class="biz-name">AI Voice Agent Pros</div>
-      <div class="biz-location">📍 Serving {city}, {abbr} & All 50 States</div>
-      <div class="rating-row"><span class="stars">★★★★★</span><span class="rating-num">5.0</span><span class="review-count">(98 reviews)</span></div>
-      <div class="biz-desc">AI that answers every call for your {city} business — 24 hours a day, 7 days a week, 365 days a year. Qualifies leads, books appointments, takes messages. From $297/month.</div>
-      <a href="https://aivoiceagentpros.com" target="_blank" rel="noopener" class="biz-btn">Visit Website →</a>
-    </div>
-    <div class="biz-card premium">
-      <div class="premium-tag">⭐ PREMIUM MEMBER</div>
-      <div class="biz-category">⭐ Review Management</div>
-      <div class="biz-name">Dominion Review Pro</div>
-      <div class="biz-location">📍 Serving {city}, {abbr} & All 50 States</div>
-      <div class="rating-row"><span class="stars">★★★★★</span><span class="rating-num">5.0</span><span class="review-count">(76 reviews)</span></div>
-      <div class="biz-desc">Automated Google review generation for {city} businesses. Get more 5-star reviews on autopilot — without begging customers. Proven system from $197/month.</div>
-      <a href="https://dominionreviewpro.com" target="_blank" rel="noopener" class="biz-btn">Visit Website →</a>
-    </div>
-    <div class="biz-card premium">
-      <div class="premium-tag">⭐ PREMIUM MEMBER</div>
-      <div class="biz-category">☀️ Solar Energy</div>
-      <div class="biz-name">Dominion Solar Pro</div>
-      <div class="biz-location">📍 Serving {city}, {abbr} & All 50 States</div>
-      <div class="rating-row"><span class="stars">★★★★★</span><span class="rating-num">5.0</span><span class="review-count">(54 reviews)</span></div>
-      <div class="biz-desc">Solar panel installation for {city} homeowners and businesses. Reduce your energy bills with clean solar power. Free quotes, financing available, federal tax credits apply.</div>
-      <a href="https://dominionsolarpro.com" target="_blank" rel="noopener" class="biz-btn">Visit Website →</a>
-    </div>
-    <div class="biz-card">
-      <div class="unclaimed-tag">⚠️ Unclaimed Listing</div>
-      <div class="biz-category">🌡️ HVAC Services</div>
-      <div class="biz-name">{city} HVAC Professionals</div>
-      <div class="biz-location">📍 {city}, {abbr}</div>
-      <div class="rating-row"><span class="stars">★★★★★</span><span class="rating-num">4.8</span><span class="review-count">(94 reviews)</span></div>
-      <div class="biz-desc">Is this your HVAC business in {city}? Claim this listing free and take control of how local customers find you online. No credit card required.</div>
-      <a href="../claim.html" class="biz-btn">Claim This Listing Free →</a>
-    </div>
-    <div class="biz-card">
-      <div class="unclaimed-tag">⚠️ Unclaimed Listing</div>
-      <div class="biz-category">🔧 Plumbing Services</div>
-      <div class="biz-name">{city} Plumbing Masters</div>
-      <div class="biz-location">📍 {city}, {abbr}</div>
-      <div class="rating-row"><span class="stars">★★★★½</span><span class="rating-num">4.7</span><span class="review-count">(67 reviews)</span></div>
-      <div class="biz-desc">Is this your plumbing company in {city}? Claim this free listing and connect with customers searching for plumbers in {city}, {state} right now.</div>
-      <a href="../claim.html" class="biz-btn">Claim This Listing Free →</a>
-    </div>
-    <div class="biz-card">
-      <div class="unclaimed-tag">⚠️ Unclaimed Listing</div>
-      <div class="biz-category">🍽️ Restaurants</div>
-      <div class="biz-name">{city} Local Restaurant</div>
-      <div class="biz-location">📍 {city}, {abbr}</div>
-      <div class="rating-row"><span class="stars">★★★★★</span><span class="rating-num">4.9</span><span class="review-count">(203 reviews)</span></div>
-      <div class="biz-desc">Own a restaurant in {city}? Get found by hungry locals searching online. Claim your free listing and start showing up where your customers are looking.</div>
-      <a href="../claim.html" class="biz-btn">Claim This Listing Free →</a>
-    </div>
-  </div>
-  <div class="local-info">
-    <h2>About <span>{city}, {state}</span></h2>
-    <p>{intro}</p>
-    <p>Businesses in {city} that claim their free listing on Dominion Local Business Directory get visibility across search engines, the ability to showcase ratings and reviews, and direct connection to customers who are actively searching for local services. Featured listings receive premium placement, enhanced profiles, and priority visibility in {city} search results.</p>
-    <h3 style="font-size:.95rem;font-weight:700;margin:18px 0 10px;color:var(--gold-light)">⭐ Top {state} Attractions Near {city}</h3>
-    <ul class="att-list">
-      <li>{info['attraction1']}</li>
-      <li>{info['attraction2']}</li>
-      <li>{info['attraction3']}</li>
-    </ul>
-    <p><strong style="color:var(--gold-light)">Local flavor:</strong> <span style="color:var(--muted)">{state} is known for {info['food']}.</span></p>
-    <p style="margin-top:10px"><strong style="color:var(--gold-light)">Did you know?</strong> <span style="color:var(--muted)">{info['fact']}.</span></p>
-  </div>
-  <div class="claim-box">
-    <h2>Own a Business in <span>{city}?</span></h2>
-    <p>Join thousands of local business owners who have claimed their free listing. Get found by customers in {city} searching for your services — no credit card required to get started.</p>
-    <a href="../claim.html" class="claim-btn">Claim Your Free {city} Listing →</a>
-  </div>
-  <div class="tagline-bar">
-    <p style="font-size:1rem;font-weight:800;color:var(--text);margin-bottom:6px">👑 Want Dominion Over Your Market? Join Us.</p>
-    <p style="color:var(--muted);font-size:.82rem;margin-bottom:10px">The Dominion family of brands helps local businesses grow through professional websites, AI automation, and reputation management.</p>
-    <a href="../claim.html" style="color:var(--gold);font-size:.85rem;font-weight:600">Get Started Free — No Credit Card Required →</a>
-  </div>
-</div>
-<footer>
-  <div class="footer-inner">
-    <div class="footer-grid">
-      <div class="footer-col">
-        <h4>Directory</h4>
-        <a href="../index.html">Home</a>
-        <a href="../states/{state_slug}.html">{state} Directory</a>
-        <a href="../states.html">All 50 States</a>
-        <a href="../categories.html">All Categories</a>
-        <a href="../claim.html">Claim Your Listing</a>
-      </div>
-      <div class="footer-col">
-        <h4>Dominion Brands</h4>
-        <a href="https://dominionwebdesignpro.com" target="_blank" rel="noopener">Dominion Web Design Pro</a>
-        <a href="https://dominionaiagency.com" target="_blank" rel="noopener">Dominion AI Agency</a>
-        <a href="https://aivoiceagentpros.com" target="_blank" rel="noopener">AI Voice Agent Pros</a>
-        <a href="https://dominionreviewpro.com" target="_blank" rel="noopener">Dominion Review Pro</a>
-        <a href="https://dominionsolarpro.com" target="_blank" rel="noopener">Dominion Solar Pro</a>
-      </div>
-      <div class="footer-col">
-        <h4>Popular Searches</h4>
-        <a href="../categories.html">HVAC Companies</a>
-        <a href="../categories.html">Plumbers</a>
-        <a href="../categories.html">Restaurants</a>
-        <a href="../categories.html">Auto Repair</a>
-        <a href="../categories.html">Dentists</a>
-      </div>
-      <div class="footer-col">
-        <h4>Resources</h4>
-        <a href="../articles.html">Local Business Guides</a>
-        <a href="../articles/texas.html">Texas Business Guide</a>
-        <a href="https://dominionwebdesignpro.com" target="_blank" rel="noopener">Get a Website</a>
-        <a href="https://aivoiceagentpros.com" target="_blank" rel="noopener">AI Receptionist</a>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <span>© 2025 Dominion Local Business Directory · East Texas, USA</span>
-      <span><a href="https://dominionaiagency.com" target="_blank" rel="noopener" style="color:var(--muted)">Part of the Dominion Brand Family</a></span>
-    </div>
-  </div>
-</footer>
-</body>
-</html>'''
+
+
+
+
+  
+    👑 Dominion Local Business Directory
+    List Your Business Free
+  
+
+
+  Home → {state} → {city}
+  {info['emoji']} {city}, {state}
+  {region} · {county} · Local Business Directory
+  Latitude {lat:.4f} · Longitude {lng:.4f}
+
+
+  Browse {city} by Category
+  
+  
+    🌡️HVAC
+    🔧Plumbing
+    ⚡Electrical
+    🏠Roofing
+    🍽️Restaurants
+    🚗Auto Repair
+    🦷Dentists
+    ⚖️Law Firms
+    🏡Real Estate
+    🌐Web Design
+    🤖AI Services
+    ☀️Solar
+    💇Salons
+    🏥Medical
+    🐾Veterinary
+    🏋️Fitness
+  
+  Featured Businesses in {city}
+  
+  
+    
+      ⭐ PREMIUM MEMBER
+      🌐 Web Design & Development
+      Dominion Web Design Pro
+      📍 Serving {city}, {abbr} & All 50 States
+      ★★★★★5.0(127 reviews)
+      Professional business websites from $497. We build your custom site first — you only pay when you love it. SEO ready, mobile first, AI chat included. Serving {city} businesses nationwide.
+      Visit Website →
+    
+    
+      ⭐ PREMIUM MEMBER
+      🤖 AI Automation Agency
+      Dominion AI Agency
+      📍 Serving {city}, {abbr} & All 50 States
+      ★★★★★5.0(143 reviews)
+      Full AI automation for {city} businesses — AI voice agents, CRM integration, automated lead generation, and reputation management. Everything from $497/month.
+      Visit Website →
+    
+    
+      ⭐ PREMIUM MEMBER
+      📞 AI Voice Agents
+      AI Voice Agent Pros
+      📍 Serving {city}, {abbr} & All 50 States
+      ★★★★★5.0(98 reviews)
+      AI that answers every call for your {city} business — 24 hours a day, 7 days a week, 365 days a year. Qualifies leads, books appointments, takes messages. From $297/month.
+      Visit Website →
+    
+    
+      ⭐ PREMIUM MEMBER
+      ⭐ Review Management
+      Dominion Review Pro
+      📍 Serving {city}, {abbr} & All 50 States
+      ★★★★★5.0(76 reviews)
+      Automated Google review generation for {city} businesses. Get more 5-star reviews on autopilot — without begging customers. Proven system from $197/month.
+      Visit Website →
+    
+    
+      ⭐ PREMIUM MEMBER
+      ☀️ Solar Energy
+      Dominion Solar Pro
+      📍 Serving {city}, {abbr} & All 50 States
+      ★★★★★5.0(54 reviews)
+      Solar panel installation for {city} homeowners and businesses. Reduce your energy bills with clean solar power. Free quotes, financing available, federal tax credits apply.
+      Visit Website →
+    
+    
+      ⚠️ Unclaimed Listing
+      🌡️ HVAC Services
+      {city} HVAC Professionals
+      📍 {city}, {abbr}
+      ★★★★★4.8(94 reviews)
+      Is this your HVAC business in {city}? Claim this listing free and take control of how local customers find you online. No credit card required.
+      Claim This Listing Free →
+    
+    
+      ⚠️ Unclaimed Listing
+      🔧 Plumbing Services
+      {city} Plumbing Masters
+      📍 {city}, {abbr}
+      ★★★★½4.7(67 reviews)
+      Is this your plumbing company in {city}? Claim this free listing and connect with customers searching for plumbers in {city}, {state} right now.
+      Claim This Listing Free →
+    
+    
+      ⚠️ Unclaimed Listing
+      🍽️ Restaurants
+      {city} Local Restaurant
+      📍 {city}, {abbr}
+      ★★★★★4.9(203 reviews)
+      Own a restaurant in {city}? Get found by hungry locals searching online. Claim your free listing and start showing up where your customers are looking.
+      Claim This Listing Free →
+    
+  
+  
+    About {city}, {state}
+    {intro}
+    Businesses in {city} that claim their free listing on Dominion Local Business Directory get visibility across search engines, the ability to showcase ratings and reviews, and direct connection to customers who are actively searching for local services. Featured listings receive premium placement, enhanced profiles, and priority visibility in {city} search results.
+    ⭐ Top {state} Attractions Near {city}
+    
+      {info['attraction1']}
+      {info['attraction2']}
+      {info['attraction3']}
+    
+    Local flavor: {state} is known for {info['food']}.
+    Did you know? {info['fact']}.
+  
+  
+    Own a Business in {city}?
+    Join thousands of local business owners who have claimed their free listing. Get found by customers in {city} searching for your services — no credit card required to get started.
+    Claim Your Free {city} Listing →
+  
+  
+    👑 Want Dominion Over Your Market? Join Us.
+    The Dominion family of brands helps local businesses grow through professional websites, AI automation, and reputation management.
+    Get Started Free — No Credit Card Required →
+  
+
+
+  
+    
+      
+        Directory
+        Home
+        {state} Directory
+        All 50 States
+        All Categories
+        Claim Your Listing
+      
+      
+        Dominion Brands
+        Dominion Web Design Pro
+        Dominion AI Agency
+        AI Voice Agent Pros
+        Dominion Review Pro
+        Dominion Solar Pro
+      
+      
+        Popular Searches
+        HVAC Companies
+        Plumbers
+        Restaurants
+        Auto Repair
+        Dentists
+      
+      
+        Resources
+        Local Business Guides
+        Texas Business Guide
+        Get a Website
+        AI Receptionist
+      
+    
+    
+      © 2025 Dominion Local Business Directory · East Texas, USA
+      Part of the Dominion Brand Family
+    
+  
+
+
+'''
 
 # ============================================================
 # BUILD LOGIC
@@ -1257,12 +1257,12 @@ def update_sitemap():
         rel = os.path.basename(f)
         pages.append(f"{base}/cities/{rel}")
     
-    xml = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+    xml = '\n\n'
     for p in pages:
         depth = p.count('/')
         priority = '1.0' if p == f"{base}/" else '0.9' if depth <= 4 else '0.7'
-        xml += f'<url><loc>{p}</loc><changefreq>weekly</changefreq><priority>{priority}</priority></url>\n'
-    xml += '</urlset>'
+        xml += f'{p}weekly{priority}\n'
+    xml += ''
     
     with open(os.path.join(WORK_DIR, 'sitemap.xml'), 'w') as f:
         f.write(xml)
