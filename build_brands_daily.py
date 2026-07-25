@@ -205,6 +205,132 @@ BRANDS = {
             ("texas/hard-money-lender", "Hard Money Lender"),
         ],
     },
+    "houstonwash": {
+        "repo": "dominionsoundmusic-create/houston-powerwashing-pro",
+        "work_dir": "/opt/render/project/src/houston-powerwashing-pro",
+        "domain": "houston-powerwashing-pro.netlify.app",
+        "name": "Houston Power Washing Pro",
+        "tagline": "Professional Power Washing in Houston TX",
+        "cta": "Get a Free Quote",
+        "phone": "eight three two, six six two, four one zero seven",
+        "colors": {"primary": "#0d1f3c", "accent": "#00c6ff", "text": "#ffffff", "bg": "#f5f8fc"},
+        "starting_price": "$99",
+        "pitch": "Professional power washing for driveways, fences, roofs, and decks across Houston and surrounding communities.",
+        "favicon": "💧",
+        "service_folders": [
+            ("power-washing", "Power Washing"),
+            ("pressure-washing", "Pressure Washing"),
+            ("driveway-cleaning", "Driveway Cleaning"),
+            ("fence-cleaning", "Fence Cleaning"),
+            ("roof-soft-wash", "Roof Soft Wash"),
+            ("deck-cleaning", "Deck Cleaning"),
+        ],
+    },
+    "houstonhvac": {
+        "repo": "dominionsoundmusic-create/houston-hvac-pro",
+        "work_dir": "/opt/render/project/src/houston-hvac-pro",
+        "domain": "stirring-gumdrop-4e30a6.netlify.app",
+        "name": "Houston HVAC Pro",
+        "tagline": "AC Repair and HVAC Service in Houston TX",
+        "cta": "Call for Same-Day Service",
+        "phone": "eight three two, six six two, four one zero seven",
+        "colors": {"primary": "#0d2137", "accent": "#00b4d8", "text": "#ffffff", "bg": "#f0f4f8"},
+        "starting_price": "$89",
+        "pitch": "Fast AC repair, air conditioning installation, and 24/7 emergency HVAC service across Houston and surrounding communities.",
+        "favicon": "❄️",
+        "service_folders": [
+            ("ac-repair", "AC Repair"),
+            ("air-conditioning-repair", "Air Conditioning Repair"),
+            ("ac-installation", "AC Installation"),
+            ("emergency-ac-repair", "Emergency AC Repair"),
+            ("hvac-tune-up", "HVAC Tune Up"),
+            ("furnace-repair", "Furnace Repair"),
+        ],
+    },
+    "houstonroofing": {
+        "repo": "dominionsoundmusic-create/houston-roofing-pro",
+        "work_dir": "/opt/render/project/src/houston-roofing-pro",
+        "domain": "delicate-bavarois-59069c.netlify.app",
+        "name": "Houston Roofing Pro",
+        "tagline": "Roof Repair and Replacement in Houston TX",
+        "cta": "Get Free Roof Inspection",
+        "phone": "eight three two, six six two, four one zero seven",
+        "colors": {"primary": "#12111a", "accent": "#c9a84c", "text": "#ffffff", "bg": "#f8f7f2"},
+        "starting_price": "Free Inspection",
+        "pitch": "Expert roof repair, replacement, and storm damage restoration across Houston and surrounding communities. Free inspections. Insurance claims handled.",
+        "favicon": "🏠",
+        "service_folders": [
+            ("roof-repair", "Roof Repair"),
+            ("roof-replacement", "Roof Replacement"),
+            ("storm-damage-roof-repair", "Storm Damage Roof Repair"),
+            ("hail-damage-roof-repair", "Hail Damage Roof Repair"),
+            ("free-roof-inspection", "Free Roof Inspection"),
+            ("roof-leak-repair", "Roof Leak Repair"),
+        ],
+    },
+    "dallaswash": {
+        "repo": "dominionsoundmusic-create/dallas-powerwashing-pro",
+        "work_dir": "/opt/render/project/src/dallas-powerwashing-pro",
+        "domain": "sage-tarsier-f0ded1.netlify.app",
+        "name": "Dallas Metro Power Washing Pro",
+        "tagline": "Professional Power Washing in Dallas-Fort Worth TX",
+        "cta": "Get a Free Quote",
+        "phone": "two one four, five five five, zero one nine nine",
+        "colors": {"primary": "#0d1f3c", "accent": "#00c6ff", "text": "#ffffff", "bg": "#f5f8fc"},
+        "starting_price": "$99",
+        "pitch": "Professional power washing for driveways, fences, roofs, and decks across Dallas-Fort Worth and all surrounding communities.",
+        "favicon": "💧",
+        "service_folders": [
+            ("power-washing", "Power Washing"),
+            ("pressure-washing", "Pressure Washing"),
+            ("driveway-cleaning", "Driveway Cleaning"),
+            ("fence-cleaning", "Fence Cleaning"),
+            ("roof-soft-wash", "Roof Soft Wash"),
+            ("deck-cleaning", "Deck Cleaning"),
+        ],
+    },
+    "dallashvac": {
+        "repo": "dominionsoundmusic-create/dallas-hvac-pro",
+        "work_dir": "/opt/render/project/src/dallas-hvac-pro",
+        "domain": "ornate-wisp-2520ba.netlify.app",
+        "name": "Dallas Metro HVAC Pro",
+        "tagline": "AC Repair and HVAC Service in Dallas-Fort Worth TX",
+        "cta": "Call for Same-Day Service",
+        "phone": "two one four, five five five, zero one nine nine",
+        "colors": {"primary": "#0d1f3a", "accent": "#00b4d8", "text": "#ffffff", "bg": "#f0f4f8"},
+        "starting_price": "$89",
+        "pitch": "Fast AC repair, air conditioning installation, and 24/7 emergency HVAC service across Dallas-Fort Worth and all surrounding communities.",
+        "favicon": "❄️",
+        "service_folders": [
+            ("ac-repair", "AC Repair"),
+            ("air-conditioning-repair", "Air Conditioning Repair"),
+            ("ac-installation", "AC Installation"),
+            ("emergency-ac-repair", "Emergency AC Repair"),
+            ("hvac-tune-up", "HVAC Tune Up"),
+            ("furnace-repair", "Furnace Repair"),
+        ],
+    },
+    "dallasroofing": {
+        "repo": "dominionsoundmusic-create/dallas-roofing-pro",
+        "work_dir": "/opt/render/project/src/dallas-roofing-pro",
+        "domain": "splendid-sable-28fb05.netlify.app",
+        "name": "Dallas Metro Roofing Pro",
+        "tagline": "Roof Repair and Replacement in Dallas-Fort Worth TX",
+        "cta": "Get Free Roof Inspection",
+        "phone": "two one four, five five five, zero one nine nine",
+        "colors": {"primary": "#12111a", "accent": "#c9a84c", "text": "#ffffff", "bg": "#f8f7f2"},
+        "starting_price": "Free Inspection",
+        "pitch": "Expert roof repair, replacement, and hail damage restoration across Dallas-Fort Worth. Free inspections. Insurance claims handled. 25-year warranty.",
+        "favicon": "🏠",
+        "service_folders": [
+            ("roof-repair", "Roof Repair"),
+            ("roof-replacement", "Roof Replacement"),
+            ("hail-damage-roof-repair", "Hail Damage Roof Repair"),
+            ("storm-damage-roof-repair", "Storm Damage Roof Repair"),
+            ("free-roof-inspection", "Free Roof Inspection"),
+            ("roof-leak-repair", "Roof Leak Repair"),
+        ],
+    },
 }
 
 # ============================================================
@@ -685,30 +811,30 @@ def build_aivoice_page(city, state, abbr, region, county, lat, lng, folder_slug,
     slug = make_slug(city, abbr)
     url = f"https://{b['domain']}/{folder_slug}/{slug}.html"
     info = get_state_info(abbr)
-    return f'''<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{folder_name} in {city}, {state} | {b["name"]}</title>
-<meta name="description" content="Professional {folder_name.lower()} for {city}, {state} businesses. AI that answers every call 24/7, qualifies leads, and books appointments. Starting at {b["starting_price"]}.">
-<link rel="canonical" href="{url}">
-<link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<meta property="og:title" content="{folder_name} in {city}, {state} | {b['name']}">
-<meta property="og:description" content="Never miss another call in {city}. AI receptionist answers 24/7 from {b['starting_price']}.">
-<meta name="geo.region" content="US-{abbr}">
-<meta name="geo.placename" content="{city}, {state}">
-<meta name="geo.position" content="{lat};{lng}">
-<script type="application/ld+json">
+    return f'''
+
+
+
+
+{folder_name} in {city}, {state} | {b["name"]}
+
+
+
+
+
+
+
+
+
 {{"@context":"https://schema.org","@type":"Service","name":"{folder_name} in {city}, {state}","provider":{{"@type":"LocalBusiness","name":"{b['name']}","url":"https://{b['domain']}","telephone":"{b['phone']}","areaServed":{{"@type":"City","name":"{city}","containedInPlace":{{"@type":"State","name":"{state}"}}}}}},"description":"Professional {folder_name.lower()} for businesses in {city}, {state}. AI answers every call 24/7.","offers":{{"@type":"Offer","price":"297","priceCurrency":"USD","priceSpecification":{{"@type":"UnitPriceSpecification","price":"297","priceCurrency":"USD","unitText":"month"}}}}}}
-</script>
-<script type="application/ld+json">
+
+
 {{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{{"@type":"ListItem","position":1,"name":"Home","item":"https://{b['domain']}"}},{{"@type":"ListItem","position":2,"name":"{folder_name}","item":"https://{b['domain']}/{folder_slug}"}},{{"@type":"ListItem","position":3,"name":"{city}, {state}","item":"{url}"}}]}}
-</script>
-<script type="application/ld+json">
+
+
 {{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{{"@type":"Question","name":"How does {folder_name.lower()} work for {city} businesses?","acceptedAnswer":{{"@type":"Answer","text":"Our AI answers every call to your {city} business in a natural voice, qualifies the lead, books appointments, and takes messages — 24 hours a day, 7 days a week, starting at $297/month."}}}},{{"@type":"Question","name":"How quickly can my {city} business get set up?","acceptedAnswer":{{"@type":"Answer","text":"Most {city} businesses are live with their AI receptionist within 48 hours. Call 903-636-7511 or visit AIVoiceAgentPros.com to get started."}}}}]}}
-</script>
-<style>
+
+
 *{{margin:0;padding:0;box-sizing:border-box}}
 body{{font-family:'Segoe UI',system-ui,sans-serif;background:#0A0A14;color:#F9FAFB;line-height:1.6}}
 a{{color:inherit;text-decoration:none}}
@@ -744,55 +870,55 @@ h1 span{{color:#A78BFA}}
 footer{{background:#111120;border-top:1px solid #1F1F35;padding:32px 20px;text-align:center;color:#6B7280;font-size:.82rem}}
 footer a{{color:#6B7280}}
 footer a:hover{{color:#A78BFA}}
-</style>
-</head>
-<body>
-<nav>
-  <div class="nav-inner">
-    <a href="/index.html"><span class="logo">🤖 <span>AI Voice Agent Pros</span></span></a>
-    <a href="/index.html#pricing" class="nav-cta">Get Started</a>
-  </div>
-</nav>
-<div class="hero">
-  <div class="breadcrumb"><a href="/index.html">Home</a> → <a href="/{folder_slug}">{folder_name}</a> → {city}, {state}</div>
-  <div class="eyebrow">🤖 {folder_name}</div>
-  <h1>{info['emoji']} {folder_name} in <span>{city}, {state}</span></h1>
-  <p class="sub">AI that answers every call for {city} businesses 24 hours a day, 7 days a week. Qualify leads, book appointments, never miss a customer again.</p>
-  <div class="btns">
-    <a href="/index.html#pricing" class="btn-p">Get Started — {b['starting_price']} →</a>
-    <a href="tel:+19036367511" class="btn-o">📞 Call 903-636-7511</a>
-  </div>
-</div>
-<div class="section">
-  <h2 style="font-size:1.4rem;font-weight:800;margin-bottom:8px">Why {city} Businesses Need {folder_name}</h2>
-  <p style="color:#9CA3AF;font-size:.92rem;max-width:680px">Every missed call in {city} is a customer going to your competitor. Our AI receptionist answers every call instantly, day or night, and handles the conversation so you can focus on your work.</p>
-  <div class="grid-3">
-    <div class="card"><div class="card-icon">📞</div><h3>Never Miss a Call</h3><p>Your {city} AI receptionist picks up every call — after hours, weekends, holidays, when you're on the job. Every lead captured.</p></div>
-    <div class="card"><div class="card-icon">📅</div><h3>Books Appointments</h3><p>AI qualifies the lead and books directly to your calendar. Your {city} customers get instant scheduling — you get confirmed appointments.</p></div>
-    <div class="card"><div class="card-icon">💬</div><h3>Natural Conversation</h3><p>Not a phone tree. Not hold music. A real AI conversation that represents your {city} business professionally every single time.</p></div>
-    <div class="card"><div class="card-icon">⚡</div><h3>Live in 48 Hours</h3><p>Your {city} AI receptionist can be answering calls within 48 hours of signup. No tech skills needed — we handle everything.</p></div>
-    <div class="card"><div class="card-icon">💰</div><h3>From {b['starting_price']}</h3><p>Less than a part-time employee for a fraction of the cost. No long contracts, no setup fees. Cancel any time.</p></div>
-    <div class="card"><div class="card-icon">📊</div><h3>Every Call Logged</h3><p>Full transcript and recording of every call. Know exactly what your {city} customers are asking about and never lose a lead.</p></div>
-  </div>
-  <div class="local-box">
-    <h2>Serving <span>{city}, {state}</span> Businesses</h2>
-    <p>{city} is a thriving community in {region}, located in {county}. Local businesses in {city} face the same challenge as businesses everywhere — calls come in at the worst possible times. When you're on a job, in a meeting, or it's 10 PM on a Sunday, your AI receptionist is still there answering professionally and capturing every lead.</p>
-    <p>Contractors, HVAC companies, plumbers, electricians, law firms, medical offices, restaurants, auto shops — any {city} business that gets phone calls can benefit from AI Voice Agent Pros. Stop losing customers to voicemail and start converting more calls into appointments.</p>
-    <p style="font-size:.85rem;color:#6B7280">📍 {info['emoji']} Fun fact: {info['fact']}.</p>
-  </div>
-  <div class="cta-box">
-    <h2>Ready to Never Miss a Call in {city}?</h2>
-    <p>Get your AI receptionist live in 48 hours. Starting at {b['starting_price']} — no long contracts.</p>
-    <a href="/index.html#pricing" class="cta-btn">Get Started Today →</a>
-    <p style="margin-top:14px;font-size:.82rem;color:#6B7280">Or call us: <a href="tel:+19036367511" style="color:#A78BFA">903-636-7511</a> · <a href="https://aivoiceagentpros.com" style="color:#A78BFA">AIVoiceAgentPros.com</a></p>
-  </div>
-</div>
-<footer>
-  <p style="margin-bottom:8px">© 2025 AI Voice Agent Pros · Part of the <a href="https://dominionaiagency.com">Dominion Brand Family</a></p>
-  <p><a href="/index.html">Home</a> · <a href="https://dominionwebdesignpro.com">Web Design</a> · <a href="https://dominionreviewpro.com">Review Pro</a> · <a href="https://dominionaiagency.com">AI Agency</a></p>
-</footer>
-</body>
-</html>'''
+
+
+
+
+  
+    🤖 AI Voice Agent Pros
+    Get Started
+  
+
+
+  Home → {folder_name} → {city}, {state}
+  🤖 {folder_name}
+  {info['emoji']} {folder_name} in {city}, {state}
+  AI that answers every call for {city} businesses 24 hours a day, 7 days a week. Qualify leads, book appointments, never miss a customer again.
+  
+    Get Started — {b['starting_price']} →
+    📞 Call 903-636-7511
+  
+
+
+  Why {city} Businesses Need {folder_name}
+  Every missed call in {city} is a customer going to your competitor. Our AI receptionist answers every call instantly, day or night, and handles the conversation so you can focus on your work.
+  
+    📞Never Miss a CallYour {city} AI receptionist picks up every call — after hours, weekends, holidays, when you're on the job. Every lead captured.
+    📅Books AppointmentsAI qualifies the lead and books directly to your calendar. Your {city} customers get instant scheduling — you get confirmed appointments.
+    💬Natural ConversationNot a phone tree. Not hold music. A real AI conversation that represents your {city} business professionally every single time.
+    ⚡Live in 48 HoursYour {city} AI receptionist can be answering calls within 48 hours of signup. No tech skills needed — we handle everything.
+    💰From {b['starting_price']}Less than a part-time employee for a fraction of the cost. No long contracts, no setup fees. Cancel any time.
+    📊Every Call LoggedFull transcript and recording of every call. Know exactly what your {city} customers are asking about and never lose a lead.
+  
+  
+    Serving {city}, {state} Businesses
+    {city} is a thriving community in {region}, located in {county}. Local businesses in {city} face the same challenge as businesses everywhere — calls come in at the worst possible times. When you're on a job, in a meeting, or it's 10 PM on a Sunday, your AI receptionist is still there answering professionally and capturing every lead.
+    Contractors, HVAC companies, plumbers, electricians, law firms, medical offices, restaurants, auto shops — any {city} business that gets phone calls can benefit from AI Voice Agent Pros. Stop losing customers to voicemail and start converting more calls into appointments.
+    📍 {info['emoji']} Fun fact: {info['fact']}.
+  
+  
+    Ready to Never Miss a Call in {city}?
+    Get your AI receptionist live in 48 hours. Starting at {b['starting_price']} — no long contracts.
+    Get Started Today →
+    Or call us: 903-636-7511 · AIVoiceAgentPros.com
+  
+
+
+  © 2025 AI Voice Agent Pros · Part of the Dominion Brand Family
+  Home · Web Design · Review Pro · AI Agency
+
+
+'''
 
 
 def build_reviewpro_page(city, state, abbr, region, county, lat, lng, folder_slug, folder_name):
@@ -800,25 +926,25 @@ def build_reviewpro_page(city, state, abbr, region, county, lat, lng, folder_slu
     slug = make_slug(city, abbr)
     url = f"https://{b['domain']}/{folder_slug}/{slug}.html"
     info = get_state_info(abbr)
-    return f'''<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{folder_name} in {city}, {state} | {b["name"]}</title>
-<meta name="description" content="{folder_name} for {city}, {state} businesses. Get more 5-star Google reviews automatically. Most clients double their reviews in 60 days. Starting at {b['starting_price']}.">
-<link rel="canonical" href="{url}">
-<link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<meta name="geo.region" content="US-{abbr}">
-<meta name="geo.placename" content="{city}, {state}">
-<meta name="geo.position" content="{lat};{lng}">
-<script type="application/ld+json">
+    return f'''
+
+
+
+
+{folder_name} in {city}, {state} | {b["name"]}
+
+
+
+
+
+
+
 {{"@context":"https://schema.org","@type":"Service","name":"{folder_name} in {city}, {state}","provider":{{"@type":"LocalBusiness","name":"{b['name']}","url":"https://{b['domain']}","telephone":"{b['phone']}","areaServed":{{"@type":"City","name":"{city}","containedInPlace":{{"@type":"State","name":"{state}"}}}}}},"description":"{folder_name} for businesses in {city}, {state}. Automated Google review generation starting at $197/month."}}
-</script>
-<script type="application/ld+json">
+
+
 {{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{{"@type":"Question","name":"How does {folder_name.lower()} work for {city} businesses?","acceptedAnswer":{{"@type":"Answer","text":"After every job, our system automatically sends your {city} customer a review request via SMS or email. One tap takes them straight to your Google review page. Most {city} clients double their review count within 60 days."}}}},{{"@type":"Question","name":"How much does review management cost for {city} businesses?","acceptedAnswer":{{"@type":"Answer","text":"Dominion Review Pro starts at $197/month for {city} businesses. Setup takes less than 24 hours. Call 903-636-7511 or visit DominionReviewPro.com."}}}}]}}
-</script>
-<style>
+
+
 *{{margin:0;padding:0;box-sizing:border-box}}
 body{{font-family:'Segoe UI',system-ui,sans-serif;background:#0A0F0A;color:#F9FAFB;line-height:1.6}}
 a{{color:inherit;text-decoration:none}}
@@ -855,55 +981,55 @@ h1 span{{color:#34D399}}
 footer{{background:#0F1A0F;border-top:1px solid #1A3A1A;padding:32px 20px;text-align:center;color:#6B7280;font-size:.82rem}}
 footer a{{color:#6B7280}}
 footer a:hover{{color:#34D399}}
-</style>
-</head>
-<body>
-<nav>
-  <div class="nav-inner">
-    <a href="/index.html"><span class="logo">⭐ <span>Dominion Review Pro</span></span></a>
-    <a href="/index.html#pricing" class="nav-cta">Get Started</a>
-  </div>
-</nav>
-<div class="hero">
-  <div class="breadcrumb"><a href="/index.html">Home</a> → <a href="/{folder_slug}">{folder_name}</a> → {city}, {state}</div>
-  <div class="eyebrow">⭐ {folder_name}</div>
-  <h1>{info['emoji']} {folder_name} in <span>{city}, {state}</span></h1>
-  <p class="sub">Get more 5-star Google reviews for your {city} business — automatically. Our system follows up with every customer and guides them to leave a review in one tap.</p>
-  <div class="btns">
-    <a href="/index.html#pricing" class="btn-p">Start Getting Reviews — {b['starting_price']} →</a>
-    <a href="tel:+19036367511" class="btn-o">📞 Call 903-636-7511</a>
-  </div>
-</div>
-<div class="section">
-  <h2 style="font-size:1.4rem;font-weight:800;margin-bottom:8px">Why {city} Businesses Need More Google Reviews</h2>
-  <p style="color:#9CA3AF;font-size:.92rem;max-width:680px">When someone in {city} searches for your type of business, the first thing they see is the star rating. More reviews means more trust, higher Google ranking, and more customers choosing you over your competition.</p>
-  <div class="grid-3">
-    <div class="card"><div class="stars">★★★★★</div><h3>Automated Requests</h3><p>After every job, our system automatically sends your {city} customer a review request. No awkward asks. No manual follow-up. Just results.</p></div>
-    <div class="card"><div class="card-icon">📱</div><h3>One-Tap Review</h3><p>Customers get a link that takes them straight to your Google review page. One tap and they're writing a review for your {city} business.</p></div>
-    <div class="card"><div class="card-icon">📈</div><h3>Double in 60 Days</h3><p>Most {city} clients double their Google review count within the first 60 days. More reviews means higher ranking in {city} local search results.</p></div>
-    <div class="card"><div class="card-icon">🚨</div><h3>Negative Review Alerts</h3><p>Get notified immediately if a {city} customer is unhappy — before they post publicly. Address issues fast and protect your reputation.</p></div>
-    <div class="card"><div class="card-icon">💰</div><h3>From {b['starting_price']}</h3><p>Less than a single lost customer. Setup in under 24 hours. No long contracts. Cancel any time. Start getting reviews this week.</p></div>
-    <div class="card"><div class="card-icon">🗺️</div><h3>Google Maps Ranking</h3><p>More reviews directly improves your Google Maps ranking in {city}. Show up higher when local customers search for your services.</p></div>
-  </div>
-  <div class="local-box">
-    <h2>Serving <span>{city}, {state}</span> Businesses</h2>
-    <p>{city} is a competitive market in {region}. Local customers in {county} are reading reviews before they call anyone. If your competitors have hundreds of 5-star reviews and you have a handful, you're losing business before the phone ever rings.</p>
-    <p>Dominion Review Pro levels the playing field for {city} small businesses. Whether you run an HVAC company, a restaurant, a law firm, an auto shop, or any other local business in {city} — our automated review system gets you more 5-star reviews every single week without you lifting a finger.</p>
-    <p style="font-size:.85rem;color:#6B7280">📍 {info['emoji']} Fun fact: {info['fact']}.</p>
-  </div>
-  <div class="cta-box">
-    <h2>Start Getting More Reviews in {city}</h2>
-    <p>Setup in under 24 hours. Starting at {b['starting_price']}. No long contracts.</p>
-    <a href="/index.html#pricing" class="cta-btn">Get Started Today →</a>
-    <p style="margin-top:14px;font-size:.82rem;color:#6B7280">Or call us: <a href="tel:+19036367511" style="color:#34D399">903-636-7511</a> · <a href="https://dominionreviewpro.com" style="color:#34D399">DominionReviewPro.com</a></p>
-  </div>
-</div>
-<footer>
-  <p style="margin-bottom:8px">© 2025 Dominion Review Pro · Part of the <a href="https://dominionaiagency.com">Dominion Brand Family</a></p>
-  <p><a href="/index.html">Home</a> · <a href="https://dominionwebdesignpro.com">Web Design</a> · <a href="https://aivoiceagentpros.com">AI Voice</a> · <a href="https://dominionaiagency.com">AI Agency</a></p>
-</footer>
-</body>
-</html>'''
+
+
+
+
+  
+    ⭐ Dominion Review Pro
+    Get Started
+  
+
+
+  Home → {folder_name} → {city}, {state}
+  ⭐ {folder_name}
+  {info['emoji']} {folder_name} in {city}, {state}
+  Get more 5-star Google reviews for your {city} business — automatically. Our system follows up with every customer and guides them to leave a review in one tap.
+  
+    Start Getting Reviews — {b['starting_price']} →
+    📞 Call 903-636-7511
+  
+
+
+  Why {city} Businesses Need More Google Reviews
+  When someone in {city} searches for your type of business, the first thing they see is the star rating. More reviews means more trust, higher Google ranking, and more customers choosing you over your competition.
+  
+    ★★★★★Automated RequestsAfter every job, our system automatically sends your {city} customer a review request. No awkward asks. No manual follow-up. Just results.
+    📱One-Tap ReviewCustomers get a link that takes them straight to your Google review page. One tap and they're writing a review for your {city} business.
+    📈Double in 60 DaysMost {city} clients double their Google review count within the first 60 days. More reviews means higher ranking in {city} local search results.
+    🚨Negative Review AlertsGet notified immediately if a {city} customer is unhappy — before they post publicly. Address issues fast and protect your reputation.
+    💰From {b['starting_price']}Less than a single lost customer. Setup in under 24 hours. No long contracts. Cancel any time. Start getting reviews this week.
+    🗺️Google Maps RankingMore reviews directly improves your Google Maps ranking in {city}. Show up higher when local customers search for your services.
+  
+  
+    Serving {city}, {state} Businesses
+    {city} is a competitive market in {region}. Local customers in {county} are reading reviews before they call anyone. If your competitors have hundreds of 5-star reviews and you have a handful, you're losing business before the phone ever rings.
+    Dominion Review Pro levels the playing field for {city} small businesses. Whether you run an HVAC company, a restaurant, a law firm, an auto shop, or any other local business in {city} — our automated review system gets you more 5-star reviews every single week without you lifting a finger.
+    📍 {info['emoji']} Fun fact: {info['fact']}.
+  
+  
+    Start Getting More Reviews in {city}
+    Setup in under 24 hours. Starting at {b['starting_price']}. No long contracts.
+    Get Started Today →
+    Or call us: 903-636-7511 · DominionReviewPro.com
+  
+
+
+  © 2025 Dominion Review Pro · Part of the Dominion Brand Family
+  Home · Web Design · AI Voice · AI Agency
+
+
+'''
 
 
 def build_aiagency_page(city, state, abbr, region, county, lat, lng, folder_slug, folder_name):
@@ -911,25 +1037,25 @@ def build_aiagency_page(city, state, abbr, region, county, lat, lng, folder_slug
     slug = make_slug(city, abbr)
     url = f"https://{b['domain']}/{folder_slug}/{slug}.html"
     info = get_state_info(abbr)
-    return f'''<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{folder_name} in {city}, {state} | {b["name"]}</title>
-<meta name="description" content="{folder_name} for {city}, {state} businesses. Full AI automation — voice agents, CRM, lead generation, and reputation management. Starting at {b['starting_price']}.">
-<link rel="canonical" href="{url}">
-<link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<meta name="geo.region" content="US-{abbr}">
-<meta name="geo.placename" content="{city}, {state}">
-<meta name="geo.position" content="{lat};{lng}">
-<script type="application/ld+json">
+    return f'''
+
+
+
+
+{folder_name} in {city}, {state} | {b["name"]}
+
+
+
+
+
+
+
 {{"@context":"https://schema.org","@type":"Service","name":"{folder_name} in {city}, {state}","provider":{{"@type":"LocalBusiness","name":"{b['name']}","url":"https://{b['domain']}","telephone":"{b['phone']}","areaServed":{{"@type":"City","name":"{city}","containedInPlace":{{"@type":"State","name":"{state}"}}}}}},"description":"{folder_name} for businesses in {city}, {state}. Full AI automation starting at $497/month."}}
-</script>
-<script type="application/ld+json">
+
+
 {{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{{"@type":"Question","name":"What does an {folder_name.lower()} do for {city} businesses?","acceptedAnswer":{{"@type":"Answer","text":"Dominion AI Agency provides full AI automation for {city} businesses — AI voice agents, CRM automation, lead generation, review management, and more. Starting at $497/month."}}}},{{"@type":"Question","name":"How do I get started with AI automation in {city}?","acceptedAnswer":{{"@type":"Answer","text":"Call 903-636-7511 or visit DominionAIAgency.com to get a free consultation for your {city} business. Most clients are up and running within one week."}}}}]}}
-</script>
-<style>
+
+
 *{{margin:0;padding:0;box-sizing:border-box}}
 body{{font-family:'Segoe UI',system-ui,sans-serif;background:#0A1628;color:#F5F0E8;line-height:1.6}}
 a{{color:inherit;text-decoration:none}}
@@ -965,55 +1091,55 @@ h1 span{{color:#E8C97A}}
 footer{{background:#0F1E35;border-top:1px solid #1E3050;padding:32px 20px;text-align:center;color:#8B9AB0;font-size:.82rem}}
 footer a{{color:#8B9AB0}}
 footer a:hover{{color:#E8C97A}}
-</style>
-</head>
-<body>
-<nav>
-  <div class="nav-inner">
-    <a href="/index.html"><span class="logo">👑 <span>Dominion AI Agency</span></span></a>
-    <a href="/index.html#pricing" class="nav-cta">Get Started</a>
-  </div>
-</nav>
-<div class="hero">
-  <div class="breadcrumb"><a href="/index.html">Home</a> → <a href="/{folder_slug}">{folder_name}</a> → {city}, {state}</div>
-  <div class="eyebrow">👑 {folder_name}</div>
-  <h1>{info['emoji']} {folder_name} in <span>{city}, {state}</span></h1>
-  <p class="sub">Full AI automation for {city} businesses. Voice agents, CRM, lead generation, and reputation management — all under one roof starting at {b['starting_price']}.</p>
-  <div class="btns">
-    <a href="/index.html#pricing" class="btn-p">Get Started — {b['starting_price']} →</a>
-    <a href="tel:+19036367511" class="btn-o">📞 Call 903-636-7511</a>
-  </div>
-</div>
-<div class="section">
-  <h2 style="font-size:1.4rem;font-weight:800;margin-bottom:8px">Full AI Automation for {city} Businesses</h2>
-  <p style="color:#8B9AB0;font-size:.92rem;max-width:680px">Dominion AI Agency brings enterprise-level AI automation to {city} small businesses. Instead of hiring staff for every role, our AI handles your calls, CRM, lead generation, and reviews — automatically, around the clock.</p>
-  <div class="grid-3">
-    <div class="card"><div class="card-icon">📞</div><h3>AI Voice Agents</h3><p>AI receptionist answers every call to your {city} business 24/7. Qualifies leads, books appointments, takes messages. Never miss a customer.</p></div>
-    <div class="card"><div class="card-icon">🤖</div><h3>CRM Automation</h3><p>Your CRM runs itself. Contacts auto-created, pipeline stages auto-updated, follow-up sequences auto-triggered. No manual data entry.</p></div>
-    <div class="card"><div class="card-icon">🎯</div><h3>Lead Generation</h3><p>Automated lead scraping, outreach, and follow-up for {city} area prospects. New leads flowing into your pipeline every day on autopilot.</p></div>
-    <div class="card"><div class="card-icon">⭐</div><h3>Review Management</h3><p>Automated Google review requests after every job. Most {city} clients double their review count in 60 days.</p></div>
-    <div class="card"><div class="card-icon">💰</div><h3>From {b['starting_price']}</h3><p>Everything your {city} business needs to run on AI — for less than the cost of a single part-time employee. No long contracts.</p></div>
-    <div class="card"><div class="card-icon">⚡</div><h3>Up and Running Fast</h3><p>Most {city} businesses are fully onboarded within one week. We handle all the setup — you just run your business.</p></div>
-  </div>
-  <div class="local-box">
-    <h2>Serving <span>{city}, {state}</span> Businesses</h2>
-    <p>{city} is a growing community in {region}, {state}. Local businesses in {county} are increasingly competing with larger companies that have full marketing and sales teams. Dominion AI Agency gives {city} small businesses access to the same AI tools that big companies use — at a fraction of the cost.</p>
-    <p>Whether you're a contractor, a service business, a restaurant, or a professional office in {city}, our AI automation stack handles your customer communication, follow-up, and reputation management so you can focus on delivering great work.</p>
-    <p style="font-size:.85rem;color:#8B9AB0">📍 {info['emoji']} Fun fact: {info['fact']}.</p>
-  </div>
-  <div class="cta-box">
-    <h2>Ready to Automate Your {city} Business?</h2>
-    <p>Free consultation. Up and running in one week. Starting at {b['starting_price']}.</p>
-    <a href="/index.html#pricing" class="cta-btn">Get Started Today →</a>
-    <p style="margin-top:14px;font-size:.82rem;color:#8B9AB0">Or call us: <a href="tel:+19036367511" style="color:#E8C97A">903-636-7511</a> · <a href="https://dominionaiagency.com" style="color:#E8C97A">DominionAIAgency.com</a></p>
-  </div>
-</div>
-<footer>
-  <p style="margin-bottom:8px">© 2025 Dominion AI Agency · Part of the <a href="https://dominionaiagency.com">Dominion Brand Family</a></p>
-  <p><a href="/index.html">Home</a> · <a href="https://dominionwebdesignpro.com">Web Design</a> · <a href="https://aivoiceagentpros.com">AI Voice</a> · <a href="https://dominionreviewpro.com">Review Pro</a></p>
-</footer>
-</body>
-</html>'''
+
+
+
+
+  
+    👑 Dominion AI Agency
+    Get Started
+  
+
+
+  Home → {folder_name} → {city}, {state}
+  👑 {folder_name}
+  {info['emoji']} {folder_name} in {city}, {state}
+  Full AI automation for {city} businesses. Voice agents, CRM, lead generation, and reputation management — all under one roof starting at {b['starting_price']}.
+  
+    Get Started — {b['starting_price']} →
+    📞 Call 903-636-7511
+  
+
+
+  Full AI Automation for {city} Businesses
+  Dominion AI Agency brings enterprise-level AI automation to {city} small businesses. Instead of hiring staff for every role, our AI handles your calls, CRM, lead generation, and reviews — automatically, around the clock.
+  
+    📞AI Voice AgentsAI receptionist answers every call to your {city} business 24/7. Qualifies leads, books appointments, takes messages. Never miss a customer.
+    🤖CRM AutomationYour CRM runs itself. Contacts auto-created, pipeline stages auto-updated, follow-up sequences auto-triggered. No manual data entry.
+    🎯Lead GenerationAutomated lead scraping, outreach, and follow-up for {city} area prospects. New leads flowing into your pipeline every day on autopilot.
+    ⭐Review ManagementAutomated Google review requests after every job. Most {city} clients double their review count in 60 days.
+    💰From {b['starting_price']}Everything your {city} business needs to run on AI — for less than the cost of a single part-time employee. No long contracts.
+    ⚡Up and Running FastMost {city} businesses are fully onboarded within one week. We handle all the setup — you just run your business.
+  
+  
+    Serving {city}, {state} Businesses
+    {city} is a growing community in {region}, {state}. Local businesses in {county} are increasingly competing with larger companies that have full marketing and sales teams. Dominion AI Agency gives {city} small businesses access to the same AI tools that big companies use — at a fraction of the cost.
+    Whether you're a contractor, a service business, a restaurant, or a professional office in {city}, our AI automation stack handles your customer communication, follow-up, and reputation management so you can focus on delivering great work.
+    📍 {info['emoji']} Fun fact: {info['fact']}.
+  
+  
+    Ready to Automate Your {city} Business?
+    Free consultation. Up and running in one week. Starting at {b['starting_price']}.
+    Get Started Today →
+    Or call us: 903-636-7511 · DominionAIAgency.com
+  
+
+
+  © 2025 Dominion AI Agency · Part of the Dominion Brand Family
+  Home · Web Design · AI Voice · Review Pro
+
+
+'''
 
 
 def build_webdesign_page(city, state, abbr, region, county, lat, lng, folder_slug, folder_name):
@@ -1021,25 +1147,25 @@ def build_webdesign_page(city, state, abbr, region, county, lat, lng, folder_slu
     slug = make_slug(city, abbr)
     url = f"https://{b['domain']}/{folder_slug}/{slug}.html"
     info = get_state_info(abbr)
-    return f'''<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{folder_name} in {city}, {state} | {b["name"]}</title>
-<meta name="description" content="Professional {folder_name.lower()} for {city}, {state} businesses. We build your site first — you only pay when you love it. SEO ready, mobile first, AI chat included. From {b['starting_price']}.">
-<link rel="canonical" href="{url}">
-<link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<meta name="geo.region" content="US-{abbr}">
-<meta name="geo.placename" content="{city}, {state}">
-<meta name="geo.position" content="{lat};{lng}">
-<script type="application/ld+json">
+    return f'''
+
+
+
+
+{folder_name} in {city}, {state} | {b["name"]}
+
+
+
+
+
+
+
 {{"@context":"https://schema.org","@type":"Service","name":"{folder_name} in {city}, {state}","provider":{{"@type":"LocalBusiness","name":"{b['name']}","url":"https://{b['domain']}","telephone":"{b['phone']}","areaServed":{{"@type":"City","name":"{city}","containedInPlace":{{"@type":"State","name":"{state}"}}}}}},"description":"Professional {folder_name.lower()} for businesses in {city}, {state}. Custom websites from $497 — we build it first, you pay when you love it."}}
-</script>
-<script type="application/ld+json">
+
+
 {{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{{"@type":"Question","name":"How much does {folder_name.lower()} cost in {city}?","acceptedAnswer":{{"@type":"Answer","text":"Dominion Web Design Pro builds professional websites for {city} businesses starting at $497. We build your demo site first — you only pay when you love it. Call 903-636-7511 or visit DominionWebDesignPro.com."}}}},{{"@type":"Question","name":"Do you build websites for {city} businesses?","acceptedAnswer":{{"@type":"Answer","text":"Yes! We serve businesses in {city}, {state} and all across the US. Every site includes SEO optimization, mobile design, and an AI chat widget. Get your free demo today."}}}}]}}
-</script>
-<style>
+
+
 *{{margin:0;padding:0;box-sizing:border-box}}
 body{{font-family:'Segoe UI',system-ui,sans-serif;background:#0A0A18;color:#F9FAFB;line-height:1.6}}
 a{{color:inherit;text-decoration:none}}
@@ -1075,72 +1201,72 @@ h1 span{{color:#60A5FA}}
 footer{{background:#0F0F22;border-top:1px solid #1E1E40;padding:32px 20px;text-align:center;color:#6B7280;font-size:.82rem}}
 footer a{{color:#6B7280}}
 footer a:hover{{color:#60A5FA}}
-</style>
-</head>
-<body>
-<nav>
-  <div class="nav-inner">
-    <a href="/index.html"><span class="logo">🌐 <span>Dominion Web Design Pro</span></span></a>
-    <a href="/index.html#pricing" class="nav-cta">Get Free Demo</a>
-  </div>
-</nav>
-<div class="hero">
-  <div class="breadcrumb"><a href="/index.html">Home</a> → <a href="/{folder_slug}">{folder_name}</a> → {city}, {state}</div>
-  <div class="eyebrow">🌐 {folder_name}</div>
-  <h1>{info['emoji']} {folder_name} in <span>{city}, {state}</span></h1>
-  <p class="sub">We build your {city} business website first — you only pay when you love it. SEO ready, mobile first, AI chat included. Starting at {b['starting_price']}.</p>
-  <div class="btns">
-    <a href="/index.html#pricing" class="btn-p">Get Your Free Demo →</a>
-    <a href="tel:+19036367511" class="btn-o">📞 Call 903-636-7511</a>
-  </div>
-</div>
-<div class="section">
-  <h2 style="font-size:1.4rem;font-weight:800;margin-bottom:8px">Professional {folder_name} for {city} Businesses</h2>
-  <p style="color:#9CA3AF;font-size:.92rem;max-width:680px">Your website is your most important marketing tool. {city} customers are searching for your services online right now. If your site looks outdated, loads slowly, or isn't mobile friendly — they're going to your competitor.</p>
-  <div class="grid-3">
-    <div class="card"><div class="card-icon">🎨</div><h3>Built First, Pay Later</h3><p>We build your complete {city} business website before you pay a single dollar. No risk, no guessing. Love it or we keep working until you do.</p></div>
-    <div class="card"><div class="card-icon">📱</div><h3>Mobile First Design</h3><p>Over 70% of your {city} customers are on mobile. Every site we build looks and works perfectly on phones, tablets, and desktop.</p></div>
-    <div class="card"><div class="card-icon">🔍</div><h3>SEO Optimized</h3><p>Built from the ground up to rank in {city} local search. Schema markup, fast load times, proper meta tags — everything Google loves.</p></div>
-    <div class="card"><div class="card-icon">🤖</div><h3>AI Chat Included</h3><p>Every website includes an AI chat widget that answers questions and captures leads from your {city} visitors — even when you're busy.</p></div>
-    <div class="card"><div class="card-icon">💰</div><h3>From {b['starting_price']}</h3><p>Professional website for less than most people spend on one month of ads. No monthly fees on base package. You own it outright.</p></div>
-    <div class="card"><div class="card-icon">⚡</div><h3>Fast Turnaround</h3><p>Most {city} business sites are ready for your review within 5-7 days. We move fast so you can start getting online leads quickly.</p></div>
-  </div>
-  <div class="local-box">
-    <h2>Serving <span>{city}, {state}</span> Businesses</h2>
-    <p>{city} is a thriving community in {region}, {state}. Businesses in {county} need a strong online presence to compete in today's market. Whether you're a contractor, restaurant, law firm, medical office, or any other local business in {city} — your website is the foundation of all your marketing.</p>
-    <p>Dominion Web Design Pro has built websites for businesses across Texas and all 50 states. We understand what local {city} customers are looking for and we build sites that convert visitors into calls and appointments.</p>
-    <p style="font-size:.85rem;color:#6B7280">📍 {info['emoji']} Fun fact: {info['fact']}.</p>
-  </div>
-  <div class="cta-box">
-    <h2>Get Your Free {city} Website Demo</h2>
-    <p>We build it first. You pay only when you love it. Starting at {b['starting_price']}.</p>
-    <a href="/index.html#pricing" class="cta-btn">Get Your Free Demo →</a>
-    <p style="margin-top:14px;font-size:.82rem;color:#6B7280">Or call us: <a href="tel:+19036367511" style="color:#60A5FA">903-636-7511</a> · <a href="https://dominionwebdesignpro.com" style="color:#60A5FA">DominionWebDesignPro.com</a></p>
-  </div>
-</div>
-<footer>
-  <p style="margin-bottom:8px">© 2025 Dominion Web Design Pro · Part of the <a href="https://dominionaiagency.com">Dominion Brand Family</a></p>
-  <p><a href="/index.html">Home</a> · <a href="https://aivoiceagentpros.com">AI Voice</a> · <a href="https://dominionreviewpro.com">Review Pro</a> · <a href="https://dominionaiagency.com">AI Agency</a></p>
-</footer>
-</body>
-</html>'''
+
+
+
+
+  
+    🌐 Dominion Web Design Pro
+    Get Free Demo
+  
+
+
+  Home → {folder_name} → {city}, {state}
+  🌐 {folder_name}
+  {info['emoji']} {folder_name} in {city}, {state}
+  We build your {city} business website first — you only pay when you love it. SEO ready, mobile first, AI chat included. Starting at {b['starting_price']}.
+  
+    Get Your Free Demo →
+    📞 Call 903-636-7511
+  
+
+
+  Professional {folder_name} for {city} Businesses
+  Your website is your most important marketing tool. {city} customers are searching for your services online right now. If your site looks outdated, loads slowly, or isn't mobile friendly — they're going to your competitor.
+  
+    🎨Built First, Pay LaterWe build your complete {city} business website before you pay a single dollar. No risk, no guessing. Love it or we keep working until you do.
+    📱Mobile First DesignOver 70% of your {city} customers are on mobile. Every site we build looks and works perfectly on phones, tablets, and desktop.
+    🔍SEO OptimizedBuilt from the ground up to rank in {city} local search. Schema markup, fast load times, proper meta tags — everything Google loves.
+    🤖AI Chat IncludedEvery website includes an AI chat widget that answers questions and captures leads from your {city} visitors — even when you're busy.
+    💰From {b['starting_price']}Professional website for less than most people spend on one month of ads. No monthly fees on base package. You own it outright.
+    ⚡Fast TurnaroundMost {city} business sites are ready for your review within 5-7 days. We move fast so you can start getting online leads quickly.
+  
+  
+    Serving {city}, {state} Businesses
+    {city} is a thriving community in {region}, {state}. Businesses in {county} need a strong online presence to compete in today's market. Whether you're a contractor, restaurant, law firm, medical office, or any other local business in {city} — your website is the foundation of all your marketing.
+    Dominion Web Design Pro has built websites for businesses across Texas and all 50 states. We understand what local {city} customers are looking for and we build sites that convert visitors into calls and appointments.
+    📍 {info['emoji']} Fun fact: {info['fact']}.
+  
+  
+    Get Your Free {city} Website Demo
+    We build it first. You pay only when you love it. Starting at {b['starting_price']}.
+    Get Your Free Demo →
+    Or call us: 903-636-7511 · DominionWebDesignPro.com
+  
+
+
+  © 2025 Dominion Web Design Pro · Part of the Dominion Brand Family
+  Home · AI Voice · Review Pro · AI Agency
+
+
+'''
 def build_hardmoney_page(city, state, abbr, region, county, lat, lng, folder_slug, folder_name):
     slug = make_slug(city, abbr)
     state_info = get_state_info(abbr)
     title = folder_name + ' in ' + city + ', ' + state + ' | Dominion Hard Money'
     desc = 'Need a ' + folder_name.lower() + ' in ' + city + ', ' + state + '? Dominion Hard Money funds fix and flip, DSCR rental, and bridge loans fast. Apply today.'
-    html = '<!DOCTYPE html>'
-    html += '<html lang=en><head>'
-    html += '<meta charset=UTF-8>'
-    html += '<title>' + title + '</title>'
-    html += '<meta name=description content=' + desc + '>'
-    html += '</head><body>'
-    html += '<h1>' + folder_name + ' in ' + city + ', ' + state + '</h1>'
-    html += '<p>' + desc + '</p>'
-    html += '<p>Call us: 903-636-8811</p>'
-    html += '<p>Serving ' + city + ', ' + county + ' County, ' + state + '</p>'
-    html += '<p>' + state_info['emoji'] + ' ' + state_info['fact'] + '</p>'
-    html += '</body></html>'
+    html = ''
+    html += ''
+    html += ''
+    html += '' + title + ''
+    html += ''
+    html += ''
+    html += '' + folder_name + ' in ' + city + ', ' + state + ''
+    html += '' + desc + ''
+    html += 'Call us: 903-636-8811'
+    html += 'Serving ' + city + ', ' + county + ' County, ' + state + ''
+    html += '' + state_info['emoji'] + ' ' + state_info['fact'] + ''
+    html += ''
     return html
 
 PAGE_BUILDERS = {
@@ -1171,11 +1297,11 @@ def update_sitemap(brand_key):
     for folder_slug, _ in brand["service_folders"]:
         for f in sorted(glob.glob(os.path.join(brand["work_dir"], folder_slug, "*.html"))):
             pages.append(f"{base}/{folder_slug}/{os.path.basename(f)}")
-    xml = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+    xml = '\n\n'
     for p in pages:
         priority = '1.0' if p.endswith('/') or p.endswith('index.html') else '0.8'
-        xml += f'<url><loc>{p}</loc><changefreq>weekly</changefreq><priority>{priority}</priority></url>\n'
-    xml += '</urlset>'
+        xml += f'{p}weekly{priority}\n'
+    xml += ''
     with open(os.path.join(brand["work_dir"], "sitemap.xml"), 'w') as f:
         f.write(xml)
     return len(pages)
