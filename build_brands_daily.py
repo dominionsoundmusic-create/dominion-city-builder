@@ -1433,6 +1433,7 @@ def git_push(brand_key, count_built, total):
     today = datetime.now().strftime('%Y-%m-%d')
     subprocess.run(['git','config','user.email','build@dominion.com'])
     subprocess.run(['git','config','user.name','Dominion Builder'])
+    subprocess.run(['git', 'pull', '--rebase', repo_url, 'main'], capture_output=True, text=True)
     subprocess.run(['git','add','-A'])
     result = subprocess.run(['git','commit','-m',f'Daily build {today}: +{count_built} cities ({total} total) — {brand["name"]}'], capture_output=True, text=True)
     if 'nothing to commit' in result.stdout:
