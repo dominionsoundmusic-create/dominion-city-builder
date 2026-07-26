@@ -1210,6 +1210,17 @@ footer{{background:var(--navy2);border-top:1px solid var(--border);padding:36px 
     
       © 2025 Dominion Local Business Directory · East Texas, USA
       Part of the Dominion Brand Family
+
+      <!-- SERVICETITAN AFFILIATE SECTION -->
+      <section style="background:#1a1a2e;padding:48px 5%;text-align:center;border-top:3px solid #ff6b35">
+        <div style="max-width:800px;margin:0 auto">
+          <p style="color:#ff6b35;font-size:0.75em;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:12px">Recommended for Home Service Businesses</p>
+          <h3 style="color:#ffffff;font-size:1.6em;margin-bottom:12px;font-weight:700">Run Your Service Business Like a Pro</h3>
+          <p style="color:rgba(255,255,255,0.7);font-size:0.95em;line-height:1.7;max-width:600px;margin:0 auto 24px">ServiceTitan is the #1 software platform for HVAC, plumbing, electrical, and other home service businesses. Scheduling, dispatching, invoicing, and customer management — all in one place.</p>
+          <a href="https://join.servicetitan.com/mzWepOS" target="_blank" rel="noopener" style="display:inline-block;background:#ff6b35;color:#ffffff;padding:14px 36px;border-radius:6px;text-decoration:none;font-weight:700;font-size:0.95em">Learn More About ServiceTitan →</a>
+          <p style="color:rgba(255,255,255,0.35);font-size:0.72em;margin-top:12px">Referral partner disclosure: Dominion may receive compensation for referrals.</p>
+        </div>
+      </section>
     
   
 
