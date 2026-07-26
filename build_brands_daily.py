@@ -7,7 +7,7 @@ Each city gets pages in all service folders for maximum SEO coverage
 Pushes each brand to its own GitHub repo → Netlify auto-deploys
 """
 
-import os, re, math, json, glob, subprocess
+import os, re, math, json, glob, shutil, subprocess
 from datetime import datetime
 
 # ============================================================
@@ -190,19 +190,20 @@ BRANDS = {
         "tagline": "Private Money for Real Estate Investors",
         "cta": "Apply Now",
         "phone": "nine zero three, six three six, seven five one one",
+        "phone_display": "903-636-7511",
         "colors": {"primary": "#0a1628", "accent": "#c9a84c", "text": "#ffffff", "bg": "#f8f6f0"},
         "starting_price": "$50,000",
         "pitch": "Fast private money loans for fix and flip, DSCR rental, and bridge financing.",
         "favicon": "💰",
         "service_folders": [
-            ("texas/hard-money-loans", "Hard Money Loans"),
-            ("texas/fix-and-flip-loans", "Fix and Flip Loans"),
-            ("texas/bridge-loans", "Bridge Loans"),
-            ("texas/dscr-loans", "DSCR Rental Loans"),
-            ("texas/private-money-lender", "Private Money Lender"),
-            ("texas/rehab-loans", "Rehab Loans"),
-            ("texas/real-estate-investor-loans", "Real Estate Investor Loans"),
-            ("texas/hard-money-lender", "Hard Money Lender"),
+            ("hard-money-loans", "Hard Money Loans"),
+            ("fix-and-flip-loans", "Fix and Flip Loans"),
+            ("bridge-loans", "Bridge Loans"),
+            ("dscr-loans", "DSCR Rental Loans"),
+            ("private-money-lender", "Private Money Lender"),
+            ("rehab-loans", "Rehab Loans"),
+            ("real-estate-investor-loans", "Real Estate Investor Loans"),
+            ("hard-money-lender", "Hard Money Lender"),
         ],
     },
     "houstonwash": {
@@ -1471,42 +1472,139 @@ def build_solarpro_page(city, state, abbr, region, county, lat, lng, folder_slug
     return html
 
 def build_hardmoney_page(city, state, abbr, region, county, lat, lng, folder_slug, folder_name):
+    brand = BRANDS["hardmoney"]
+    county = county.replace(" County", "").strip()
     slug = make_slug(city, abbr)
     state_info = get_state_info(abbr)
-    title = folder_name + ' in ' + city + ', ' + state + ' | Dominion Hard Money'
-    desc = 'Need a ' + folder_name.lower() + ' in ' + city + ', ' + state + '? Dominion Hard Money funds fix and flip, DSCR rental, and bridge loans fast. Apply today.'
-    html = ''
-    html += ''
-    html += ''
-    html += '' + title + ''
-    html += ''
-    html += ''
-    html += '' + folder_name + ' in ' + city + ', ' + state + ''
-    html += '' + desc + ''
-    html += 'Call us: 903-636-8811'
-    html += 'Serving ' + city + ', ' + county + ' County, ' + state + ''
-    html += '' + state_info['emoji'] + ' ' + state_info['fact'] + ''
-    html += ''
+    c = brand["colors"]
+    primary, accent, bg = c["primary"], c["accent"], c["bg"]
+    base = "https://" + brand["domain"]
+    phone = brand.get("phone_display", "903-636-7511")
+    tel = "tel:+1" + "".join(ch for ch in phone if ch.isdigit())
+
+    title = folder_name + " in " + city + ", " + state + " | Dominion Hard Money"
+    desc = ("Private money and " + folder_name.lower() + " for real estate investors in " + city + ", " + state
+            + ". Asset-based lending from " + brand["starting_price"] + ", funding in days rather than months.")
+    canonical = base + "/" + folder_slug + "/" + slug + ".html"
+
+    intro = (city + " sits in " + county + " County, " + state + ". Investors working this market run into the same wall "
+        "everyone else does — a conventional lender wants two years of returns, a full appraisal cycle, and thirty to "
+        "forty-five days before anyone sees a dollar. Distressed deals do not wait that long. "
+        "Dominion Hard Money lends against the asset instead of the borrower's tax returns, which is why a "
+        + city + " deal can close in days. We fund purchases, rehabs, and refinances across " + state
+        + ", from single-family flips to small multifamily and rental portfolios. Loans start at "
+        + brand["starting_price"] + ". Terms depend on the property, the exit, and the numbers — not on how long you have been in business.")
+
+    schema = ('{"@context":"https://schema.org","@type":"FinancialService","name":"Dominion Hard Money",'
+        '"description":"' + brand["pitch"].replace('"', "'") + '",'
+        '"telephone":"' + phone + '","url":"' + canonical + '",'
+        '"areaServed":{"@type":"City","name":"' + city.replace('"', "'") + '","addressRegion":"' + abbr + '"},'
+        '"geo":{"@type":"GeoCoordinates","latitude":"' + str(lat) + '","longitude":"' + str(lng) + '"},'
+        '"serviceType":"' + folder_name + '"}')
+
+    crumbs = ('{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":['
+        '{"@type":"ListItem","position":1,"name":"Home","item":"' + base + '/"},'
+        '{"@type":"ListItem","position":2,"name":"' + folder_name + '","item":"' + base + '/' + folder_slug + '/"},'
+        '{"@type":"ListItem","position":3,"name":"' + city.replace('"', "'") + ', ' + abbr + '","item":"' + canonical + '"}]}')
+
+    css = ("*{box-sizing:border-box}body{font-family:Georgia,'Times New Roman',serif;margin:0;background:" + bg +
+        ";color:#16202e;line-height:1.65}a{color:inherit}"
+        "header{background:" + primary + ";color:#fff;padding:15px 22px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}"
+        "header .logo{font-weight:700;font-size:1.05em;text-decoration:none;color:#fff;letter-spacing:.4px}"
+        "header nav{margin-left:auto;display:flex;gap:15px;flex-wrap:wrap;font-family:system-ui,sans-serif}"
+        "header nav a{color:rgba(255,255,255,.82);text-decoration:none;font-size:.83em}"
+        "header nav a:hover{color:" + accent + "}"
+        ".hero{background:linear-gradient(150deg," + primary + ",#050d18);color:#fff;padding:56px 22px;text-align:center}"
+        ".hero h1{font-size:2em;margin:0 0 12px;line-height:1.18}"
+        ".hero .kicker{font-family:system-ui,sans-serif;font-size:.75em;letter-spacing:.18em;text-transform:uppercase;"
+        "color:" + accent + ";margin-bottom:14px}"
+        ".hero p{max-width:660px;margin:0 auto 24px;opacity:.85}"
+        ".btn{display:inline-block;background:" + accent + ";color:" + primary + ";padding:14px 30px;border-radius:3px;"
+        "text-decoration:none;font-family:system-ui,sans-serif;font-weight:700}"
+        ".btn-o{border:1px solid rgba(255,255,255,.45);color:#fff;background:none;margin-left:8px}"
+        ".wrap{max-width:880px;margin:0 auto;padding:46px 22px}"
+        "h2{font-size:1.3em;border-bottom:2px solid " + accent + ";padding-bottom:8px;margin:0 0 18px}"
+        ".intro{background:#fff;border-left:3px solid " + accent + ";padding:22px;margin-bottom:30px}"
+        ".terms{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:28px;"
+        "font-family:system-ui,sans-serif}"
+        ".term{background:#fff;border:1px solid #ded8c8;padding:15px;text-align:center}"
+        ".term b{display:block;font-size:1.45em;color:" + primary + "}"
+        ".term span{font-size:.78em;color:#6b6455;letter-spacing:.06em;text-transform:uppercase}"
+        ".grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px;margin-bottom:26px}"
+        ".card{background:#fff;border:1px solid #ded8c8;border-left:3px solid " + accent + ";padding:15px}"
+        ".card h3{margin:0 0 5px;font-size:.98em}.card p{margin:0;font-size:.85em;color:#6b6455}"
+        ".card a{text-decoration:none}"
+        ".callout{background:" + primary + ";color:#fff;padding:26px;text-align:center;margin-top:28px}"
+        ".callout a{color:" + accent + ";font-weight:700}"
+        "footer{background:" + primary + ";color:rgba(255,255,255,.6);padding:26px 22px;text-align:center;"
+        "font-size:.8em;font-family:system-ui,sans-serif}footer a{color:rgba(255,255,255,.8)}"
+        "@media(max-width:560px){.hero h1{font-size:1.5em}.btn-o{margin:10px 0 0;display:block}}")
+
+    html = '<!DOCTYPE html><html lang="en"><head>'
+    html += '<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
+    html += '<title>' + title + '</title>'
+    html += '<meta name="description" content="' + desc + '">'
+    html += '<link rel="canonical" href="' + canonical + '">'
+    html += '<meta name="geo.region" content="US-' + abbr + '"><meta name="geo.placename" content="' + city + '">'
+    html += '<meta name="ICBM" content="' + str(lat) + ', ' + str(lng) + '">'
+    html += '<meta property="og:title" content="' + title + '"><meta property="og:description" content="' + desc + '">'
+    html += '<meta property="og:type" content="website"><meta property="og:url" content="' + canonical + '">'
+    html += '<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>' + brand["favicon"] + '</text></svg>">'
+    html += '<script type="application/ld+json">' + schema + '</script>'
+    html += '<script type="application/ld+json">' + crumbs + '</script>'
+    html += '<style>' + css + '</style></head><body>'
+
+    html += '<header><a class="logo" href="' + base + '/">' + brand["favicon"] + ' Dominion Hard Money</a><nav>'
+    for fs, fn in brand["service_folders"][:5]:
+        html += '<a href="' + base + '/' + fs + '/' + slug + '.html">' + fn + '</a>'
+    html += '<a href="' + tel + '">' + phone + '</a></nav></header>'
+
+    html += '<div class="hero"><div class="kicker">' + city + ', ' + state + '</div>'
+    html += '<h1>' + folder_name + ' in ' + city + ', ' + state + '</h1>'
+    html += '<p>' + brand["pitch"] + ' Asset-based lending for investors in ' + city
+    html += ' and across ' + state + '. Loans from ' + brand["starting_price"] + '.</p>'
+    html += '<a class="btn" href="' + tel + '">' + brand["cta"] + ' — ' + phone + '</a>'
+    html += '<a class="btn btn-o" href="' + base + '/">All Loan Programs</a></div>'
+
+    html += '<div class="wrap">'
+    html += '<h2>' + folder_name + ' for ' + city + ' Investors</h2>'
+    html += '<div class="intro">' + intro + '</div>'
+
+    html += '<div class="terms">'
+    html += '<div class="term"><b>Days</b><span>Typical close</span></div>'
+    html += '<div class="term"><b>' + brand["starting_price"] + '</b><span>Loan minimum</span></div>'
+    html += '<div class="term"><b>Asset</b><span>Based on the deal</span></div>'
+    html += '<div class="term"><b>1–4</b><span>Unit residential</span></div>'
+    html += '</div>'
+
+    html += '<h2>Other Programs Available in ' + city + '</h2><div class="grid">'
+    for fs, fn in brand["service_folders"]:
+        if fs == folder_slug:
+            continue
+        html += '<div class="card"><h3><a href="' + base + '/' + fs + '/' + slug + '.html">' + fn + ' in ' + city + '</a></h3>'
+        html += '<p>' + fn + ' for investors across ' + county + ' County and ' + state + '.</p></div>'
+    html += '</div>'
+
+    html += '<h2>What Investors Use This For</h2><div class="grid">'
+    html += '<div class="card"><h3>Auction and foreclosure buys</h3><p>Deals with a closing clock a bank cannot meet.</p></div>'
+    html += '<div class="card"><h3>Rehab and resale</h3><p>Purchase plus renovation on one loan, repaid at sale.</p></div>'
+    html += '<div class="card"><h3>Rental refinance</h3><p>DSCR loans qualified on the property income, not tax returns.</p></div>'
+    html += '<div class="card"><h3>Bridge financing</h3><p>Short-term capital while a longer-term loan is arranged.</p></div>'
+    html += '</div>'
+
+    html += '<div class="callout"><strong>Working a deal in ' + city + '?</strong><br>'
+    html += 'Call <a href="' + tel + '">' + phone + '</a> and we will tell you in one conversation whether it is fundable.</div>'
+    html += '<p style="font-size:.78em;color:#6b6455;margin-top:26px;font-family:system-ui,sans-serif">'
+    html += 'Dominion Hard Money arranges private and asset-based real estate financing for business purposes only. '
+    html += 'Not a commitment to lend. All loans subject to underwriting, property review, and approval. '
+    html += 'Terms vary by property, borrower experience, and exit strategy.</p>'
+    html += '</div>'
+
+    html += '<footer>&copy; 2026 Dominion Hard Money &middot; Serving ' + city + ', ' + county + ' County, ' + state
+    html += ' and investors nationwide &middot; <a href="' + base + '/">Home</a><br>'
+    html += state_info["emoji"] + ' ' + state_info["fact"] + '</footer>'
+    html += '</body></html>'
     return html
-
-PAGE_BUILDERS = {
-    "aivoice": build_aivoice_page,
-    "reviewpro": build_reviewpro_page,
-    "aiagency": build_aiagency_page,
-    "webdesign": build_webdesign_page,
-    "hardmoney": build_hardmoney_page,
-    'houstonwash': build_houstonwash_page,
-    'houstonhvac': build_houstonhvac_page,
-    'houstonroofing': build_houstonroofing_page,
-    'dallaswash': build_dallaswash_page,
-    'dallashvac': build_dallashvac_page,
-    'dallasroofing': build_dallasroofing_page,
-    'solarpro': build_solarpro_page,
-}
-
-# ============================================================
-# BUILD + PUSH LOGIC
-# ============================================================
 
 def _miles(lat1, lng1, lat2, lng2):
     R = 3958.8
@@ -1660,6 +1758,25 @@ def cities_for_brand(brand_key):
     return out
 
 
+def purge_stale_folders(brand_key):
+    """Remove page directories that are no longer in this brand's service_folders."""
+    brand = BRANDS[brand_key]
+    keep = {f.split('/')[0] for f, _ in brand["service_folders"]}
+    removed = 0
+    for entry in os.listdir(brand["work_dir"]):
+        p = os.path.join(brand["work_dir"], entry)
+        if not os.path.isdir(p) or entry.startswith('.') or entry in keep:
+            continue
+        if entry in ('img', 'assets', 'blog'):
+            continue
+        n = len(glob.glob(os.path.join(p, '**', '*.html'), recursive=True))
+        if n:
+            shutil.rmtree(p); removed += n
+    if removed:
+        print(f"  PURGE: removed {removed} pages from retired folders in {brand['name']}")
+    return removed
+
+
 def purge_out_of_area(brand_key):
     """Delete page files for cities outside this brand's metro. Returns count removed."""
     brand = BRANDS[brand_key]
@@ -1684,6 +1801,20 @@ def get_existing_slugs(brand_key):
     for f in glob.glob(pattern):
         existing.add(os.path.basename(f).replace('.html',''))
     return existing
+
+def write_redirects(brand_key):
+    """Netlify _redirects for URL structures we have retired."""
+    brand = BRANDS[brand_key]
+    if brand_key != "hardmoney":
+        return
+    lines = ["# retired /texas/ prefix — national site now", ""]
+    for folder_slug, _ in brand["service_folders"]:
+        lines.append(f"/texas/{folder_slug}/*  /{folder_slug}/:splat  301")
+    lines.append("/texas/*  /  301")
+    with open(os.path.join(brand["work_dir"], "_redirects"), "w", encoding="utf-8") as f:
+        f.write("\n".join(lines) + "\n")
+    print(f"  wrote _redirects for {brand['name']}")
+
 
 def update_sitemap(brand_key):
     brand = BRANDS[brand_key]
@@ -1738,6 +1869,7 @@ def build_brand(brand_key):
         subprocess.run(['git', 'clone', repo_url, brand['work_dir']])
     builder = PAGE_BUILDERS[brand_key]
     if os.environ.get('PURGE') == '1':
+        purge_stale_folders(brand_key)
         purge_out_of_area(brand_key)
     brand_cities = cities_for_brand(brand_key)
     existing = get_existing_slugs(brand_key)
@@ -1777,6 +1909,7 @@ def build_brand(brand_key):
         built += 1
         print(f"    ✓ {city}, {state}")
     total = len(existing) if os.environ.get('REBUILD') == '1' else len(existing) + built
+    write_redirects(brand_key)
     sitemap_count = update_sitemap(brand_key)
     git_push(brand_key, built, total)
     return built
