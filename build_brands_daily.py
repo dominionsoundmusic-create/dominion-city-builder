@@ -7,7 +7,7 @@ Each city gets pages in all service folders for maximum SEO coverage
 Pushes each brand to its own GitHub repo → Netlify auto-deploys
 """
 
-import os, json, glob, subprocess
+import os, re, json, glob, subprocess
 from datetime import datetime
 
 # ============================================================
@@ -213,6 +213,7 @@ BRANDS = {
         "tagline": "Professional Power Washing in Houston TX",
         "cta": "Get a Free Quote",
         "phone": "eight three two, six six two, four one zero seven",
+        "phone_display": "832-662-4107",
         "colors": {"primary": "#0d1f3c", "accent": "#00c6ff", "text": "#ffffff", "bg": "#f5f8fc"},
         "starting_price": "$99",
         "pitch": "Professional power washing for driveways, fences, roofs, and decks across Houston and surrounding communities.",
@@ -234,6 +235,7 @@ BRANDS = {
         "tagline": "AC Repair and HVAC Service in Houston TX",
         "cta": "Call for Same-Day Service",
         "phone": "eight three two, six six two, four one zero seven",
+        "phone_display": "832-662-4107",
         "colors": {"primary": "#0d2137", "accent": "#00b4d8", "text": "#ffffff", "bg": "#f0f4f8"},
         "starting_price": "$89",
         "pitch": "Fast AC repair, air conditioning installation, and 24/7 emergency HVAC service across Houston and surrounding communities.",
@@ -255,6 +257,7 @@ BRANDS = {
         "tagline": "Roof Repair and Replacement in Houston TX",
         "cta": "Get Free Roof Inspection",
         "phone": "eight three two, six six two, four one zero seven",
+        "phone_display": "832-662-4107",
         "colors": {"primary": "#12111a", "accent": "#c9a84c", "text": "#ffffff", "bg": "#f8f7f2"},
         "starting_price": "Free Inspection",
         "pitch": "Expert roof repair, replacement, and storm damage restoration across Houston and surrounding communities. Free inspections. Insurance claims handled.",
@@ -276,6 +279,7 @@ BRANDS = {
         "tagline": "Professional Power Washing in Dallas-Fort Worth TX",
         "cta": "Get a Free Quote",
         "phone": "two one four, five five five, zero one nine nine",
+        "phone_display": "214-555-0199",
         "colors": {"primary": "#0d1f3c", "accent": "#00c6ff", "text": "#ffffff", "bg": "#f5f8fc"},
         "starting_price": "$99",
         "pitch": "Professional power washing for driveways, fences, roofs, and decks across Dallas-Fort Worth and all surrounding communities.",
@@ -297,6 +301,7 @@ BRANDS = {
         "tagline": "AC Repair and HVAC Service in Dallas-Fort Worth TX",
         "cta": "Call for Same-Day Service",
         "phone": "two one four, five five five, zero one nine nine",
+        "phone_display": "214-555-0199",
         "colors": {"primary": "#0d1f3a", "accent": "#00b4d8", "text": "#ffffff", "bg": "#f0f4f8"},
         "starting_price": "$89",
         "pitch": "Fast AC repair, air conditioning installation, and 24/7 emergency HVAC service across Dallas-Fort Worth and all surrounding communities.",
@@ -318,6 +323,7 @@ BRANDS = {
         "tagline": "Roof Repair and Replacement in Dallas-Fort Worth TX",
         "cta": "Get Free Roof Inspection",
         "phone": "two one four, five five five, zero one nine nine",
+        "phone_display": "214-555-0199",
         "colors": {"primary": "#12111a", "accent": "#c9a84c", "text": "#ffffff", "bg": "#f8f7f2"},
         "starting_price": "Free Inspection",
         "pitch": "Expert roof repair, replacement, and hail damage restoration across Dallas-Fort Worth. Free inspections. Insurance claims handled. 25-year warranty.",
@@ -1275,119 +1281,141 @@ footer a:hover{{color:#60A5FA}}
 
 
 '''
-def build_houstonwash_page(city, state, abbr, region, county, lat, lng, folder_slug, folder_name):
+def _phone_digits(brand):
+    return brand.get("phone_display", brand.get("phone", ""))
+
+
+def build_leadpro_page(brand_key, city, state, abbr, region, county, lat, lng, folder_slug, folder_name):
+    """Generic local-service city page. Used by all six Lead Pro brands."""
+    brand = BRANDS[brand_key]
     slug = make_slug(city, abbr)
     state_info = get_state_info(abbr)
-    title = folder_name + ' in ' + city + ', ' + state + ' | Houston Power Washing Pro'
-    desc = 'Professional ' + folder_name.lower() + ' in ' + city + ', ' + state + '. Houston Power Washing Pro serves Houston and all surrounding communities. Free quotes. Same-week service.'
-    html = ''
-    html += ''
-    html += '' + title + ''
-    html += ''
-    html += ''
-    html += '' + folder_name + ' in ' + city + ', ' + state + ''
-    html += '' + desc + ''
-    html += 'Call us: 832-662-4107'
-    html += 'Serving ' + city + ', ' + county + ' County, ' + state + ''
-    html += '' + state_info['emoji'] + ' ' + state_info['fact'] + ''
-    html += 'Home Service Business? Try ServiceTitan Free'
-    html += ''
+    c = brand["colors"]
+    primary, accent, bg = c["primary"], c["accent"], c["bg"]
+    base = "https://" + brand["domain"]
+    phone = _phone_digits(brand)
+    tel = "tel:+1" + ''.join(ch for ch in phone if ch.isdigit())
+
+    title = folder_name + ' in ' + city + ', ' + state + ' | ' + brand["name"]
+    desc = ('Professional ' + folder_name.lower() + ' in ' + city + ', ' + state + '. ' + brand["name"]
+            + ' serves ' + city + ' and all of ' + county + ' County. Free quotes, fast scheduling, work starting at '
+            + brand["starting_price"] + '.')
+    canonical = base + '/' + folder_slug + '/' + slug + '.html'
+
+    city_intro = (city + ' sits in ' + county + ' County, ' + state + ', in the ' + region + ' region. '
+        + 'Homes and businesses here deal with the same weather everyone in ' + state + ' deals with — heat, humidity, '
+        + 'storms, and the wear that comes with all of it. That is exactly the kind of thing ' + folder_name.lower()
+        + ' is meant to handle. ' + brand["name"] + ' works with property owners across ' + city + ' and the surrounding '
+        + county + ' County area, from single-family homes to commercial buildings and rental properties. '
+        + 'Every job starts with a free quote so you know the number before anyone touches your property. '
+        + 'If you are comparing ' + folder_name.lower() + ' options near ' + city + ', call ' + phone
+        + ' and we will walk you through what the work actually involves and what it costs.')
+
+    schema = ('{"@context":"https://schema.org","@type":"LocalBusiness","name":"' + brand["name"]
+        + '","description":"' + brand["pitch"].replace('"', "'")
+        + '","telephone":"' + phone + '","url":"' + canonical
+        + '","areaServed":{"@type":"City","name":"' + city.replace('"', "'") + '","addressRegion":"' + abbr
+        + '"},"geo":{"@type":"GeoCoordinates","latitude":"' + str(lat) + '","longitude":"' + str(lng)
+        + '"},"priceRange":"' + brand["starting_price"] + '+"}')
+
+    crumbs = ('{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":['
+        + '{"@type":"ListItem","position":1,"name":"Home","item":"' + base + '/"},'
+        + '{"@type":"ListItem","position":2,"name":"' + folder_name + '","item":"' + base + '/' + folder_slug + '/"},'
+        + '{"@type":"ListItem","position":3,"name":"' + city.replace('"', "'") + ', ' + abbr + '","item":"' + canonical + '"}]}')
+
+    css = ('*{box-sizing:border-box}body{font-family:system-ui,-apple-system,Segoe UI,sans-serif;margin:0;'
+        'background:' + bg + ';color:#1a2332;line-height:1.6}'
+        'a{color:inherit}header{background:' + primary + ';color:#fff;padding:14px 22px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}'
+        'header .logo{font-weight:800;font-size:1.05em;text-decoration:none;color:#fff}'
+        'header nav{margin-left:auto;display:flex;gap:16px;flex-wrap:wrap}'
+        'header nav a{color:rgba(255,255,255,.85);text-decoration:none;font-size:.86em}'
+        'header nav a:hover{color:' + accent + '}'
+        '.hero{background:linear-gradient(135deg,' + primary + ',#000);color:#fff;padding:52px 22px;text-align:center}'
+        '.hero h1{font-size:1.9em;margin:0 0 10px;line-height:1.2}'
+        '.hero p{max-width:640px;margin:0 auto 22px;opacity:.88}'
+        '.btn{background:' + accent + ';color:' + primary + ';padding:14px 30px;border-radius:6px;text-decoration:none;'
+        'font-weight:700;display:inline-block}'
+        '.btn-outline{border:2px solid rgba(255,255,255,.5);color:#fff;background:none;margin-left:8px}'
+        '.wrap{max-width:900px;margin:0 auto;padding:44px 22px}'
+        'h2{font-size:1.35em;border-bottom:3px solid ' + accent + ';padding-bottom:8px;margin:0 0 18px}'
+        '.intro{background:#fff;border-left:4px solid ' + accent + ';padding:22px;border-radius:4px;margin-bottom:30px;color:#334155}'
+        '.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-bottom:26px}'
+        '.card{background:#fff;border:1px solid #e2e8f0;border-left:4px solid ' + accent + ';border-radius:8px;padding:15px}'
+        '.card h3{margin:0 0 5px;font-size:.95em}.card p{margin:0;font-size:.82em;color:#64748b}'
+        '.card a{text-decoration:none}'
+        '.callout{background:' + primary + ';color:#fff;padding:26px 22px;border-radius:8px;text-align:center;margin-top:30px}'
+        '.callout a{color:' + accent + ';font-weight:700}'
+        'footer{background:' + primary + ';color:rgba(255,255,255,.62);padding:26px 22px;text-align:center;font-size:.8em}'
+        'footer a{color:rgba(255,255,255,.8)}'
+        '@media(max-width:560px){.hero h1{font-size:1.45em}.btn-outline{margin:10px 0 0;display:block}}')
+
+    html = '<!DOCTYPE html><html lang="en"><head>'
+    html += '<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
+    html += '<title>' + title + '</title>'
+    html += '<meta name="description" content="' + desc + '">'
+    html += '<link rel="canonical" href="' + canonical + '">'
+    html += '<meta name="geo.region" content="US-' + abbr + '"><meta name="geo.placename" content="' + city + '">'
+    html += '<meta name="ICBM" content="' + str(lat) + ', ' + str(lng) + '">'
+    html += '<meta property="og:title" content="' + title + '"><meta property="og:description" content="' + desc + '">'
+    html += '<meta property="og:type" content="website"><meta property="og:url" content="' + canonical + '">'
+    html += '<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>' + brand["favicon"] + '</text></svg>">'
+    html += '<script type="application/ld+json">' + schema + '</script>'
+    html += '<script type="application/ld+json">' + crumbs + '</script>'
+    html += '<style>' + css + '</style>'
+    html += '</head><body>'
+
+    html += '<header><a class="logo" href="' + base + '/">' + brand["favicon"] + ' ' + brand["name"] + '</a><nav>'
+    for fs, fn in brand["service_folders"][:5]:
+        html += '<a href="' + base + '/' + fs + '/' + slug + '.html">' + fn + '</a>'
+    html += '<a href="' + tel + '">' + phone + '</a></nav></header>'
+
+    html += '<div class="hero"><h1>' + folder_name + ' in ' + city + ', ' + state + '</h1>'
+    html += '<p>' + brand["pitch"] + ' Serving ' + city + ' and all of ' + county + ' County. Work starting at ' + brand["starting_price"] + '.</p>'
+    html += '<a class="btn" href="' + tel + '">' + brand["cta"] + ' — ' + phone + '</a>'
+    html += '<a class="btn btn-outline" href="' + base + '/">See All Services</a></div>'
+
+    html += '<div class="wrap">'
+    html += '<h2>' + folder_name + ' in ' + city + ', ' + state + '</h2>'
+    html += '<div class="intro">' + city_intro + '</div>'
+
+    html += '<h2>Other Services We Offer in ' + city + '</h2><div class="grid">'
+    for fs, fn in brand["service_folders"]:
+        if fs == folder_slug:
+            continue
+        html += '<div class="card"><h3><a href="' + base + '/' + fs + '/' + slug + '.html">' + fn + ' in ' + city + '</a></h3>'
+        html += '<p>' + fn + ' for homes and businesses across ' + county + ' County.</p></div>'
+    html += '</div>'
+
+    html += '<h2>Why ' + city + ' Property Owners Call Us</h2><div class="grid">'
+    html += '<div class="card"><h3>Free Quotes</h3><p>You get the price before any work starts. No surprises on the invoice.</p></div>'
+    html += '<div class="card"><h3>Local Crews</h3><p>We work ' + city + ' and the surrounding ' + county + ' County area regularly.</p></div>'
+    html += '<div class="card"><h3>Fast Scheduling</h3><p>Most ' + city + ' jobs get on the calendar within the same week.</p></div>'
+    html += '<div class="card"><h3>Insured Work</h3><p>Fully insured, so your property is covered while we are on it.</p></div>'
+    html += '</div>'
+
+    html += '<div class="callout"><strong>Need ' + folder_name.lower() + ' in ' + city + '?</strong><br>'
+    html += 'Call <a href="' + tel + '">' + phone + '</a> for a free quote today.</div>'
+    html += '</div>'
+
+    html += '<footer>&copy; 2026 ' + brand["name"] + ' &middot; Serving ' + city + ', ' + county + ' County, ' + state
+    html += ' and all of ' + region + ' &middot; <a href="' + base + '/">Home</a><br>'
+    html += state_info["emoji"] + ' ' + state_info["fact"] + '</footer>'
+    html += '</body></html>'
     return html
 
-def build_houstonhvac_page(city, state, abbr, region, county, lat, lng, folder_slug, folder_name):
-    slug = make_slug(city, abbr)
-    state_info = get_state_info(abbr)
-    title = folder_name + ' in ' + city + ', ' + state + ' | Houston HVAC Pro'
-    desc = 'Fast ' + folder_name.lower() + ' in ' + city + ', ' + state + '. Houston HVAC Pro offers same-day AC repair and 24/7 emergency HVAC service across Houston and surrounding communities.'
-    html = ''
-    html += ''
-    html += '' + title + ''
-    html += ''
-    html += ''
-    html += '' + folder_name + ' in ' + city + ', ' + state + ''
-    html += '' + desc + ''
-    html += 'Call us: 832-662-4107'
-    html += 'Serving ' + city + ', ' + county + ' County, ' + state + ''
-    html += '' + state_info['emoji'] + ' ' + state_info['fact'] + ''
-    html += 'HVAC Business Owner? Try ServiceTitan Free'
-    html += ''
-    return html
 
-def build_houstonroofing_page(city, state, abbr, region, county, lat, lng, folder_slug, folder_name):
-    slug = make_slug(city, abbr)
-    state_info = get_state_info(abbr)
-    title = folder_name + ' in ' + city + ', ' + state + ' | Houston Roofing Pro'
-    desc = 'Expert ' + folder_name.lower() + ' in ' + city + ', ' + state + '. Houston Roofing Pro offers free inspections, storm damage repair, and 25-year warranty on all roofing work across Houston.'
-    html = ''
-    html += ''
-    html += '' + title + ''
-    html += ''
-    html += ''
-    html += '' + folder_name + ' in ' + city + ', ' + state + ''
-    html += '' + desc + ''
-    html += 'Call us: 832-662-4107'
-    html += 'Serving ' + city + ', ' + county + ' County, ' + state + ''
-    html += '' + state_info['emoji'] + ' ' + state_info['fact'] + ''
-    html += 'Roofing Business Owner? Try ServiceTitan Free'
-    html += ''
-    return html
+def _leadpro_builder(brand_key):
+    def _builder(city, state, abbr, region, county, lat, lng, folder_slug, folder_name):
+        return build_leadpro_page(brand_key, city, state, abbr, region, county, lat, lng, folder_slug, folder_name)
+    return _builder
 
-def build_dallaswash_page(city, state, abbr, region, county, lat, lng, folder_slug, folder_name):
-    slug = make_slug(city, abbr)
-    state_info = get_state_info(abbr)
-    title = folder_name + ' in ' + city + ', ' + state + ' | Dallas Metro Power Washing Pro'
-    desc = 'Professional ' + folder_name.lower() + ' in ' + city + ', ' + state + '. Dallas Metro Power Washing Pro serves Dallas-Fort Worth and all surrounding communities. Free quotes.'
-    html = ''
-    html += ''
-    html += '' + title + ''
-    html += ''
-    html += ''
-    html += '' + folder_name + ' in ' + city + ', ' + state + ''
-    html += '' + desc + ''
-    html += 'Call us: 214-555-0199'
-    html += 'Serving ' + city + ', ' + county + ' County, ' + state + ''
-    html += '' + state_info['emoji'] + ' ' + state_info['fact'] + ''
-    html += 'Home Service Business? Try ServiceTitan Free'
-    html += ''
-    return html
 
-def build_dallashvac_page(city, state, abbr, region, county, lat, lng, folder_slug, folder_name):
-    slug = make_slug(city, abbr)
-    state_info = get_state_info(abbr)
-    title = folder_name + ' in ' + city + ', ' + state + ' | Dallas Metro HVAC Pro'
-    desc = 'Fast ' + folder_name.lower() + ' in ' + city + ', ' + state + '. Dallas Metro HVAC Pro offers same-day AC repair and 24/7 emergency HVAC service across Dallas-Fort Worth.'
-    html = ''
-    html += ''
-    html += '' + title + ''
-    html += ''
-    html += ''
-    html += '' + folder_name + ' in ' + city + ', ' + state + ''
-    html += '' + desc + ''
-    html += 'Call us: 214-555-0199'
-    html += 'Serving ' + city + ', ' + county + ' County, ' + state + ''
-    html += '' + state_info['emoji'] + ' ' + state_info['fact'] + ''
-    html += 'HVAC Business Owner? Try ServiceTitan Free'
-    html += ''
-    return html
-
-def build_dallasroofing_page(city, state, abbr, region, county, lat, lng, folder_slug, folder_name):
-    slug = make_slug(city, abbr)
-    state_info = get_state_info(abbr)
-    title = folder_name + ' in ' + city + ', ' + state + ' | Dallas Metro Roofing Pro'
-    desc = 'Expert ' + folder_name.lower() + ' in ' + city + ', ' + state + '. Dallas Metro Roofing Pro offers free inspections, hail damage repair, and 25-year warranty across Dallas-Fort Worth.'
-    html = ''
-    html += ''
-    html += '' + title + ''
-    html += ''
-    html += ''
-    html += '' + folder_name + ' in ' + city + ', ' + state + ''
-    html += '' + desc + ''
-    html += 'Call us: 214-555-0199'
-    html += 'Serving ' + city + ', ' + county + ' County, ' + state + ''
-    html += '' + state_info['emoji'] + ' ' + state_info['fact'] + ''
-    html += 'Roofing Business Owner? Try ServiceTitan Free'
-    html += ''
-    return html
+build_houstonwash_page = _leadpro_builder("houstonwash")
+build_houstonhvac_page = _leadpro_builder("houstonhvac")
+build_houstonroofing_page = _leadpro_builder("houstonroofing")
+build_dallaswash_page = _leadpro_builder("dallaswash")
+build_dallashvac_page = _leadpro_builder("dallashvac")
+build_dallasroofing_page = _leadpro_builder("dallasroofing")
 
 def build_solarpro_page(city, state, abbr, region, county, lat, lng, folder_slug, folder_name):
     slug = make_slug(city, abbr)
@@ -1478,18 +1506,25 @@ def get_existing_slugs(brand_key):
 def update_sitemap(brand_key):
     brand = BRANDS[brand_key]
     base = f"https://{brand['domain']}"
-    pages = [f"{base}/", f"{base}/index.html", f"{base}/service-areas.html"]
+    pages = [f"{base}/"]
+    for extra in ("index.html", "service-areas.html"):
+        if os.path.exists(os.path.join(brand["work_dir"], extra)):
+            pages.append(f"{base}/{extra}")
     for folder_slug, _ in brand["service_folders"]:
         for f in sorted(glob.glob(os.path.join(brand["work_dir"], folder_slug, "*.html"))):
             pages.append(f"{base}/{folder_slug}/{os.path.basename(f)}")
-    xml = '\n\n'
+    today = datetime.now().strftime('%Y-%m-%d')
+    xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
+    xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
     for p in pages:
         priority = '1.0' if p.endswith('/') or p.endswith('index.html') else '0.8'
-        xml += f'{p}weekly{priority}\n'
-    xml += ''
-    with open(os.path.join(brand["work_dir"], "sitemap.xml"), 'w') as f:
+        xml += '  <url><loc>' + p + '</loc><lastmod>' + today + '</lastmod>'
+        xml += '<changefreq>weekly</changefreq><priority>' + priority + '</priority></url>\n'
+    xml += '</urlset>\n'
+    with open(os.path.join(brand["work_dir"], "sitemap.xml"), 'w', encoding='utf-8') as f:
         f.write(xml)
     return len(pages)
+
 
 def git_push(brand_key, count_built, total):
     brand = BRANDS[brand_key]
@@ -1507,8 +1542,15 @@ def git_push(brand_key, count_built, total):
     subprocess.run(['git','push', '--force', repo_url,'main'])
     print(f"  ✅ {brand['name']}: +{count_built} cities pushed ({total} total)")
 
+RESERVED_FAKE = re.compile(r"\b555-01\d\d\b")
+
 def build_brand(brand_key):
     brand = BRANDS[brand_key]
+    _ph = brand.get("phone_display", "")
+    if _ph and RESERVED_FAKE.search(_ph):
+        print(f"  !! {brand['name']}: SKIPPED — phone_display {_ph} is a reserved placeholder number.")
+        print(f"     Set a real number in BRANDS['{brand_key}']['phone_display'] before building.")
+        return 0
     if not os.path.exists(brand['work_dir']):
         repo_url = f'https://{GITHUB_TOKEN}@github.com/{brand["repo"]}.git'
         subprocess.run(['git', 'clone', repo_url, brand['work_dir']])
@@ -1525,7 +1567,11 @@ def build_brand(brand_key):
     if not unbuilt:
         print(f"  {brand['name']}: ALL CITIES COMPLETE ✅")
         return 0
-    batch = unbuilt[:CITIES_PER_DAY]
+    if os.environ.get('REBUILD') == '1':
+        batch = [cd for cd in ALL_US_CITIES if make_slug(cd[0], cd[2]) in existing]
+        print(f"  REBUILD MODE: regenerating {len(batch)} existing cities")
+    else:
+        batch = unbuilt[:CITIES_PER_DAY]
     built = 0
     for city_data in batch:
         city, state, abbr, region, county, lat, lng = city_data
@@ -1542,7 +1588,7 @@ def build_brand(brand_key):
                 print(f"    ✗ {city} {folder_slug}: {e}")
         built += 1
         print(f"    ✓ {city}, {state}")
-    total = len(existing) + built
+    total = len(existing) if os.environ.get('REBUILD') == '1' else len(existing) + built
     sitemap_count = update_sitemap(brand_key)
     git_push(brand_key, built, total)
     return built
