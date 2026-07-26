@@ -1564,13 +1564,16 @@ def build_brand(brand_key):
         if slug not in existing and slug not in seen:
             seen.add(slug)
             unbuilt.append(city_data)
-    if not unbuilt:
-        print(f"  {brand['name']}: ALL CITIES COMPLETE ✅")
-        return 0
     if os.environ.get('REBUILD') == '1':
         batch = [cd for cd in ALL_US_CITIES if make_slug(cd[0], cd[2]) in existing]
         print(f"  REBUILD MODE: regenerating {len(batch)} existing cities")
+        if not batch:
+            print(f"  {brand['name']}: nothing to regenerate")
+            return 0
     else:
+        if not unbuilt:
+            print(f"  {brand['name']}: ALL CITIES COMPLETE ✅")
+            return 0
         batch = unbuilt[:CITIES_PER_DAY]
     built = 0
     for city_data in batch:
