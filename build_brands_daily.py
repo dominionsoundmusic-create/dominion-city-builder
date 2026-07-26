@@ -1375,450 +1375,6 @@ def get_state_slug(state):
 # PAGE BUILDERS — one per brand
 # ============================================================
 
-def build_aivoice_page(city, state, abbr, region, county, lat, lng, folder_slug, folder_name):
-    b = BRANDS["aivoice"]
-    slug = make_slug(city, abbr)
-    url = f"https://{b['domain']}/{folder_slug}/{slug}.html"
-    info = get_state_info(abbr)
-    return f'''
-
-
-
-
-{folder_name} in {city}, {state} | {b["name"]}
-
-
-
-
-
-
-
-
-
-{{"@context":"https://schema.org","@type":"Service","name":"{folder_name} in {city}, {state}","provider":{{"@type":"LocalBusiness","name":"{b['name']}","url":"https://{b['domain']}","telephone":"{b['phone']}","areaServed":{{"@type":"City","name":"{city}","containedInPlace":{{"@type":"State","name":"{state}"}}}}}},"description":"Professional {folder_name.lower()} for businesses in {city}, {state}. AI answers every call 24/7.","offers":{{"@type":"Offer","price":"297","priceCurrency":"USD","priceSpecification":{{"@type":"UnitPriceSpecification","price":"297","priceCurrency":"USD","unitText":"month"}}}}}}
-
-
-{{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{{"@type":"ListItem","position":1,"name":"Home","item":"https://{b['domain']}"}},{{"@type":"ListItem","position":2,"name":"{folder_name}","item":"https://{b['domain']}/{folder_slug}"}},{{"@type":"ListItem","position":3,"name":"{city}, {state}","item":"{url}"}}]}}
-
-
-{{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{{"@type":"Question","name":"How does {folder_name.lower()} work for {city} businesses?","acceptedAnswer":{{"@type":"Answer","text":"Our AI answers every call to your {city} business in a natural voice, qualifies the lead, books appointments, and takes messages — 24 hours a day, 7 days a week, starting at $297/month."}}}},{{"@type":"Question","name":"How quickly can my {city} business get set up?","acceptedAnswer":{{"@type":"Answer","text":"Most {city} businesses are live with their AI receptionist within 48 hours. Call 903-636-7511 or visit AIVoiceAgentPros.com to get started."}}}}]}}
-
-
-*{{margin:0;padding:0;box-sizing:border-box}}
-body{{font-family:'Segoe UI',system-ui,sans-serif;background:#0A0A14;color:#F9FAFB;line-height:1.6}}
-a{{color:inherit;text-decoration:none}}
-nav{{background:rgba(10,10,20,.95);border-bottom:1px solid #1F1F35;padding:0 20px;position:sticky;top:0;z-index:100}}
-.nav-inner{{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:62px}}
-.logo{{font-weight:800;font-size:.95rem}}
-.logo span{{color:#A78BFA}}
-.nav-cta{{background:#7C3AED;color:#fff;font-weight:700;padding:9px 20px;border-radius:7px;font-size:.88rem}}
-.hero{{background:linear-gradient(160deg,#0A0A14,#0f0a1e 50%,#0A0A14);padding:60px 20px 50px;text-align:center}}
-.breadcrumb{{font-size:.78rem;color:#6B7280;margin-bottom:16px}}
-.breadcrumb a{{color:#A78BFA}}
-.eyebrow{{display:inline-block;background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.25);color:#A78BFA;font-size:.77rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:18px}}
-h1{{font-size:clamp(1.7rem,4.5vw,2.9rem);font-weight:900;line-height:1.1;margin-bottom:14px}}
-h1 span{{color:#A78BFA}}
-.sub{{color:#9CA3AF;max-width:580px;margin:0 auto 28px;font-size:1rem}}
-.btns{{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}}
-.btn-p{{background:#7C3AED;color:#fff;font-weight:800;padding:14px 28px;border-radius:9px;font-size:.95rem}}
-.btn-o{{border:1px solid #1F1F35;color:#F9FAFB;padding:14px 28px;border-radius:9px;font-size:.95rem}}
-.section{{max-width:1100px;margin:0 auto;padding:56px 20px}}
-.grid-3{{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;margin-top:32px}}
-.card{{background:#111120;border:1px solid #1F1F35;border-radius:14px;padding:24px}}
-.card-icon{{font-size:1.8rem;margin-bottom:12px}}
-.card h3{{font-size:1rem;font-weight:700;margin-bottom:8px}}
-.card p{{color:#9CA3AF;font-size:.88rem;line-height:1.6}}
-.local-box{{background:#111120;border:1px solid #1F1F35;border-radius:14px;padding:28px;margin-top:40px}}
-.local-box h2{{font-size:1.3rem;font-weight:800;margin-bottom:12px}}
-.local-box h2 span{{color:#A78BFA}}
-.local-box p{{color:#9CA3AF;font-size:.9rem;line-height:1.8;margin-bottom:10px}}
-.cta-box{{background:linear-gradient(135deg,rgba(124,58,237,.12),rgba(124,58,237,.04));border:1px solid rgba(124,58,237,.2);border-radius:14px;padding:40px;text-align:center;margin-top:40px}}
-.cta-box h2{{font-size:1.5rem;font-weight:800;margin-bottom:10px}}
-.cta-box p{{color:#9CA3AF;margin-bottom:20px;font-size:.9rem}}
-.cta-btn{{display:inline-block;background:#7C3AED;color:#fff;font-weight:800;padding:14px 30px;border-radius:9px;font-size:.95rem}}
-footer{{background:#111120;border-top:1px solid #1F1F35;padding:32px 20px;text-align:center;color:#6B7280;font-size:.82rem}}
-footer a{{color:#6B7280}}
-footer a:hover{{color:#A78BFA}}
-
-
-
-
-  
-    🤖 AI Voice Agent Pros
-    Get Started
-  
-
-
-  Home → {folder_name} → {city}, {state}
-  🤖 {folder_name}
-  {info['emoji']} {folder_name} in {city}, {state}
-  AI that answers every call for {city} businesses 24 hours a day, 7 days a week. Qualify leads, book appointments, never miss a customer again.
-  
-    Get Started — {b['starting_price']} →
-    📞 Call 903-636-7511
-  
-
-
-  Why {city} Businesses Need {folder_name}
-  Every missed call in {city} is a customer going to your competitor. Our AI receptionist answers every call instantly, day or night, and handles the conversation so you can focus on your work.
-  
-    📞Never Miss a CallYour {city} AI receptionist picks up every call — after hours, weekends, holidays, when you're on the job. Every lead captured.
-    📅Books AppointmentsAI qualifies the lead and books directly to your calendar. Your {city} customers get instant scheduling — you get confirmed appointments.
-    💬Natural ConversationNot a phone tree. Not hold music. A real AI conversation that represents your {city} business professionally every single time.
-    ⚡Live in 48 HoursYour {city} AI receptionist can be answering calls within 48 hours of signup. No tech skills needed — we handle everything.
-    💰From {b['starting_price']}Less than a part-time employee for a fraction of the cost. No long contracts, no setup fees. Cancel any time.
-    📊Every Call LoggedFull transcript and recording of every call. Know exactly what your {city} customers are asking about and never lose a lead.
-  
-  
-    Serving {city}, {state} Businesses
-    {city} is a thriving community in {region}, located in {county}. Local businesses in {city} face the same challenge as businesses everywhere — calls come in at the worst possible times. When you're on a job, in a meeting, or it's 10 PM on a Sunday, your AI receptionist is still there answering professionally and capturing every lead.
-    Contractors, HVAC companies, plumbers, electricians, law firms, medical offices, restaurants, auto shops — any {city} business that gets phone calls can benefit from AI Voice Agent Pros. Stop losing customers to voicemail and start converting more calls into appointments.
-    📍 {info['emoji']} Fun fact: {info['fact']}.
-  
-  
-    Ready to Never Miss a Call in {city}?
-    Get your AI receptionist live in 48 hours. Starting at {b['starting_price']} — no long contracts.
-    Get Started Today →
-    Or call us: 903-636-7511 · AIVoiceAgentPros.com
-  
-
-
-  © 2025 AI Voice Agent Pros · Part of the Dominion Brand Family
-  Home · Web Design · Review Pro · AI Agency
-
-
-'''
-
-
-def build_reviewpro_page(city, state, abbr, region, county, lat, lng, folder_slug, folder_name):
-    b = BRANDS["reviewpro"]
-    slug = make_slug(city, abbr)
-    url = f"https://{b['domain']}/{folder_slug}/{slug}.html"
-    info = get_state_info(abbr)
-    return f'''
-
-
-
-
-{folder_name} in {city}, {state} | {b["name"]}
-
-
-
-
-
-
-
-{{"@context":"https://schema.org","@type":"Service","name":"{folder_name} in {city}, {state}","provider":{{"@type":"LocalBusiness","name":"{b['name']}","url":"https://{b['domain']}","telephone":"{b['phone']}","areaServed":{{"@type":"City","name":"{city}","containedInPlace":{{"@type":"State","name":"{state}"}}}}}},"description":"{folder_name} for businesses in {city}, {state}. Automated Google review generation starting at $197/month."}}
-
-
-{{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{{"@type":"Question","name":"How does {folder_name.lower()} work for {city} businesses?","acceptedAnswer":{{"@type":"Answer","text":"After every job, our system automatically sends your {city} customer a review request via SMS or email. One tap takes them straight to your Google review page. Most {city} clients double their review count within 60 days."}}}},{{"@type":"Question","name":"How much does review management cost for {city} businesses?","acceptedAnswer":{{"@type":"Answer","text":"Dominion Review Pro starts at $197/month for {city} businesses. Setup takes less than 24 hours. Call 903-636-7511 or visit DominionReviewPro.com."}}}}]}}
-
-
-*{{margin:0;padding:0;box-sizing:border-box}}
-body{{font-family:'Segoe UI',system-ui,sans-serif;background:#0A0F0A;color:#F9FAFB;line-height:1.6}}
-a{{color:inherit;text-decoration:none}}
-nav{{background:rgba(10,15,10,.95);border-bottom:1px solid #1A3A1A;padding:0 20px;position:sticky;top:0;z-index:100}}
-.nav-inner{{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:62px}}
-.logo{{font-weight:800;font-size:.95rem}}
-.logo span{{color:#34D399}}
-.nav-cta{{background:#059669;color:#fff;font-weight:700;padding:9px 20px;border-radius:7px;font-size:.88rem}}
-.hero{{background:linear-gradient(160deg,#0A0F0A,#0F1A0F 50%,#0A0F0A);padding:60px 20px 50px;text-align:center}}
-.breadcrumb{{font-size:.78rem;color:#6B7280;margin-bottom:16px}}
-.breadcrumb a{{color:#34D399}}
-.eyebrow{{display:inline-block;background:rgba(5,150,105,.12);border:1px solid rgba(5,150,105,.25);color:#34D399;font-size:.77rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:18px}}
-h1{{font-size:clamp(1.7rem,4.5vw,2.9rem);font-weight:900;line-height:1.1;margin-bottom:14px}}
-h1 span{{color:#34D399}}
-.sub{{color:#9CA3AF;max-width:580px;margin:0 auto 28px;font-size:1rem}}
-.btns{{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}}
-.btn-p{{background:#059669;color:#fff;font-weight:800;padding:14px 28px;border-radius:9px;font-size:.95rem}}
-.btn-o{{border:1px solid #1A3A1A;color:#F9FAFB;padding:14px 28px;border-radius:9px;font-size:.95rem}}
-.section{{max-width:1100px;margin:0 auto;padding:56px 20px}}
-.grid-3{{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;margin-top:32px}}
-.card{{background:#0F1A0F;border:1px solid #1A3A1A;border-radius:14px;padding:24px}}
-.card-icon{{font-size:1.8rem;margin-bottom:12px}}
-.card h3{{font-size:1rem;font-weight:700;margin-bottom:8px}}
-.card p{{color:#9CA3AF;font-size:.88rem;line-height:1.6}}
-.stars{{color:#F5A623;font-size:1.2rem;margin-bottom:8px}}
-.local-box{{background:#0F1A0F;border:1px solid #1A3A1A;border-radius:14px;padding:28px;margin-top:40px}}
-.local-box h2{{font-size:1.3rem;font-weight:800;margin-bottom:12px}}
-.local-box h2 span{{color:#34D399}}
-.local-box p{{color:#9CA3AF;font-size:.9rem;line-height:1.8;margin-bottom:10px}}
-.cta-box{{background:linear-gradient(135deg,rgba(5,150,105,.12),rgba(5,150,105,.04));border:1px solid rgba(5,150,105,.2);border-radius:14px;padding:40px;text-align:center;margin-top:40px}}
-.cta-box h2{{font-size:1.5rem;font-weight:800;margin-bottom:10px}}
-.cta-box p{{color:#9CA3AF;margin-bottom:20px;font-size:.9rem}}
-.cta-btn{{display:inline-block;background:#059669;color:#fff;font-weight:800;padding:14px 30px;border-radius:9px;font-size:.95rem}}
-footer{{background:#0F1A0F;border-top:1px solid #1A3A1A;padding:32px 20px;text-align:center;color:#6B7280;font-size:.82rem}}
-footer a{{color:#6B7280}}
-footer a:hover{{color:#34D399}}
-
-
-
-
-  
-    ⭐ Dominion Review Pro
-    Get Started
-  
-
-
-  Home → {folder_name} → {city}, {state}
-  ⭐ {folder_name}
-  {info['emoji']} {folder_name} in {city}, {state}
-  Get more 5-star Google reviews for your {city} business — automatically. Our system follows up with every customer and guides them to leave a review in one tap.
-  
-    Start Getting Reviews — {b['starting_price']} →
-    📞 Call 903-636-7511
-  
-
-
-  Why {city} Businesses Need More Google Reviews
-  When someone in {city} searches for your type of business, the first thing they see is the star rating. More reviews means more trust, higher Google ranking, and more customers choosing you over your competition.
-  
-    ★★★★★Automated RequestsAfter every job, our system automatically sends your {city} customer a review request. No awkward asks. No manual follow-up. Just results.
-    📱One-Tap ReviewCustomers get a link that takes them straight to your Google review page. One tap and they're writing a review for your {city} business.
-    📈Double in 60 DaysMost {city} clients double their Google review count within the first 60 days. More reviews means higher ranking in {city} local search results.
-    🚨Negative Review AlertsGet notified immediately if a {city} customer is unhappy — before they post publicly. Address issues fast and protect your reputation.
-    💰From {b['starting_price']}Less than a single lost customer. Setup in under 24 hours. No long contracts. Cancel any time. Start getting reviews this week.
-    🗺️Google Maps RankingMore reviews directly improves your Google Maps ranking in {city}. Show up higher when local customers search for your services.
-  
-  
-    Serving {city}, {state} Businesses
-    {city} is a competitive market in {region}. Local customers in {county} are reading reviews before they call anyone. If your competitors have hundreds of 5-star reviews and you have a handful, you're losing business before the phone ever rings.
-    Dominion Review Pro levels the playing field for {city} small businesses. Whether you run an HVAC company, a restaurant, a law firm, an auto shop, or any other local business in {city} — our automated review system gets you more 5-star reviews every single week without you lifting a finger.
-    📍 {info['emoji']} Fun fact: {info['fact']}.
-  
-  
-    Start Getting More Reviews in {city}
-    Setup in under 24 hours. Starting at {b['starting_price']}. No long contracts.
-    Get Started Today →
-    Or call us: 903-636-7511 · DominionReviewPro.com
-  
-
-
-  © 2025 Dominion Review Pro · Part of the Dominion Brand Family
-  Home · Web Design · AI Voice · AI Agency
-
-
-'''
-
-
-def build_aiagency_page(city, state, abbr, region, county, lat, lng, folder_slug, folder_name):
-    b = BRANDS["aiagency"]
-    slug = make_slug(city, abbr)
-    url = f"https://{b['domain']}/{folder_slug}/{slug}.html"
-    info = get_state_info(abbr)
-    return f'''
-
-
-
-
-{folder_name} in {city}, {state} | {b["name"]}
-
-
-
-
-
-
-
-{{"@context":"https://schema.org","@type":"Service","name":"{folder_name} in {city}, {state}","provider":{{"@type":"LocalBusiness","name":"{b['name']}","url":"https://{b['domain']}","telephone":"{b['phone']}","areaServed":{{"@type":"City","name":"{city}","containedInPlace":{{"@type":"State","name":"{state}"}}}}}},"description":"{folder_name} for businesses in {city}, {state}. Full AI automation starting at $497/month."}}
-
-
-{{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{{"@type":"Question","name":"What does an {folder_name.lower()} do for {city} businesses?","acceptedAnswer":{{"@type":"Answer","text":"Dominion AI Agency provides full AI automation for {city} businesses — AI voice agents, CRM automation, lead generation, review management, and more. Starting at $497/month."}}}},{{"@type":"Question","name":"How do I get started with AI automation in {city}?","acceptedAnswer":{{"@type":"Answer","text":"Call 903-636-7511 or visit DominionAIAgency.com to get a free consultation for your {city} business. Most clients are up and running within one week."}}}}]}}
-
-
-*{{margin:0;padding:0;box-sizing:border-box}}
-body{{font-family:'Segoe UI',system-ui,sans-serif;background:#0A1628;color:#F5F0E8;line-height:1.6}}
-a{{color:inherit;text-decoration:none}}
-nav{{background:rgba(10,22,40,.98);border-bottom:1px solid #1E3050;padding:0 20px;position:sticky;top:0;z-index:100}}
-.nav-inner{{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:62px}}
-.logo{{font-weight:800;font-size:.95rem}}
-.logo span{{color:#E8C97A}}
-.nav-cta{{background:linear-gradient(135deg,#C9A84C,#A8832A);color:#0A1628;font-weight:700;padding:9px 20px;border-radius:7px;font-size:.88rem}}
-.hero{{background:linear-gradient(160deg,#0A1628,#0F1E35 50%,#0A1628);padding:60px 20px 50px;text-align:center}}
-.breadcrumb{{font-size:.78rem;color:#8B9AB0;margin-bottom:16px}}
-.breadcrumb a{{color:#E8C97A}}
-.eyebrow{{display:inline-block;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.25);color:#E8C97A;font-size:.77rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:18px}}
-h1{{font-size:clamp(1.7rem,4.5vw,2.9rem);font-weight:900;line-height:1.1;margin-bottom:14px}}
-h1 span{{color:#E8C97A}}
-.sub{{color:#8B9AB0;max-width:580px;margin:0 auto 28px;font-size:1rem}}
-.btns{{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}}
-.btn-p{{background:linear-gradient(135deg,#C9A84C,#A8832A);color:#0A1628;font-weight:800;padding:14px 28px;border-radius:9px;font-size:.95rem}}
-.btn-o{{border:1px solid #1E3050;color:#F5F0E8;padding:14px 28px;border-radius:9px;font-size:.95rem}}
-.section{{max-width:1100px;margin:0 auto;padding:56px 20px}}
-.grid-3{{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;margin-top:32px}}
-.card{{background:#0F1E35;border:1px solid #1E3050;border-radius:14px;padding:24px}}
-.card-icon{{font-size:1.8rem;margin-bottom:12px}}
-.card h3{{font-size:1rem;font-weight:700;margin-bottom:8px}}
-.card p{{color:#8B9AB0;font-size:.88rem;line-height:1.6}}
-.local-box{{background:#0F1E35;border:1px solid #1E3050;border-radius:14px;padding:28px;margin-top:40px}}
-.local-box h2{{font-size:1.3rem;font-weight:800;margin-bottom:12px}}
-.local-box h2 span{{color:#E8C97A}}
-.local-box p{{color:#8B9AB0;font-size:.9rem;line-height:1.8;margin-bottom:10px}}
-.cta-box{{background:linear-gradient(135deg,rgba(201,168,76,.1),rgba(201,168,76,.03));border:1px solid rgba(201,168,76,.2);border-radius:14px;padding:40px;text-align:center;margin-top:40px}}
-.cta-box h2{{font-size:1.5rem;font-weight:800;margin-bottom:10px}}
-.cta-box p{{color:#8B9AB0;margin-bottom:20px;font-size:.9rem}}
-.cta-btn{{display:inline-block;background:linear-gradient(135deg,#C9A84C,#A8832A);color:#0A1628;font-weight:800;padding:14px 30px;border-radius:9px;font-size:.95rem}}
-footer{{background:#0F1E35;border-top:1px solid #1E3050;padding:32px 20px;text-align:center;color:#8B9AB0;font-size:.82rem}}
-footer a{{color:#8B9AB0}}
-footer a:hover{{color:#E8C97A}}
-
-
-
-
-  
-    👑 Dominion AI Agency
-    Get Started
-  
-
-
-  Home → {folder_name} → {city}, {state}
-  👑 {folder_name}
-  {info['emoji']} {folder_name} in {city}, {state}
-  Full AI automation for {city} businesses. Voice agents, CRM, lead generation, and reputation management — all under one roof starting at {b['starting_price']}.
-  
-    Get Started — {b['starting_price']} →
-    📞 Call 903-636-7511
-  
-
-
-  Full AI Automation for {city} Businesses
-  Dominion AI Agency brings enterprise-level AI automation to {city} small businesses. Instead of hiring staff for every role, our AI handles your calls, CRM, lead generation, and reviews — automatically, around the clock.
-  
-    📞AI Voice AgentsAI receptionist answers every call to your {city} business 24/7. Qualifies leads, books appointments, takes messages. Never miss a customer.
-    🤖CRM AutomationYour CRM runs itself. Contacts auto-created, pipeline stages auto-updated, follow-up sequences auto-triggered. No manual data entry.
-    🎯Lead GenerationAutomated lead scraping, outreach, and follow-up for {city} area prospects. New leads flowing into your pipeline every day on autopilot.
-    ⭐Review ManagementAutomated Google review requests after every job. Most {city} clients double their review count in 60 days.
-    💰From {b['starting_price']}Everything your {city} business needs to run on AI — for less than the cost of a single part-time employee. No long contracts.
-    ⚡Up and Running FastMost {city} businesses are fully onboarded within one week. We handle all the setup — you just run your business.
-  
-  
-    Serving {city}, {state} Businesses
-    {city} is a growing community in {region}, {state}. Local businesses in {county} are increasingly competing with larger companies that have full marketing and sales teams. Dominion AI Agency gives {city} small businesses access to the same AI tools that big companies use — at a fraction of the cost.
-    Whether you're a contractor, a service business, a restaurant, or a professional office in {city}, our AI automation stack handles your customer communication, follow-up, and reputation management so you can focus on delivering great work.
-    📍 {info['emoji']} Fun fact: {info['fact']}.
-  
-  
-    Ready to Automate Your {city} Business?
-    Free consultation. Up and running in one week. Starting at {b['starting_price']}.
-    Get Started Today →
-    Or call us: 903-636-7511 · DominionAIAgency.com
-  
-
-
-  © 2025 Dominion AI Agency · Part of the Dominion Brand Family
-  Home · Web Design · AI Voice · Review Pro
-
-
-'''
-
-
-def build_webdesign_page(city, state, abbr, region, county, lat, lng, folder_slug, folder_name):
-    b = BRANDS["webdesign"]
-    slug = make_slug(city, abbr)
-    url = f"https://{b['domain']}/{folder_slug}/{slug}.html"
-    info = get_state_info(abbr)
-    return f'''
-
-
-
-
-{folder_name} in {city}, {state} | {b["name"]}
-
-
-
-
-
-
-
-{{"@context":"https://schema.org","@type":"Service","name":"{folder_name} in {city}, {state}","provider":{{"@type":"LocalBusiness","name":"{b['name']}","url":"https://{b['domain']}","telephone":"{b['phone']}","areaServed":{{"@type":"City","name":"{city}","containedInPlace":{{"@type":"State","name":"{state}"}}}}}},"description":"Professional {folder_name.lower()} for businesses in {city}, {state}. Custom websites from $497 — we build it first, you pay when you love it."}}
-
-
-{{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{{"@type":"Question","name":"How much does {folder_name.lower()} cost in {city}?","acceptedAnswer":{{"@type":"Answer","text":"Dominion Web Design Pro builds professional websites for {city} businesses starting at $497. We build your demo site first — you only pay when you love it. Call 903-636-7511 or visit DominionWebDesignPro.com."}}}},{{"@type":"Question","name":"Do you build websites for {city} businesses?","acceptedAnswer":{{"@type":"Answer","text":"Yes! We serve businesses in {city}, {state} and all across the US. Every site includes SEO optimization, mobile design, and an AI chat widget. Get your free demo today."}}}}]}}
-
-
-*{{margin:0;padding:0;box-sizing:border-box}}
-body{{font-family:'Segoe UI',system-ui,sans-serif;background:#0A0A18;color:#F9FAFB;line-height:1.6}}
-a{{color:inherit;text-decoration:none}}
-nav{{background:rgba(10,10,24,.98);border-bottom:1px solid #1E1E40;padding:0 20px;position:sticky;top:0;z-index:100}}
-.nav-inner{{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:62px}}
-.logo{{font-weight:800;font-size:.95rem}}
-.logo span{{color:#60A5FA}}
-.nav-cta{{background:#1D4ED8;color:#fff;font-weight:700;padding:9px 20px;border-radius:7px;font-size:.88rem}}
-.hero{{background:linear-gradient(160deg,#0A0A18,#0F0F22 50%,#0A0A18);padding:60px 20px 50px;text-align:center}}
-.breadcrumb{{font-size:.78rem;color:#6B7280;margin-bottom:16px}}
-.breadcrumb a{{color:#60A5FA}}
-.eyebrow{{display:inline-block;background:rgba(29,78,216,.12);border:1px solid rgba(29,78,216,.25);color:#60A5FA;font-size:.77rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:18px}}
-h1{{font-size:clamp(1.7rem,4.5vw,2.9rem);font-weight:900;line-height:1.1;margin-bottom:14px}}
-h1 span{{color:#60A5FA}}
-.sub{{color:#9CA3AF;max-width:580px;margin:0 auto 28px;font-size:1rem}}
-.btns{{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}}
-.btn-p{{background:#1D4ED8;color:#fff;font-weight:800;padding:14px 28px;border-radius:9px;font-size:.95rem}}
-.btn-o{{border:1px solid #1E1E40;color:#F9FAFB;padding:14px 28px;border-radius:9px;font-size:.95rem}}
-.section{{max-width:1100px;margin:0 auto;padding:56px 20px}}
-.grid-3{{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;margin-top:32px}}
-.card{{background:#0F0F22;border:1px solid #1E1E40;border-radius:14px;padding:24px}}
-.card-icon{{font-size:1.8rem;margin-bottom:12px}}
-.card h3{{font-size:1rem;font-weight:700;margin-bottom:8px}}
-.card p{{color:#9CA3AF;font-size:.88rem;line-height:1.6}}
-.local-box{{background:#0F0F22;border:1px solid #1E1E40;border-radius:14px;padding:28px;margin-top:40px}}
-.local-box h2{{font-size:1.3rem;font-weight:800;margin-bottom:12px}}
-.local-box h2 span{{color:#60A5FA}}
-.local-box p{{color:#9CA3AF;font-size:.9rem;line-height:1.8;margin-bottom:10px}}
-.cta-box{{background:linear-gradient(135deg,rgba(29,78,216,.12),rgba(29,78,216,.04));border:1px solid rgba(29,78,216,.2);border-radius:14px;padding:40px;text-align:center;margin-top:40px}}
-.cta-box h2{{font-size:1.5rem;font-weight:800;margin-bottom:10px}}
-.cta-box p{{color:#9CA3AF;margin-bottom:20px;font-size:.9rem}}
-.cta-btn{{display:inline-block;background:#1D4ED8;color:#fff;font-weight:800;padding:14px 30px;border-radius:9px;font-size:.95rem}}
-footer{{background:#0F0F22;border-top:1px solid #1E1E40;padding:32px 20px;text-align:center;color:#6B7280;font-size:.82rem}}
-footer a{{color:#6B7280}}
-footer a:hover{{color:#60A5FA}}
-
-
-
-
-  
-    🌐 Dominion Web Design Pro
-    Get Free Demo
-  
-
-
-  Home → {folder_name} → {city}, {state}
-  🌐 {folder_name}
-  {info['emoji']} {folder_name} in {city}, {state}
-  We build your {city} business website first — you only pay when you love it. SEO ready, mobile first, AI chat included. Starting at {b['starting_price']}.
-  
-    Get Your Free Demo →
-    📞 Call 903-636-7511
-  
-
-
-  Professional {folder_name} for {city} Businesses
-  Your website is your most important marketing tool. {city} customers are searching for your services online right now. If your site looks outdated, loads slowly, or isn't mobile friendly — they're going to your competitor.
-  
-    🎨Built First, Pay LaterWe build your complete {city} business website before you pay a single dollar. No risk, no guessing. Love it or we keep working until you do.
-    📱Mobile First DesignOver 70% of your {city} customers are on mobile. Every site we build looks and works perfectly on phones, tablets, and desktop.
-    🔍SEO OptimizedBuilt from the ground up to rank in {city} local search. Schema markup, fast load times, proper meta tags — everything Google loves.
-    🤖AI Chat IncludedEvery website includes an AI chat widget that answers questions and captures leads from your {city} visitors — even when you're busy.
-    💰From {b['starting_price']}Professional website for less than most people spend on one month of ads. No monthly fees on base package. You own it outright.
-    ⚡Fast TurnaroundMost {city} business sites are ready for your review within 5-7 days. We move fast so you can start getting online leads quickly.
-  
-  
-    Serving {city}, {state} Businesses
-    {city} is a thriving community in {region}, {state}. Businesses in {county} need a strong online presence to compete in today's market. Whether you're a contractor, restaurant, law firm, medical office, or any other local business in {city} — your website is the foundation of all your marketing.
-    Dominion Web Design Pro has built websites for businesses across Texas and all 50 states. We understand what local {city} customers are looking for and we build sites that convert visitors into calls and appointments.
-    📍 {info['emoji']} Fun fact: {info['fact']}.
-  
-  
-    Get Your Free {city} Website Demo
-    We build it first. You pay only when you love it. Starting at {b['starting_price']}.
-    Get Your Free Demo →
-    Or call us: 903-636-7511 · DominionWebDesignPro.com
-  
-
-
-  © 2025 Dominion Web Design Pro · Part of the Dominion Brand Family
-  Home · AI Voice · Review Pro · AI Agency
-
-
-'''
 def _phone_digits(brand):
     return brand.get("phone_display", brand.get("phone", ""))
 
@@ -2281,6 +1837,162 @@ def cities_for_brand(brand_key):
         if _miles(c[0], c[1], cd[5], cd[6]) <= rad:
             seen.add(key); out.append(cd)
     return out
+
+
+def build_national_page(brand_key, city, state, abbr, region, county, lat, lng, folder_slug, folder_name):
+    """Local landing page for the four national B2B brands (dark theme)."""
+    brand = BRANDS[brand_key]
+    county = fmt_county(county)
+    slug = make_slug(city, abbr)
+    state_info = get_state_info(abbr)
+    base = "https://" + brand["domain"]
+    accent, dark, light = brand["color"], brand["color_dark"], brand["color_light"]
+    bg, bg2, border = brand["color_bg"], brand["color_bg2"], brand["color_border"]
+    phone = brand["phone"]
+    tel = "tel:+1" + "".join(ch for ch in phone if ch.isdigit())
+
+    title = folder_name + " in " + city + ", " + state + " | " + brand["name"]
+    desc = (brand["pitch"] + " Serving businesses in " + city + ", " + state
+            + " and across " + county + ". From " + brand["starting_price"] + ".")
+    canonical = base + "/" + folder_slug + "/" + slug + ".html"
+
+    intro = (city + " is in " + county + ", " + state + ", and the businesses here compete for the same "
+        "customers everyone else does — with fewer hands to do it. Most small operations in " + city
+        + " lose work for one boring reason: nobody picked up, nobody followed up, or the website did not "
+        "give anyone a reason to call. " + brand["name"] + " exists to close that gap. "
+        "We work with " + city + " businesses across " + county + " and the wider " + region
+        + " area, and the setup is the same whether you run one location or five. Pricing starts at "
+        + brand["starting_price"] + ", month to month, no long contract.")
+
+    schema = ('{"@context":"https://schema.org","@type":"Service","name":"' + folder_name
+        + '","provider":{"@type":"Organization","name":"' + brand["name"] + '","telephone":"' + phone
+        + '","url":"' + base + '/"},"areaServed":{"@type":"City","name":"' + city.replace('"', "'")
+        + '","addressRegion":"' + abbr + '"},"description":"' + brand["pitch"].replace('"', "'")
+        + '","url":"' + canonical + '"}')
+
+    crumbs = ('{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":['
+        '{"@type":"ListItem","position":1,"name":"Home","item":"' + base + '/"},'
+        '{"@type":"ListItem","position":2,"name":"' + folder_name + '","item":"' + base + '/' + folder_slug + '/"},'
+        '{"@type":"ListItem","position":3,"name":"' + city.replace('"', "'") + ', ' + abbr + '","item":"' + canonical + '"}]}')
+
+    css = ("*{box-sizing:border-box}body{font-family:system-ui,-apple-system,Segoe UI,sans-serif;margin:0;"
+        "background:" + bg + ";color:#e7e7f0;line-height:1.65}a{color:inherit}"
+        "header{background:" + bg2 + ";border-bottom:1px solid " + border + ";padding:14px 22px;"
+        "display:flex;align-items:center;gap:12px;flex-wrap:wrap}"
+        "header .logo{font-weight:800;text-decoration:none;color:#fff;font-size:1.02em}"
+        "header .logo span{color:" + accent + "}"
+        "header nav{margin-left:auto;display:flex;gap:16px;flex-wrap:wrap}"
+        "header nav a{color:#9a9ab4;text-decoration:none;font-size:.84em}header nav a:hover{color:" + light + "}"
+        ".hero{padding:60px 22px;text-align:center;background:radial-gradient(900px 400px at 50% -10%," + dark + "55,transparent 70%)," + bg + "}"
+        ".eyebrow{display:inline-block;border:1px solid " + border + ";color:" + light + ";font-size:.72em;"
+        "letter-spacing:.16em;text-transform:uppercase;padding:6px 14px;border-radius:100px;margin-bottom:16px}"
+        ".hero h1{font-size:2.05em;margin:0 0 12px;line-height:1.16;color:#fff}"
+        ".hero p{max-width:640px;margin:0 auto 24px;color:#a9a9c2}"
+        ".btn{display:inline-block;background:" + accent + ";color:#fff;padding:14px 30px;border-radius:8px;"
+        "text-decoration:none;font-weight:700}"
+        ".btn-o{background:none;border:1px solid " + border + ";color:#e7e7f0;margin-left:8px}"
+        ".wrap{max-width:900px;margin:0 auto;padding:46px 22px}"
+        "h2{font-size:1.28em;color:#fff;margin:0 0 16px}"
+        "h2::after{content:'';display:block;width:46px;height:3px;background:" + accent + ";margin-top:8px;border-radius:2px}"
+        ".intro{background:" + bg2 + ";border:1px solid " + border + ";border-left:3px solid " + accent + ";"
+        "padding:22px;border-radius:8px;margin-bottom:30px;color:#b9b9cf}"
+        ".grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:28px}"
+        ".card{background:" + bg2 + ";border:1px solid " + border + ";border-radius:8px;padding:16px}"
+        ".card h3{margin:0 0 6px;font-size:.96em;color:#fff}.card p{margin:0;font-size:.85em;color:#9a9ab4}"
+        ".card a{text-decoration:none;color:" + light + "}"
+        ".price{background:" + bg2 + ";border:1px solid " + border + ";border-radius:10px;padding:24px;text-align:center;margin-top:8px}"
+        ".price b{display:block;font-size:1.9em;color:#fff}"
+        ".price span{color:#9a9ab4;font-size:.88em}"
+        ".callout{background:linear-gradient(135deg," + dark + "," + bg2 + ");border:1px solid " + border + ";"
+        "border-radius:10px;padding:26px;text-align:center;margin-top:30px}"
+        ".callout a{color:" + light + ";font-weight:700}"
+        "footer{background:" + bg2 + ";border-top:1px solid " + border + ";color:#7e7e99;padding:26px 22px;"
+        "text-align:center;font-size:.8em}footer a{color:#9a9ab4}"
+        "@media(max-width:560px){.hero h1{font-size:1.55em}.btn-o{margin:10px 0 0;display:block}}")
+
+    html = '<!DOCTYPE html><html lang="en"><head>'
+    html += '<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
+    html += '<title>' + title + '</title>'
+    html += '<meta name="description" content="' + desc + '">'
+    html += '<link rel="canonical" href="' + canonical + '">'
+    html += '<meta name="geo.region" content="US-' + abbr + '"><meta name="geo.placename" content="' + city + '">'
+    html += '<meta name="ICBM" content="' + str(lat) + ', ' + str(lng) + '">'
+    html += '<meta property="og:title" content="' + title + '"><meta property="og:description" content="' + desc + '">'
+    html += '<meta property="og:type" content="website"><meta property="og:url" content="' + canonical + '">'
+    html += '<script type="application/ld+json">' + schema + '</script>'
+    html += '<script type="application/ld+json">' + crumbs + '</script>'
+    html += '<style>' + css + '</style></head><body>'
+
+    html += '<header><a class="logo" href="' + base + '/">' + brand["name"].split()[0] + ' <span>'
+    html += ' '.join(brand["name"].split()[1:]) + '</span></a><nav>'
+    for fs, fn in brand["service_folders"][:5]:
+        html += '<a href="' + base + '/' + fs + '/' + slug + '.html">' + fn + '</a>'
+    html += '<a href="' + tel + '">' + phone + '</a></nav></header>'
+
+    html += '<div class="hero"><div class="eyebrow">' + city + ', ' + abbr + '</div>'
+    html += '<h1>' + folder_name + ' in ' + city + ', ' + state + '</h1>'
+    html += '<p>' + brand["tagline"] + ' ' + brand["pitch"] + '</p>'
+    html += '<a class="btn" href="' + tel + '">' + brand["cta"] + '</a>'
+    html += '<a class="btn btn-o" href="' + base + '/">See How It Works</a></div>'
+
+    html += '<div class="wrap">'
+    html += '<h2>' + folder_name + ' for ' + city + ' Businesses</h2>'
+    html += '<div class="intro">' + intro + '</div>'
+
+    html += '<h2>What Else We Do in ' + city + '</h2><div class="grid">'
+    for fs, fn in brand["service_folders"]:
+        if fs == folder_slug:
+            continue
+        html += '<div class="card"><h3><a href="' + base + '/' + fs + '/' + slug + '.html">' + fn + '</a></h3>'
+        html += '<p>' + fn + ' for businesses in ' + city + ' and across ' + county + '.</p></div>'
+    html += '</div>'
+
+    html += '<h2>Why ' + city + ' Businesses Use Us</h2><div class="grid">'
+    html += '<div class="card"><h3>Set up for you</h3><p>We configure the whole thing. You are not learning software.</p></div>'
+    html += '<div class="card"><h3>Month to month</h3><p>No annual contract. Cancel whenever it stops earning.</p></div>'
+    html += '<div class="card"><h3>Works after hours</h3><p>Most missed opportunities happen when the office is closed.</p></div>'
+    html += '<div class="card"><h3>One point of contact</h3><p>You deal with us directly, not a support queue.</p></div>'
+    html += '</div>'
+
+    html += '<div class="price"><b>' + brand["starting_price"] + '</b><span>Starting price &middot; setup included &middot; no contract</span></div>'
+
+    html += '<div class="callout"><strong>Serving ' + city + ' and all of ' + county + '</strong><br>'
+    html += 'Call <a href="' + tel + '">' + phone + '</a> or book a walkthrough and see it working on your own business.</div>'
+    html += '</div>'
+
+    html += '<footer>&copy; 2026 ' + brand["name"] + ' &middot; Serving ' + city + ', ' + county + ', ' + state
+    html += ' and the ' + region + ' area &middot; <a href="' + base + '/">Home</a><br>'
+    html += state_info["emoji"] + ' ' + state_info["fact"] + '</footer>'
+    html += '</body></html>'
+    return html
+
+
+def _national_builder(brand_key):
+    def _b(city, state, abbr, region, county, lat, lng, folder_slug, folder_name):
+        return build_national_page(brand_key, city, state, abbr, region, county, lat, lng, folder_slug, folder_name)
+    return _b
+
+
+build_aivoice_page = _national_builder("aivoice")
+build_reviewpro_page = _national_builder("reviewpro")
+build_aiagency_page = _national_builder("aiagency")
+build_webdesign_page = _national_builder("webdesign")
+
+
+PAGE_BUILDERS = {
+    "aivoice": build_aivoice_page,
+    "reviewpro": build_reviewpro_page,
+    "aiagency": build_aiagency_page,
+    "webdesign": build_webdesign_page,
+    "hardmoney": build_hardmoney_page,
+    "houstonwash": build_houstonwash_page,
+    "houstonhvac": build_houstonhvac_page,
+    "houstonroofing": build_houstonroofing_page,
+    "dallaswash": build_dallaswash_page,
+    "dallashvac": build_dallashvac_page,
+    "dallasroofing": build_dallasroofing_page,
+    "solarpro": build_solarpro_page,
+}
 
 
 def purge_stale_folders(brand_key):
