@@ -7,7 +7,7 @@ Each city gets pages in all service folders for maximum SEO coverage
 Pushes each brand to its own GitHub repo → Netlify auto-deploys
 """
 
-import os, re, json, glob, subprocess
+import os, re, math, json, glob, subprocess
 from datetime import datetime
 
 # ============================================================
@@ -207,6 +207,8 @@ BRANDS = {
     },
     "houstonwash": {
         "repo": "dominionsoundmusic-create/houston-powerwashing-pro",
+        "metro_center": (29.7604, -95.3698),
+        "metro_radius": 60,
         "work_dir": "/opt/render/project/src/houston-powerwashing-pro",
         "domain": "houston-powerwashing-pro.netlify.app",
         "name": "Houston Power Washing Pro",
@@ -229,6 +231,8 @@ BRANDS = {
     },
     "houstonhvac": {
         "repo": "dominionsoundmusic-create/houston-hvac-pro",
+        "metro_center": (29.7604, -95.3698),
+        "metro_radius": 60,
         "work_dir": "/opt/render/project/src/houston-hvac-pro",
         "domain": "stirring-gumdrop-4e30a6.netlify.app",
         "name": "Houston HVAC Pro",
@@ -251,6 +255,8 @@ BRANDS = {
     },
     "houstonroofing": {
         "repo": "dominionsoundmusic-create/houston-roofing-pro",
+        "metro_center": (29.7604, -95.3698),
+        "metro_radius": 60,
         "work_dir": "/opt/render/project/src/houston-roofing-pro",
         "domain": "delicate-bavarois-59069c.netlify.app",
         "name": "Houston Roofing Pro",
@@ -273,6 +279,8 @@ BRANDS = {
     },
     "dallaswash": {
         "repo": "dominionsoundmusic-create/dallas-powerwashing-pro",
+        "metro_center": (32.7767, -96.797),
+        "metro_radius": 60,
         "work_dir": "/opt/render/project/src/dallas-powerwashing-pro",
         "domain": "sage-tarsier-f0ded1.netlify.app",
         "name": "Dallas Metro Power Washing Pro",
@@ -295,6 +303,8 @@ BRANDS = {
     },
     "dallashvac": {
         "repo": "dominionsoundmusic-create/dallas-hvac-pro",
+        "metro_center": (32.7767, -96.797),
+        "metro_radius": 60,
         "work_dir": "/opt/render/project/src/dallas-hvac-pro",
         "domain": "ornate-wisp-2520ba.netlify.app",
         "name": "Dallas Metro HVAC Pro",
@@ -317,6 +327,8 @@ BRANDS = {
     },
     "dallasroofing": {
         "repo": "dominionsoundmusic-create/dallas-roofing-pro",
+        "metro_center": (32.7767, -96.797),
+        "metro_radius": 60,
         "work_dir": "/opt/render/project/src/dallas-roofing-pro",
         "domain": "splendid-sable-28fb05.netlify.app",
         "name": "Dallas Metro Roofing Pro",
@@ -1286,6 +1298,7 @@ def _phone_digits(brand):
 
 
 def build_leadpro_page(brand_key, city, state, abbr, region, county, lat, lng, folder_slug, folder_name):
+    county = county.replace(' County', '').strip()
     """Generic local-service city page. Used by all six Lead Pro brands."""
     brand = BRANDS[brand_key]
     slug = make_slug(city, abbr)
@@ -1418,6 +1431,7 @@ build_dallashvac_page = _leadpro_builder("dallashvac")
 build_dallasroofing_page = _leadpro_builder("dallasroofing")
 
 def build_solarpro_page(city, state, abbr, region, county, lat, lng, folder_slug, folder_name):
+    county = county.replace(' County', '').strip()
     slug = make_slug(city, abbr)
     state_info = get_state_info(abbr)
     title = folder_name + ' in ' + city + ', ' + state + ' | Dominion Solar Pro'
@@ -1494,6 +1508,174 @@ PAGE_BUILDERS = {
 # BUILD + PUSH LOGIC
 # ============================================================
 
+def _miles(lat1, lng1, lat2, lng2):
+    R = 3958.8
+    p1, p2 = math.radians(lat1), math.radians(lat2)
+    dp = math.radians(lat2 - lat1); dl = math.radians(lng2 - lng1)
+    a = math.sin(dp/2)**2 + math.cos(p1)*math.cos(p2)*math.sin(dl/2)**2
+    return 2 * R * math.asin(math.sqrt(a))
+
+METRO_EXTRA_CITIES = [
+    # ---------- Houston metro : Harris County ----------
+    ("Tomball", "Texas", "TX", "Southeast Texas", "Harris County", 30.0972, -95.6161),
+    ("Cypress", "Texas", "TX", "Southeast Texas", "Harris County", 29.9691, -95.6972),
+    ("Deer Park", "Texas", "TX", "Southeast Texas", "Harris County", 29.7052, -95.1238),
+    ("La Porte", "Texas", "TX", "Southeast Texas", "Harris County", 29.6658, -95.0194),
+    ("Bellaire", "Texas", "TX", "Southeast Texas", "Harris County", 29.7058, -95.4588),
+    ("West University Place", "Texas", "TX", "Southeast Texas", "Harris County", 29.7180, -95.4344),
+    ("Jersey Village", "Texas", "TX", "Southeast Texas", "Harris County", 29.8891, -95.5622),
+    ("Galena Park", "Texas", "TX", "Southeast Texas", "Harris County", 29.7397, -95.2313),
+    ("South Houston", "Texas", "TX", "Southeast Texas", "Harris County", 29.6627, -95.2377),
+    ("Seabrook", "Texas", "TX", "Southeast Texas", "Harris County", 29.5638, -95.0230),
+    ("Webster", "Texas", "TX", "Southeast Texas", "Harris County", 29.5377, -95.1183),
+    ("Channelview", "Texas", "TX", "Southeast Texas", "Harris County", 29.7763, -95.1138),
+    ("Crosby", "Texas", "TX", "Southeast Texas", "Harris County", 29.9127, -95.0621),
+    ("Atascocita", "Texas", "TX", "Southeast Texas", "Harris County", 29.9993, -95.1766),
+    ("Kingwood", "Texas", "TX", "Southeast Texas", "Harris County", 30.0530, -95.1815),
+    ("Highlands", "Texas", "TX", "Southeast Texas", "Harris County", 29.8180, -95.0577),
+    ("Hockley", "Texas", "TX", "Southeast Texas", "Harris County", 30.0405, -95.8330),
+
+    # ---------- Houston metro : Fort Bend County ----------
+    ("Stafford", "Texas", "TX", "Southeast Texas", "Fort Bend County", 29.6161, -95.5577),
+    ("Richmond", "Texas", "TX", "Southeast Texas", "Fort Bend County", 29.5822, -95.7607),
+    ("Rosenberg", "Texas", "TX", "Southeast Texas", "Fort Bend County", 29.5572, -95.8085),
+    ("Fulshear", "Texas", "TX", "Southeast Texas", "Fort Bend County", 29.6905, -95.8913),
+    ("Needville", "Texas", "TX", "Southeast Texas", "Fort Bend County", 29.3958, -95.8380),
+    ("Fresno", "Texas", "TX", "Southeast Texas", "Fort Bend County", 29.5386, -95.4477),
+
+    # ---------- Houston metro : Montgomery County ----------
+    ("Magnolia", "Texas", "TX", "Southeast Texas", "Montgomery County", 30.2094, -95.7513),
+    ("Willis", "Texas", "TX", "Southeast Texas", "Montgomery County", 30.4257, -95.4788),
+    ("Montgomery", "Texas", "TX", "Southeast Texas", "Montgomery County", 30.3888, -95.6963),
+    ("Shenandoah", "Texas", "TX", "Southeast Texas", "Montgomery County", 30.1830, -95.4530),
+    ("Oak Ridge North", "Texas", "TX", "Southeast Texas", "Montgomery County", 30.1594, -95.4519),
+    ("New Caney", "Texas", "TX", "Southeast Texas", "Montgomery County", 30.1519, -95.2130),
+    ("Porter", "Texas", "TX", "Southeast Texas", "Montgomery County", 30.1055, -95.2380),
+    ("Splendora", "Texas", "TX", "Southeast Texas", "Montgomery County", 30.2333, -95.1608),
+
+    # ---------- Houston metro : Galveston County ----------
+    ("Friendswood", "Texas", "TX", "Southeast Texas", "Galveston County", 29.5294, -95.2010),
+    ("Dickinson", "Texas", "TX", "Southeast Texas", "Galveston County", 29.4608, -95.0513),
+    ("Texas City", "Texas", "TX", "Southeast Texas", "Galveston County", 29.3838, -94.9027),
+    ("La Marque", "Texas", "TX", "Southeast Texas", "Galveston County", 29.3683, -94.9777),
+    ("Santa Fe", "Texas", "TX", "Southeast Texas", "Galveston County", 29.3822, -95.1005),
+    ("Galveston", "Texas", "TX", "Coastal Texas", "Galveston County", 29.3013, -94.7977),
+    ("Kemah", "Texas", "TX", "Southeast Texas", "Galveston County", 29.5441, -95.0197),
+
+    # ---------- Houston metro : Brazoria County ----------
+    ("Manvel", "Texas", "TX", "Southeast Texas", "Brazoria County", 29.4788, -95.3577),
+    ("Angleton", "Texas", "TX", "Southeast Texas", "Brazoria County", 29.1694, -95.4319),
+    ("Lake Jackson", "Texas", "TX", "Southeast Texas", "Brazoria County", 29.0339, -95.4344),
+
+    # ---------- Houston metro : outer counties ----------
+    ("Waller", "Texas", "TX", "Southeast Texas", "Waller County", 30.0574, -95.9280),
+    ("Hempstead", "Texas", "TX", "Southeast Texas", "Waller County", 30.0977, -96.0764),
+    ("Brookshire", "Texas", "TX", "Southeast Texas", "Waller County", 29.7861, -95.9538),
+    ("Cleveland", "Texas", "TX", "Southeast Texas", "Liberty County", 30.3413, -95.0855),
+
+    # ---------- DFW : Dallas County ----------
+    ("Duncanville", "Texas", "TX", "North Texas", "Dallas County", 32.6518, -96.9083),
+    ("Cedar Hill", "Texas", "TX", "North Texas", "Dallas County", 32.5885, -96.9561),
+    ("Lancaster", "Texas", "TX", "North Texas", "Dallas County", 32.5921, -96.7561),
+    ("Balch Springs", "Texas", "TX", "North Texas", "Dallas County", 32.7287, -96.6228),
+    ("Farmers Branch", "Texas", "TX", "North Texas", "Dallas County", 32.9268, -96.8961),
+    ("Addison", "Texas", "TX", "North Texas", "Dallas County", 32.9618, -96.8292),
+    ("Highland Park", "Texas", "TX", "North Texas", "Dallas County", 32.8332, -96.8022),
+    ("University Park", "Texas", "TX", "North Texas", "Dallas County", 32.8507, -96.8003),
+    ("Seagoville", "Texas", "TX", "North Texas", "Dallas County", 32.6540, -96.5383),
+    ("Sachse", "Texas", "TX", "North Texas", "Dallas County", 32.9762, -96.5952),
+    ("Sunnyvale", "Texas", "TX", "North Texas", "Dallas County", 32.7973, -96.5580),
+    ("Glenn Heights", "Texas", "TX", "North Texas", "Dallas County", 32.5460, -96.8572),
+
+    # ---------- DFW : Tarrant County ----------
+    ("Bedford", "Texas", "TX", "North Texas", "Tarrant County", 32.8440, -97.1431),
+    ("Haltom City", "Texas", "TX", "North Texas", "Tarrant County", 32.7996, -97.2692),
+    ("Watauga", "Texas", "TX", "North Texas", "Tarrant County", 32.8579, -97.2547),
+    ("Saginaw", "Texas", "TX", "North Texas", "Tarrant County", 32.8601, -97.3639),
+    ("Benbrook", "Texas", "TX", "North Texas", "Tarrant County", 32.6732, -97.4606),
+    ("Crowley", "Texas", "TX", "North Texas", "Tarrant County", 32.5793, -97.3628),
+    ("White Settlement", "Texas", "TX", "North Texas", "Tarrant County", 32.7593, -97.4586),
+    ("Trophy Club", "Texas", "TX", "North Texas", "Tarrant County", 33.0043, -97.1856),
+    ("Forest Hill", "Texas", "TX", "North Texas", "Tarrant County", 32.6607, -97.2691),
+    ("Kennedale", "Texas", "TX", "North Texas", "Tarrant County", 32.6468, -97.2258),
+    ("Azle", "Texas", "TX", "North Texas", "Tarrant County", 32.8957, -97.5439),
+    ("Richland Hills", "Texas", "TX", "North Texas", "Tarrant County", 32.8107, -97.2278),
+    ("River Oaks", "Texas", "TX", "North Texas", "Tarrant County", 32.7752, -97.3944),
+    ("Lake Worth", "Texas", "TX", "North Texas", "Tarrant County", 32.8085, -97.4453),
+    ("Everman", "Texas", "TX", "North Texas", "Tarrant County", 32.6307, -97.2891),
+
+    # ---------- DFW : Collin County ----------
+    ("Murphy", "Texas", "TX", "North Texas", "Collin County", 33.0151, -96.6130),
+    ("Princeton", "Texas", "TX", "North Texas", "Collin County", 33.1801, -96.4980),
+    ("Anna", "Texas", "TX", "North Texas", "Collin County", 33.3495, -96.5486),
+    ("Melissa", "Texas", "TX", "North Texas", "Collin County", 33.2857, -96.5728),
+    ("Fairview", "Texas", "TX", "North Texas", "Collin County", 33.1451, -96.6314),
+    ("Lucas", "Texas", "TX", "North Texas", "Collin County", 33.0854, -96.5772),
+    ("Parker", "Texas", "TX", "North Texas", "Collin County", 33.0543, -96.6222),
+
+    # ---------- DFW : Denton County ----------
+    ("Little Elm", "Texas", "TX", "North Texas", "Denton County", 33.1626, -96.9375),
+    ("Corinth", "Texas", "TX", "North Texas", "Denton County", 33.1540, -97.0647),
+    ("Highland Village", "Texas", "TX", "North Texas", "Denton County", 33.0918, -97.0467),
+    ("Argyle", "Texas", "TX", "North Texas", "Denton County", 33.1212, -97.1836),
+    ("Justin", "Texas", "TX", "North Texas", "Denton County", 33.0846, -97.2969),
+    ("Roanoke", "Texas", "TX", "North Texas", "Denton County", 33.0040, -97.2253),
+    ("Sanger", "Texas", "TX", "North Texas", "Denton County", 33.3640, -97.1739),
+    ("Aubrey", "Texas", "TX", "North Texas", "Denton County", 33.3043, -96.9861),
+
+    # ---------- DFW : outer counties ----------
+    ("Heath", "Texas", "TX", "North Texas", "Rockwall County", 32.8368, -96.4756),
+    ("Royse City", "Texas", "TX", "North Texas", "Rockwall County", 32.9746, -96.3325),
+    ("Fate", "Texas", "TX", "North Texas", "Rockwall County", 32.9418, -96.3811),
+    ("Midlothian", "Texas", "TX", "North Texas", "Ellis County", 32.4826, -96.9944),
+    ("Ennis", "Texas", "TX", "North Texas", "Ellis County", 32.3293, -96.6253),
+    ("Red Oak", "Texas", "TX", "North Texas", "Ellis County", 32.5185, -96.8044),
+    ("Ferris", "Texas", "TX", "North Texas", "Ellis County", 32.5340, -96.6644),
+    ("Forney", "Texas", "TX", "North Texas", "Kaufman County", 32.7482, -96.4719),
+    ("Terrell", "Texas", "TX", "North Texas", "Kaufman County", 32.7360, -96.2752),
+    ("Kaufman", "Texas", "TX", "North Texas", "Kaufman County", 32.5885, -96.3086),
+    ("Crandall", "Texas", "TX", "North Texas", "Kaufman County", 32.6274, -96.4530),
+    ("Joshua", "Texas", "TX", "North Texas", "Johnson County", 32.4612, -97.3883),
+    ("Alvarado", "Texas", "TX", "North Texas", "Johnson County", 32.4062, -97.2117),
+    ("Aledo", "Texas", "TX", "North Texas", "Parker County", 32.6957, -97.6022),
+    ("Willow Park", "Texas", "TX", "North Texas", "Parker County", 32.7549, -97.6459),
+    ("Springtown", "Texas", "TX", "North Texas", "Parker County", 32.9654, -97.6828),
+]
+
+
+def cities_for_brand(brand_key):
+    """Cities this brand is allowed to build. Metro brands are limited to their radius."""
+    brand = BRANDS[brand_key]
+    c = brand.get("metro_center")
+    if not c:
+        return list(ALL_US_CITIES)
+    rad = brand.get("metro_radius", 60)
+    pool, seen, out = list(ALL_US_CITIES) + list(METRO_EXTRA_CITIES), set(), []
+    for cd in pool:
+        key = make_slug(cd[0], cd[2])
+        if key in seen:
+            continue
+        if _miles(c[0], c[1], cd[5], cd[6]) <= rad:
+            seen.add(key); out.append(cd)
+    return out
+
+
+def purge_out_of_area(brand_key):
+    """Delete page files for cities outside this brand's metro. Returns count removed."""
+    brand = BRANDS[brand_key]
+    if not brand.get("metro_center"):
+        return 0
+    allowed = {make_slug(cd[0], cd[2]) for cd in cities_for_brand(brand_key)}
+    removed = 0
+    for folder_slug, _ in brand["service_folders"]:
+        for f in glob.glob(os.path.join(brand["work_dir"], folder_slug, "*.html")):
+            if os.path.basename(f).replace('.html','') not in allowed:
+                os.remove(f); removed += 1
+    if removed:
+        print(f"  PURGE: removed {removed} out-of-area pages from {brand['name']}")
+    return removed
+
+
 def get_existing_slugs(brand_key):
     brand = BRANDS[brand_key]
     existing = set()
@@ -1555,17 +1737,20 @@ def build_brand(brand_key):
         repo_url = f'https://{GITHUB_TOKEN}@github.com/{brand["repo"]}.git'
         subprocess.run(['git', 'clone', repo_url, brand['work_dir']])
     builder = PAGE_BUILDERS[brand_key]
+    if os.environ.get('PURGE') == '1':
+        purge_out_of_area(brand_key)
+    brand_cities = cities_for_brand(brand_key)
     existing = get_existing_slugs(brand_key)
     seen = set()
     unbuilt = []
-    for city_data in ALL_US_CITIES:
+    for city_data in brand_cities:
         city, state, abbr, region, county, lat, lng = city_data
         slug = make_slug(city, abbr)
         if slug not in existing and slug not in seen:
             seen.add(slug)
             unbuilt.append(city_data)
     if os.environ.get('REBUILD') == '1':
-        batch = [cd for cd in ALL_US_CITIES if make_slug(cd[0], cd[2]) in existing]
+        batch = [cd for cd in brand_cities if make_slug(cd[0], cd[2]) in existing]
         print(f"  REBUILD MODE: regenerating {len(batch)} existing cities")
         if not batch:
             print(f"  {brand['name']}: nothing to regenerate")
