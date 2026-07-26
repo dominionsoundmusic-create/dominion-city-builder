@@ -331,6 +331,31 @@ BRANDS = {
             ("roof-leak-repair", "Roof Leak Repair"),
         ],
     },
+    'solarpro': {
+        'repo': 'dominionsoundmusic-create/dominionsolarpro-site',
+        'work_dir': '/opt/render/project/src/dominionsolarpro-site',
+        'domain': 'dominionsolarpro.com',
+        'name': 'Dominion Solar Pro',
+        'tagline': 'Jackery Solar Generators and Portable Power Stations',
+        'cta': 'Shop Solar Generators',
+        'phone': '',
+        'colors': {'primary': '#1a2332', 'accent': '#f59e0b', 'text': '#ffffff', 'bg': '#f8fafc'},
+        'starting_price': 'From $149',
+        'pitch': 'Shop the best Jackery solar generators, portable power stations, and solar panels. Perfect for camping, RV, home backup, and off-grid living. Free shipping on all orders.',
+        'favicon': '☀️',
+        'service_folders': [
+            ('solar-generators', 'Solar Generators'),
+            ('portable-power-stations', 'Portable Power Stations'),
+            ('solar-panels', 'Solar Panels'),
+            ('jackery-solar-generator', 'Jackery Solar Generator'),
+            ('best-solar-generator', 'Best Solar Generator'),
+            ('solar-generator-for-camping', 'Solar Generator for Camping'),
+            ('solar-generator-for-home-backup', 'Solar Generator for Home Backup'),
+            ('solar-generator-for-rv', 'Solar Generator for RV'),
+            ('off-grid-solar-power', 'Off Grid Solar Power'),
+            ('portable-solar-power', 'Portable Solar Power'),
+        ],
+    },
 }
 
 # ============================================================
@@ -1364,6 +1389,45 @@ def build_dallasroofing_page(city, state, abbr, region, county, lat, lng, folder
     html += ''
     return html
 
+def build_solarpro_page(city, state, abbr, region, county, lat, lng, folder_slug, folder_name):
+    slug = make_slug(city, abbr)
+    state_info = get_state_info(abbr)
+    title = folder_name + ' in ' + city + ', ' + state + ' | Dominion Solar Pro'
+    desc = 'Shop the best ' + folder_name.lower() + ' near ' + city + ', ' + state + '. Jackery solar generators, portable power stations, and solar panels for camping, RV, home backup, and off-grid living. Free shipping.'
+    city_intro = city + ' is a community in ' + county + ' County, ' + state + ', situated in the heart of ' + region + '. Like much of ' + state + ', ' + city + ' experiences a wide range of weather — from intense summer heat to severe storms that can knock out power for hours or even days. That makes reliable portable power not just a convenience but a necessity for ' + city + ' residents, campers, RV travelers, and off-grid homesteaders across ' + region + '. Whether you are spending a weekend at one of ' + region + 's many outdoor destinations, living the van life across ' + state + ', running a remote job site in ' + county + ' County, or simply want peace of mind when the next storm rolls through — a Jackery solar generator gives you clean, quiet, zero-emission power wherever you are. No fuel, no fumes, no noise. Just sunlight turning into electricity, ready when you need it most in ' + city + ' and across ' + state + '.'
+    html = '<html lang="en"><head>'
+    html += '<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
+    html += '<title>' + title + '</title>'
+    html += '<meta name="description" content="' + desc + '">'
+    html += '<link rel="canonical" href="https://dominionsolarpro.com/cities/' + folder_slug + '/' + slug + '.html">'
+    html += '<style>body{font-family:sans-serif;margin:0;background:#f8fafc;color:#1a2332}header{background:#1a2332;color:#fff;padding:16px 24px;display:flex;align-items:center;gap:12px}header h1{font-size:1.2em;margin:0}.hero{background:linear-gradient(135deg,#1a2332,#2d4a6e);color:#fff;padding:48px 24px;text-align:center}.hero h2{font-size:2em;margin-bottom:12px;color:#f59e0b}.hero p{max-width:640px;margin:0 auto 24px;opacity:0.85;line-height:1.7}.btn{background:#f59e0b;color:#1a2332;padding:14px 32px;border-radius:6px;text-decoration:none;font-weight:700;font-size:1em;display:inline-block}.section{padding:48px 24px;max-width:900px;margin:0 auto}.section h3{color:#1a2332;font-size:1.4em;border-bottom:3px solid #f59e0b;padding-bottom:8px;margin-bottom:20px}.city-intro{background:#fff;border-left:4px solid #f59e0b;padding:24px;border-radius:4px;margin-bottom:32px;line-height:1.8;color:#334155}.kw-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:32px}.kw-card{background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:16px;border-left:4px solid #f59e0b}.kw-card h4{margin:0 0 6px;color:#1a2332;font-size:0.95em}.kw-card p{margin:0;font-size:0.82em;color:#64748b;line-height:1.5}footer{background:#1a2332;color:rgba(255,255,255,0.6);padding:24px;text-align:center;font-size:0.82em}</style>'
+    html += '</head><body>'
+    html += '<header><span style="font-size:1.8em">☀️</span><h1>Dominion Solar Pro | ' + folder_name + ' in ' + city + ', ' + state + '</h1></header>'
+    html += '<div class="hero"><h2>Best ' + folder_name + ' near ' + city + ', ' + state + '</h2>'
+    html += '<p>Jackery solar generators, portable power stations, and solar panels — perfect for ' + city + ' residents, campers, RV travelers, and off-grid homesteaders across ' + region + '. Free shipping nationwide.</p>'
+    html += '<a href="https://www.jackery.com?aff=1363" class="btn" target="_blank">Shop Solar Generators on Jackery.com →</a></div>'
+    html += '<div class="section"><h3>Solar Power in ' + city + ', ' + state + '</h3>'
+    html += '<div class="city-intro">' + city_intro + '</div>'
+    html += '<h3>' + folder_name + ' — Popular Searches near ' + city + '</h3>'
+    html += '<div class="kw-grid">'
+    html += '<div class="kw-card"><h4>Solar Generator ' + city + '</h4><p>Complete kits — power station plus solar panels bundled for ' + city + ' residents.</p></div>'
+    html += '<div class="kw-card"><h4>Portable Power Station ' + city + '</h4><p>Standalone power stations — charge from wall, car, or solar panel anywhere in ' + county + ' County.</p></div>'
+    html += '<div class="kw-card"><h4>Jackery ' + city + ' ' + state + '</h4><p>Official Jackery products — the #1 portable solar brand trusted by millions worldwide.</p></div>'
+    html += '<div class="kw-card"><h4>Solar Generator for Camping ' + city + '</h4><p>Lightweight solar power for weekend camping and outdoor adventures in ' + region + '.</p></div>'
+    html += '<div class="kw-card"><h4>Home Backup Solar ' + city + '</h4><p>Keep your fridge, lights, and devices running during ' + state + ' power outages.</p></div>'
+    html += '<div class="kw-card"><h4>RV Solar Generator ' + city + '</h4><p>Full RV power without hookups — go anywhere across ' + state + ' off-grid.</p></div>'
+    html += '<div class="kw-card"><h4>Off Grid Solar ' + county + ' County</h4><p>Remote cabins, homesteads, and job sites — power anywhere in ' + county + ' County.</p></div>'
+    html += '<div class="kw-card"><h4>Emergency Power ' + city + '</h4><p>Storm and severe weather backup — keep your family safe when the grid goes down in ' + region + '.</p></div>'
+    html += '<div class="kw-card"><h4>Solar Panels ' + city + '</h4><p>Foldable, lightweight solar panels that charge any Jackery station from the sun.</p></div>'
+    html += '<div class="kw-card"><h4>Best Solar Generator ' + state + '</h4><p>Top-rated solar generators for ' + state + ' — camping, RV, home backup, and off-grid.</p></div>'
+    html += '</div>'
+    html += '<p style="text-align:center;margin-top:32px"><a href="https://www.jackery.com?aff=1363" class="btn" target="_blank">Shop All Jackery Solar Products →</a></p>'
+    html += '<p style="text-align:center;margin-top:16px;font-size:0.8em;color:#94a3b8">Affiliate Disclosure: Dominion Solar Pro is a Jackery authorized affiliate. We may earn a commission on purchases at no extra cost to you.</p>'
+    html += '</div>'
+    html += '<footer>© 2026 Dominion Solar Pro | Serving ' + city + ', ' + county + ' County, ' + state + ' and all of ' + region + ' | ' + state_info["emoji"] + ' ' + state_info["fact"] + '</footer>'
+    html += '</body></html>'
+    return html
+
 def build_hardmoney_page(city, state, abbr, region, county, lat, lng, folder_slug, folder_name):
     slug = make_slug(city, abbr)
     state_info = get_state_info(abbr)
@@ -1395,6 +1459,7 @@ PAGE_BUILDERS = {
     'dallaswash': build_dallaswash_page,
     'dallashvac': build_dallashvac_page,
     'dallasroofing': build_dallasroofing_page,
+    'solarpro': build_solarpro_page,
 }
 
 # ============================================================
