@@ -14,7 +14,7 @@ from datetime import datetime
 # CONFIG
 # ============================================================
 GITHUB_TOKEN = os.environ.get('GITHUB_TOKEN', '')
-CITIES_PER_DAY = 100
+CITIES_PER_DAY = int(os.environ.get('CITIES_PER_DAY', '100'))
 BASE_DIR = "/opt/render/project/src"
 
 BRANDS = {
@@ -184,6 +184,7 @@ BRANDS = {
     },
     "hardmoney": {
         "repo": "dominionsoundmusic-create/dominion-hard-money",
+        "retired_folders": ["texas"],
         "work_dir": "/opt/render/project/src/dominion-hard-money",
         "domain": "dominionhardmoney.com",
         "name": "Dominion Hard Money",
@@ -1759,21 +1760,21 @@ def cities_for_brand(brand_key):
 
 
 def purge_stale_folders(brand_key):
-    """Remove page directories that are no longer in this brand's service_folders."""
+    """Remove ONLY folders explicitly listed as retired for this brand.
+
+    Deliberately an allowlist, not "anything not in service_folders" — several
+    brands legitimately hold directories the builder does not manage.
+    """
     brand = BRANDS[brand_key]
-    keep = {f.split('/')[0] for f, _ in brand["service_folders"]}
+    retired = brand.get("retired_folders") or []
     removed = 0
-    for entry in os.listdir(brand["work_dir"]):
+    for entry in retired:
         p = os.path.join(brand["work_dir"], entry)
-        if not os.path.isdir(p) or entry.startswith('.') or entry in keep:
-            continue
-        if entry in ('img', 'assets', 'blog'):
+        if not os.path.isdir(p):
             continue
         n = len(glob.glob(os.path.join(p, '**', '*.html'), recursive=True))
-        if n:
-            shutil.rmtree(p); removed += n
-    if removed:
-        print(f"  PURGE: removed {removed} pages from retired folders in {brand['name']}")
+        shutil.rmtree(p); removed += n
+        print(f"  PURGE: removed retired folder '{entry}' ({n} pages) from {brand['name']}")
     return removed
 
 
