@@ -948,11 +948,19 @@ def build_page(city, state, abbr, region, county, tier, lat, lng):
     ], separators=(',',':'))
 
     return f'''
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{city} Business Directory | Local Businesses in {city}, {state} | Dominion</title>
+<meta name="description" content="Find trusted local businesses in {city}, {state}. Browse HVAC, plumbing, restaurants, auto repair and 50+ categories in the Dominion Local Business Directory.">
+<link rel="canonical" href="{page_url}">
+</head>
 
 
 
 
-{city} Business Directory | Local Businesses in {city}, {state} | Dominion
 
 
 
