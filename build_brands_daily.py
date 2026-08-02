@@ -256,12 +256,12 @@ BRANDS = {
         "metro_center": (32.7767, -96.797),
         "metro_radius": 60,
         "work_dir": "/opt/render/project/src/dallas-hvac-pro",
-        "domain": "ornate-wisp-2520ba.netlify.app",
+        "domain": "dallasairandheating.com",
         "name": "Dallas Metro HVAC Pro",
         "tagline": "AC Repair and HVAC Service in Dallas-Fort Worth TX",
         "cta": "Call for Same-Day Service",
-        "phone": "two one four, five five five, zero one nine nine",
-        "phone_display": "214-555-0199",
+        "phone": "four six nine, six four nine, seven zero six six",
+        "phone_display": "469-649-7066",
         "colors": {"primary": "#0d1f3a", "accent": "#00b4d8", "text": "#ffffff", "bg": "#f0f4f8"},
         "starting_price": "$89",
         "pitch": "Fast AC repair, air conditioning installation, and 24/7 emergency HVAC service across Dallas-Fort Worth and all surrounding communities.",
@@ -280,12 +280,12 @@ BRANDS = {
         "metro_center": (32.7767, -96.797),
         "metro_radius": 60,
         "work_dir": "/opt/render/project/src/dallas-roofing-pro",
-        "domain": "splendid-sable-28fb05.netlify.app",
+        "domain": "dfwexpertroofers.com",
         "name": "Dallas Metro Roofing Pro",
         "tagline": "Roof Repair and Replacement in Dallas-Fort Worth TX",
         "cta": "Get Free Roof Inspection",
-        "phone": "two one four, five five five, zero one nine nine",
-        "phone_display": "214-555-0199",
+        "phone": "four six nine, six four nine, seven zero six six",
+        "phone_display": "469-649-7066",
         "colors": {"primary": "#12111a", "accent": "#c9a84c", "text": "#ffffff", "bg": "#f8f7f2"},
         "starting_price": "Free Inspection",
         "pitch": "Expert roof repair, replacement, and hail damage restoration across Dallas-Fort Worth. Free inspections. Insurance claims handled. 25-year warranty.",
@@ -2025,6 +2025,12 @@ build_aiagency_page = _national_builder("aiagency")
 build_webdesign_page = _national_builder("webdesign")
 
 
+def build_phoenixpool_page(city, state, abbr, region, county, lat, lng, folder_slug, folder_name):
+    return build_leadpro_page("phoenixpool", city, state, abbr, region, county, lat, lng, folder_slug, folder_name)
+
+def build_tucsonpool_page(city, state, abbr, region, county, lat, lng, folder_slug, folder_name):
+    return build_leadpro_page("tucsonpool", city, state, abbr, region, county, lat, lng, folder_slug, folder_name)
+
 PAGE_BUILDERS = {
     "aivoice": build_aivoice_page,
     "reviewpro": build_reviewpro_page,
@@ -2038,6 +2044,8 @@ PAGE_BUILDERS = {
     "dallashvac": build_dallashvac_page,
     "dallasroofing": build_dallasroofing_page,
     "solarpro": build_solarpro_page,
+    "phoenixpool": build_phoenixpool_page,
+    "tucsonpool": build_tucsonpool_page,
 }
 
 
