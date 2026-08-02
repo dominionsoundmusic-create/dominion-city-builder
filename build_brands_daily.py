@@ -301,12 +301,15 @@ BRANDS = {
     },
     'phoenixpool': {
         'repo': 'dominionsoundmusic-create/phoenix-pool-cleaning-pro',
+        'metro_center': (33.4484, -112.0740),
+        'metro_radius': 50,
         'work_dir': '/opt/render/project/src/phoenix-pool-cleaning-pro',
         'domain': 'superlative-mandazi-aa17b9.netlify.app',
         'name': 'Phoenix Pool Cleaning Pro',
         'tagline': 'Professional Pool Cleaning & Maintenance',
         'cta': 'Get a Free Quote',
-        'phone': '903-636-7511',
+        'phone': 'nine zero three, six three six, seven five one one',
+        'phone_display': '903-636-7511',
         'colors': {'primary': '#0c1a2e', 'accent': '#0ea5e9', 'text': '#ffffff', 'bg': '#f0f9ff'},
         'starting_price': 'From $99/month',
         'pitch': 'Professional pool cleaning, chemical balancing, algae treatment, and equipment repair across the Phoenix metro. Weekly service available. Licensed and insured.',
@@ -324,16 +327,46 @@ BRANDS = {
     },
     'tucsonpool': {
         'repo': 'dominionsoundmusic-create/tucson-pool-cleaning-pro',
+        'metro_center': (32.2226, -110.9747),
+        'metro_radius': 60,
         'work_dir': '/opt/render/project/src/tucson-pool-cleaning-pro',
         'domain': 'superb-cendol-81e0e8.netlify.app',
         'name': 'Tucson Pool Cleaning Pro',
         'tagline': 'Professional Pool Cleaning & Maintenance',
         'cta': 'Get a Free Quote',
-        'phone': '903-636-7511',
+        'phone': 'nine zero three, six three six, seven five one one',
+        'phone_display': '903-636-7511',
         'colors': {'primary': '#1a0e08', 'accent': '#e07040', 'text': '#ffffff', 'bg': '#fdf6f0'},
         'starting_price': 'From $99/month',
         'pitch': 'Professional pool cleaning, chemical balancing, algae treatment, and equipment repair across the Tucson metro. Weekly service available. Licensed and insured.',
         'favicon': '🌵',
+        'service_folders': [
+            ('weekly-pool-cleaning', 'Weekly Pool Cleaning'),
+            ('pool-chemical-balancing', 'Pool Chemical Balancing'),
+            ('algae-treatment', 'Pool Algae Treatment'),
+            ('pool-equipment-repair', 'Pool Equipment Repair'),
+            ('pool-cleaning-service', 'Pool Cleaning Service'),
+            ('pool-maintenance', 'Pool Maintenance'),
+            ('swimming-pool-service', 'Swimming Pool Service'),
+            ('pool-cleaning-near-me', 'Pool Cleaning Near Me'),
+        ],
+    },
+    'yumapool': {
+        'repo': 'dominionsoundmusic-create/arizona-pool-cleaning-pro',
+        'metro_center': (32.6927, -114.6277),
+        'metro_radius': 65,
+        'metro_states': ('AZ',),
+        'work_dir': '/opt/render/project/src/arizona-pool-cleaning-pro',
+        'domain': 'majestic-youtiao-97786f.netlify.app',
+        'name': 'Yuma Pool Cleaning Pro',
+        'tagline': 'Professional Pool Cleaning & Maintenance',
+        'cta': 'Get a Free Quote',
+        'phone': 'nine zero three, six three six, seven five one one',
+        'phone_display': '903-636-7511',
+        'colors': {'primary': '#0a1f1c', 'accent': '#0d9488', 'text': '#ffffff', 'bg': '#f0fdfa'},
+        'starting_price': 'From $99/month',
+        'pitch': 'Professional pool cleaning, chemical balancing, algae treatment, and equipment repair across Yuma County. Weekly service available. Licensed and insured.',
+        'favicon': '\U0001F31E',
         'service_folders': [
             ('weekly-pool-cleaning', 'Weekly Pool Cleaning'),
             ('pool-chemical-balancing', 'Pool Chemical Balancing'),
@@ -1865,6 +1898,29 @@ METRO_EXTRA_CITIES = [
     ("Aledo", "Texas", "TX", "North Texas", "Parker County", 32.6957, -97.6022),
     ("Willow Park", "Texas", "TX", "North Texas", "Parker County", 32.7549, -97.6459),
     ("Springtown", "Texas", "TX", "North Texas", "Parker County", 32.9654, -97.6828),
+    # --- Tucson metro (Southern Arizona) ---
+    ("Oro Valley", "Arizona", "AZ", "Southern Arizona", "Pima County", 32.3909, -110.9665),
+    ("Sahuarita", "Arizona", "AZ", "Southern Arizona", "Pima County", 31.9576, -110.9558),
+    ("Vail", "Arizona", "AZ", "Southern Arizona", "Pima County", 32.0490, -110.7118),
+    ("Green Valley", "Arizona", "AZ", "Southern Arizona", "Pima County", 31.8543, -110.9937),
+    ("Catalina Foothills", "Arizona", "AZ", "Southern Arizona", "Pima County", 32.3020, -110.9192),
+    ("Casas Adobes", "Arizona", "AZ", "Southern Arizona", "Pima County", 32.3325, -111.0117),
+    ("Drexel Heights", "Arizona", "AZ", "Southern Arizona", "Pima County", 32.1273, -111.0221),
+    ("Tanque Verde", "Arizona", "AZ", "Southern Arizona", "Pima County", 32.2648, -110.7451),
+    ("Corona de Tucson", "Arizona", "AZ", "Southern Arizona", "Pima County", 31.9540, -110.7737),
+    ("Picture Rocks", "Arizona", "AZ", "Southern Arizona", "Pima County", 32.3348, -111.1421),
+    ("Flowing Wells", "Arizona", "AZ", "Southern Arizona", "Pima County", 32.2870, -111.0092),
+    ("South Tucson", "Arizona", "AZ", "Southern Arizona", "Pima County", 32.1948, -110.9686),
+    ("Benson", "Arizona", "AZ", "Southern Arizona", "Cochise County", 31.9679, -110.2945),
+    # --- Yuma County (Southwest Arizona) ---
+    ("Fortuna Foothills", "Arizona", "AZ", "Southwest Arizona", "Yuma County", 32.6570, -114.4108),
+    ("Somerton", "Arizona", "AZ", "Southwest Arizona", "Yuma County", 32.5965, -114.7097),
+    ("San Luis", "Arizona", "AZ", "Southwest Arizona", "Yuma County", 32.4870, -114.7822),
+    ("Wellton", "Arizona", "AZ", "Southwest Arizona", "Yuma County", 32.6721, -114.1480),
+    ("Gadsden", "Arizona", "AZ", "Southwest Arizona", "Yuma County", 32.5476, -114.7825),
+    ("Roll", "Arizona", "AZ", "Southwest Arizona", "Yuma County", 32.7554, -113.9800),
+    ("Tacna", "Arizona", "AZ", "Southwest Arizona", "Yuma County", 32.7017, -113.9500),
+    ("Dateland", "Arizona", "AZ", "Southwest Arizona", "Yuma County", 32.8034, -113.5397),
 ]
 
 
@@ -1875,10 +1931,13 @@ def cities_for_brand(brand_key):
     if not c:
         return list(ALL_US_CITIES)
     rad = brand.get("metro_radius", 60)
+    states = brand.get("metro_states")  # optional: restrict brand to these state abbrs
     pool, seen, out = list(ALL_US_CITIES) + list(METRO_EXTRA_CITIES), set(), []
     for cd in pool:
         key = make_slug(cd[0], cd[2])
         if key in seen:
+            continue
+        if states and cd[2] not in states:
             continue
         if _miles(c[0], c[1], cd[5], cd[6]) <= rad:
             seen.add(key); out.append(cd)
@@ -2031,6 +2090,9 @@ def build_phoenixpool_page(city, state, abbr, region, county, lat, lng, folder_s
 def build_tucsonpool_page(city, state, abbr, region, county, lat, lng, folder_slug, folder_name):
     return build_leadpro_page("tucsonpool", city, state, abbr, region, county, lat, lng, folder_slug, folder_name)
 
+def build_yumapool_page(city, state, abbr, region, county, lat, lng, folder_slug, folder_name):
+    return build_leadpro_page("yumapool", city, state, abbr, region, county, lat, lng, folder_slug, folder_name)
+
 PAGE_BUILDERS = {
     "aivoice": build_aivoice_page,
     "reviewpro": build_reviewpro_page,
@@ -2046,6 +2108,7 @@ PAGE_BUILDERS = {
     "solarpro": build_solarpro_page,
     "phoenixpool": build_phoenixpool_page,
     "tucsonpool": build_tucsonpool_page,
+    "yumapool": build_yumapool_page,
 }
 
 
