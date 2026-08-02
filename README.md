@@ -16,3 +16,5 @@ Pushes directly to the dominionlocalbusinessdirectory-site GitHub repo.
 3. Runtime: Python 3
 4. Schedule: 0 6 * * * (6 AM UTC daily)
 5. Start Command: python build_cities_daily.py
+
+Redeploy trigger Aug 2 2026
