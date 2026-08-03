@@ -1434,6 +1434,11 @@ STATE_INFO = {
 def get_state_info(abbr):
     return STATE_INFO.get(abbr, {'emoji':'📍','fact':f'A great state for local business growth'})
 
+SCRIPTURE_BAR = ('<div style="background:#0a0a12;color:#c9a84c;padding:7px 22px;'
+                 'font-family:system-ui,sans-serif;font-size:12px;font-weight:700;'
+                 'letter-spacing:.08em;border-bottom:1px solid rgba(201,168,76,.25)">John 3:16</div>')
+
+
 def fmt_county(value):
     """Louisiana has parishes, Alaska boroughs, VA/MO independent cities."""
     v = (value or "").strip()
@@ -1537,6 +1542,7 @@ def build_leadpro_page(brand_key, city, state, abbr, region, county, lat, lng, f
     html += '<script type="application/ld+json">' + crumbs + '</script>'
     html += '<style>' + css + '</style>'
     html += '</head><body>'
+    html += SCRIPTURE_BAR
 
     html += '<header><a class="logo" href="' + base + '/">' + brand["favicon"] + ' ' + brand["name"] + '</a><nav>'
     for fs, fn in brand["service_folders"][:5]:
@@ -1605,6 +1611,7 @@ def build_solarpro_page(city, state, abbr, region, county, lat, lng, folder_slug
     html += '<link rel="canonical" href="https://dominionsolarpro.com/cities/' + folder_slug + '/' + slug + '.html">'
     html += '<style>body{font-family:sans-serif;margin:0;background:#f8fafc;color:#1a2332}header{background:#1a2332;color:#fff;padding:16px 24px;display:flex;align-items:center;gap:12px}header h1{font-size:1.2em;margin:0}.hero{background:linear-gradient(135deg,#1a2332,#2d4a6e);color:#fff;padding:48px 24px;text-align:center}.hero h2{font-size:2em;margin-bottom:12px;color:#f59e0b}.hero p{max-width:640px;margin:0 auto 24px;opacity:0.85;line-height:1.7}.btn{background:#f59e0b;color:#1a2332;padding:14px 32px;border-radius:6px;text-decoration:none;font-weight:700;font-size:1em;display:inline-block}.section{padding:48px 24px;max-width:900px;margin:0 auto}.section h3{color:#1a2332;font-size:1.4em;border-bottom:3px solid #f59e0b;padding-bottom:8px;margin-bottom:20px}.city-intro{background:#fff;border-left:4px solid #f59e0b;padding:24px;border-radius:4px;margin-bottom:32px;line-height:1.8;color:#334155}.kw-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:32px}.kw-card{background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:16px;border-left:4px solid #f59e0b}.kw-card h4{margin:0 0 6px;color:#1a2332;font-size:0.95em}.kw-card p{margin:0;font-size:0.82em;color:#64748b;line-height:1.5}footer{background:#1a2332;color:rgba(255,255,255,0.6);padding:24px;text-align:center;font-size:0.82em}</style>'
     html += '</head><body>'
+    html += SCRIPTURE_BAR
     html += '<header><span style="font-size:1.8em">☀️</span><h1>Dominion Solar Pro | ' + folder_name + ' in ' + city + ', ' + state + '</h1></header>'
     html += '<div class="hero"><h2>Best ' + folder_name + ' near ' + city + ', ' + state + '</h2>'
     html += '<p>Jackery solar generators, portable power stations, and solar panels — perfect for ' + city + ' residents, campers, RV travelers, and off-grid homesteaders across ' + region + '. Free shipping nationwide.</p>'
@@ -1713,6 +1720,7 @@ def build_hardmoney_page(city, state, abbr, region, county, lat, lng, folder_slu
     html += '<script type="application/ld+json">' + schema + '</script>'
     html += '<script type="application/ld+json">' + crumbs + '</script>'
     html += '<style>' + css + '</style></head><body>'
+    html += SCRIPTURE_BAR
 
     html += '<header><a class="logo" href="' + base + '/">' + brand["favicon"] + ' Dominion Hard Money</a><nav>'
     for fs, fn in brand["service_folders"][:5]:
@@ -2027,6 +2035,7 @@ def build_national_page(brand_key, city, state, abbr, region, county, lat, lng, 
     html += '<script type="application/ld+json">' + schema + '</script>'
     html += '<script type="application/ld+json">' + crumbs + '</script>'
     html += '<style>' + css + '</style></head><body>'
+    html += SCRIPTURE_BAR
 
     html += '<header><a class="logo" href="' + base + '/">' + brand["name"].split()[0] + ' <span>'
     html += ' '.join(brand["name"].split()[1:]) + '</span></a><nav>'
