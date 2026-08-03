@@ -119,7 +119,7 @@ BRANDS = {
         "cta_url": "#pricing",
         "phone": "903-636-7511",
         "starting_price": "$497",
-        "pitch": "professional custom website built first — you only pay when you love it, starting at $497 with SEO, mobile design, and AI chat included",
+        "pitch": "professional custom website built first — you only pay when you love it, starting at $497 with SEO and mobile design included",
         "favicon": "/favicon.svg",
         "service_folders": [
             ("web-design", "Web Design"),
