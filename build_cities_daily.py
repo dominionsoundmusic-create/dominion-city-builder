@@ -940,9 +940,39 @@ def _osm_label(tags):
     return '🏢 Local Business'
 
 
+# Render's egress resolves these hosts to IPv6 and then cannot route to them,
+# which surfaces as "[Errno 101] Network is unreachable". Forcing IPv4 fixes it.
+def _force_ipv4():
+    import socket
+    if getattr(socket, "_dominion_ipv4_forced", False):
+        return
+    _orig = socket.getaddrinfo
+
+    def ipv4_only(host, port, family=0, type=0, proto=0, flags=0):
+        return _orig(host, port, socket.AF_INET, type, proto, flags)
+
+    socket.getaddrinfo = ipv4_only
+    socket._dominion_ipv4_forced = True
+
+
+OVERPASS_MIRRORS = [
+    "https://overpass-api.de/api/interpreter",
+    "https://overpass.kumi.systems/api/interpreter",
+    "https://overpass.osm.ch/api/interpreter",
+    "https://overpass.private.coffee/api/interpreter",
+]
+
+# once a mirror answers, stay on it for the rest of the run
+_LIVE_MIRROR = {"url": None, "dead": set()}
+
+
 def fetch_local_businesses(lat, lng, limit=24):
-    """Real businesses near a city centre. Returns [] on any failure — a page
-    with no listings is fine; a page with invented listings is not."""
+    """Real businesses near a city centre, from OpenStreetMap.
+
+    Returns [] on failure — a page with no listings is fine; a page with
+    invented listings is not."""
+    _force_ipv4()
+
     query = f"""
     [out:json][timeout:30];
     (
@@ -953,39 +983,61 @@ def fetch_local_businesses(lat, lng, limit=24):
     );
     out body {limit * 4};
     """
-    try:
-        r = requests.post('https://overpass-api.de/api/interpreter',
-                          data={'data': query}, timeout=45)
-        if r.status_code != 200:
-            return []
-        elements = r.json().get('elements', [])
-    except Exception as e:
-        print(f"    OSM lookup failed: {e}")
+
+    order = ([_LIVE_MIRROR["url"]] if _LIVE_MIRROR["url"] else []) + \
+            [m for m in OVERPASS_MIRRORS
+             if m != _LIVE_MIRROR["url"] and m not in _LIVE_MIRROR["dead"]]
+
+    elements = None
+    last_err = ""
+    for url in order:
+        try:
+            r = requests.post(url, data={"data": query},
+                              headers={"User-Agent": "DominionDirectory/1.0 (+https://dominionlocalbusinessdirectory.com)"},
+                              timeout=45)
+            if r.status_code == 429 or r.status_code >= 500:
+                last_err = f"{url.split('/')[2]} returned {r.status_code}"
+                continue
+            if r.status_code != 200:
+                last_err = f"{url.split('/')[2]} returned {r.status_code}"
+                continue
+            elements = r.json().get("elements", [])
+            _LIVE_MIRROR["url"] = url
+            break
+        except Exception as e:
+            last_err = f"{url.split('/')[2]}: {type(e).__name__}"
+            _LIVE_MIRROR["dead"].add(url)
+            if _LIVE_MIRROR["url"] == url:
+                _LIVE_MIRROR["url"] = None
+            continue
+
+    if elements is None:
+        print(f"    OSM unavailable ({last_err})")
         return []
 
     seen, out = set(), []
     for el in elements:
-        t = el.get('tags', {})
-        name = (t.get('name') or '').strip()
+        t = el.get("tags", {})
+        name = (t.get("name") or "").strip()
         if not name or name.lower() in seen or len(name) > 60:
             continue
         seen.add(name.lower())
 
-        street = t.get('addr:street', '')
-        num = t.get('addr:housenumber', '')
-        addr = (num + ' ' + street).strip() if street else ''
+        street = t.get("addr:street", "")
+        num = t.get("addr:housenumber", "")
+        addr = (num + " " + street).strip() if street else ""
 
         out.append({
-            'name': name,
-            'category': _osm_label(t),
-            'address': addr,
-            'phone': t.get('phone') or t.get('contact:phone') or '',
-            'website': t.get('website') or t.get('contact:website') or '',
+            "name": name,
+            "category": _osm_label(t),
+            "address": addr,
+            "phone": t.get("phone") or t.get("contact:phone") or "",
+            "website": t.get("website") or t.get("contact:website") or "",
         })
         if len(out) >= limit:
             break
 
-    out.sort(key=lambda b: (b['address'] == '', b['name']))
+    out.sort(key=lambda b: (b["address"] == "", b["name"]))
     return out
 
 
