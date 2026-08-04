@@ -907,6 +907,140 @@ def get_state_info(abbr):
         'fact': f'A wonderful place to live, work, and build a business'
     })
 
+# ── REAL LOCAL BUSINESSES ────────────────────────────────────────────────────
+# Source: OpenStreetMap via Overpass. Chosen over Google Places because the
+# Places terms forbid caching results into static pages; OSM is ODbL, which
+# permits it as long as we attribute. Attribution is printed on every page.
+
+OSM_CATEGORIES = {
+    'restaurant': '🍽️ Restaurant', 'cafe': '☕ Cafe', 'fast_food': '🍔 Fast Food',
+    'bar': '🍺 Bar', 'pub': '🍺 Pub', 'bakery': '🥖 Bakery',
+    'dentist': '🦷 Dentist', 'doctors': '🏥 Medical', 'pharmacy': '💊 Pharmacy',
+    'veterinary': '🐾 Veterinary', 'bank': '🏦 Bank', 'car_repair': '🚗 Auto Repair',
+    'hairdresser': '💇 Salon', 'beauty': '💅 Beauty', 'florist': '💐 Florist',
+    'hardware': '🔧 Hardware', 'doityourself': '🔨 Home Improvement',
+    'supermarket': '🛒 Grocery', 'convenience': '🏪 Convenience',
+    'car_wash': '🚿 Car Wash', 'laundry': '🧺 Laundry', 'optician': '👓 Optician',
+    'electrician': '⚡ Electrical', 'plumber': '🔧 Plumbing', 'hvac': '🌡️ HVAC',
+    'roofer': '🏠 Roofing', 'carpenter': '🪚 Carpentry', 'painter': '🎨 Painting',
+    'gym': '🏋️ Fitness', 'fitness_centre': '🏋️ Fitness', 'lawyer': '⚖️ Law Firm',
+    'estate_agent': '🏡 Real Estate', 'insurance': '📋 Insurance',
+    'accountant': '📊 Accounting', 'clothes': '👕 Clothing', 'furniture': '🛋️ Furniture',
+}
+
+def _osm_label(tags):
+    for key in ('craft', 'shop', 'amenity', 'office'):
+        v = tags.get(key)
+        if v and v in OSM_CATEGORIES:
+            return OSM_CATEGORIES[v]
+    for key in ('craft', 'shop', 'amenity', 'office'):
+        v = tags.get(key)
+        if v:
+            return '🏢 ' + v.replace('_', ' ').title()
+    return '🏢 Local Business'
+
+
+def fetch_local_businesses(lat, lng, limit=24):
+    """Real businesses near a city centre. Returns [] on any failure — a page
+    with no listings is fine; a page with invented listings is not."""
+    query = f"""
+    [out:json][timeout:30];
+    (
+      node(around:9000,{lat},{lng})["name"]["shop"];
+      node(around:9000,{lat},{lng})["name"]["craft"];
+      node(around:9000,{lat},{lng})["name"]["office"];
+      node(around:9000,{lat},{lng})["name"]["amenity"~"^(restaurant|cafe|fast_food|bar|pub|dentist|doctors|pharmacy|veterinary|bank|car_repair|car_wash)$"];
+    );
+    out body {limit * 4};
+    """
+    try:
+        r = requests.post('https://overpass-api.de/api/interpreter',
+                          data={'data': query}, timeout=45)
+        if r.status_code != 200:
+            return []
+        elements = r.json().get('elements', [])
+    except Exception as e:
+        print(f"    OSM lookup failed: {e}")
+        return []
+
+    seen, out = set(), []
+    for el in elements:
+        t = el.get('tags', {})
+        name = (t.get('name') or '').strip()
+        if not name or name.lower() in seen or len(name) > 60:
+            continue
+        seen.add(name.lower())
+
+        street = t.get('addr:street', '')
+        num = t.get('addr:housenumber', '')
+        addr = (num + ' ' + street).strip() if street else ''
+
+        out.append({
+            'name': name,
+            'category': _osm_label(t),
+            'address': addr,
+            'phone': t.get('phone') or t.get('contact:phone') or '',
+            'website': t.get('website') or t.get('contact:website') or '',
+        })
+        if len(out) >= limit:
+            break
+
+    out.sort(key=lambda b: (b['address'] == '', b['name']))
+    return out
+
+
+def render_business_list(businesses, city, state):
+    """The directory half of a directory page."""
+    if not businesses:
+        return ''
+
+    cards = []
+    for b in businesses:
+        bits = []
+        if b['address']:
+            bits.append('<div style="color:rgba(255,255,255,.55);font-size:.86em;margin-top:4px">📍 '
+                        + html_escape(b['address']) + '</div>')
+        if b['phone']:
+            digits = ''.join(c for c in b['phone'] if c.isdigit() or c == '+')
+            bits.append('<div style="margin-top:4px"><a href="tel:' + digits
+                        + '" style="color:#7cc4ff;font-size:.86em;text-decoration:none">📞 '
+                        + html_escape(b['phone']) + '</a></div>')
+        if b['website']:
+            bits.append('<div style="margin-top:4px"><a href="' + html_escape(b['website'])
+                        + '" target="_blank" rel="noopener nofollow" '
+                        'style="color:#7cc4ff;font-size:.86em;text-decoration:none">Visit website →</a></div>')
+
+        cards.append(
+            '<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);'
+            'border-radius:10px;padding:18px">'
+            '<div style="color:#ffb020;font-size:.74em;font-weight:700;letter-spacing:1px;'
+            'text-transform:uppercase;margin-bottom:7px">' + b['category'] + '</div>'
+            '<div style="color:#fff;font-weight:700;font-size:1.02em;line-height:1.3">'
+            + html_escape(b['name']) + '</div>'
+            + ''.join(bits) +
+            '</div>')
+
+    return (
+        '<section style="max-width:1180px;margin:0 auto;padding:56px 24px">'
+        '<h2 style="color:#fff;font-size:1.7em;margin-bottom:8px">Local Businesses in '
+        + html_escape(city) + ', ' + html_escape(state) + '</h2>'
+        '<p style="color:rgba(255,255,255,.55);margin-bottom:28px;font-size:.95em">'
+        + str(len(businesses)) + ' businesses currently listed in and around ' + html_escape(city) + '.</p>'
+        '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px">'
+        + ''.join(cards) +
+        '</div>'
+        '<p style="color:rgba(255,255,255,.35);font-size:.76em;margin-top:26px">'
+        'Business data &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" '
+        'rel="noopener" style="color:rgba(255,255,255,.5)">OpenStreetMap</a> contributors. '
+        'Own one of these businesses? <a href="/claim.html" style="color:#7cc4ff">Claim your listing free</a>.</p>'
+        '</section>')
+
+
+def html_escape(t):
+    return (str(t).replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+            .replace('"', '&quot;').replace("'", '&#39;'))
+
+
 def make_slug(text):
     return text.lower().replace(' ','_').replace("'","").replace('.','').replace(',','').replace('/','')
 
@@ -921,7 +1055,7 @@ def get_state_slug(state):
 # PAGE TEMPLATE — maximum SEO, unique per city
 # ============================================================
 
-def build_page(city, state, abbr, region, county, tier, lat, lng):
+def build_page(city, state, abbr, region, county, tier, lat, lng, businesses=None):
     info = get_state_info(abbr)
     file_slug = make_file_slug(city, abbr)
     state_slug = get_state_slug(state)
@@ -1084,76 +1218,55 @@ footer{{background:var(--navy2);border-top:1px solid var(--border);padding:36px 
   
   
     
-      ⭐ PREMIUM MEMBER
+      SPONSORED · DOMINION BRAND
       🌐 Web Design & Development
       Dominion Web Design Pro
       📍 Serving {city}, {abbr} & All 50 States
-      ★★★★★5.0(127 reviews)
+      
       Professional business websites from $497. We build your custom site first — you only pay when you love it. SEO ready, mobile first, AI chat included. Serving {city} businesses nationwide.
       Visit Website →
     
     
-      ⭐ PREMIUM MEMBER
+      SPONSORED · DOMINION BRAND
       🤖 AI Automation Agency
       Dominion AI Agency
       📍 Serving {city}, {abbr} & All 50 States
-      ★★★★★5.0(143 reviews)
+      
       Full AI automation for {city} businesses — AI voice agents, CRM integration, automated lead generation, and reputation management. Everything from $497/month.
       Visit Website →
     
     
-      ⭐ PREMIUM MEMBER
+      SPONSORED · DOMINION BRAND
       📞 AI Voice Agents
       AI Voice Agent Pros
       📍 Serving {city}, {abbr} & All 50 States
-      ★★★★★5.0(98 reviews)
+      
       AI that answers every call for your {city} business — 24 hours a day, 7 days a week, 365 days a year. Qualifies leads, books appointments, takes messages. From $297/month.
       Visit Website →
     
     
-      ⭐ PREMIUM MEMBER
+      SPONSORED · DOMINION BRAND
       ⭐ Review Management
       Dominion Review Pro
       📍 Serving {city}, {abbr} & All 50 States
-      ★★★★★5.0(76 reviews)
+      
       Automated Google review generation for {city} businesses. Get more 5-star reviews on autopilot — without begging customers. Proven system from $197/month.
       Visit Website →
     
     
-      ⭐ PREMIUM MEMBER
+      SPONSORED · DOMINION BRAND
       ☀️ Solar Energy
       Dominion Solar Pro
       📍 Serving {city}, {abbr} & All 50 States
-      ★★★★★5.0(54 reviews)
+      
       Solar panel installation for {city} homeowners and businesses. Reduce your energy bills with clean solar power. Free quotes, financing available, federal tax credits apply.
       Visit Website →
     
     
-      ⚠️ Unclaimed Listing
-      🌡️ HVAC Services
-      {city} HVAC Professionals
-      📍 {city}, {abbr}
-      ★★★★★4.8(94 reviews)
-      Is this your HVAC business in {city}? Claim this listing free and take control of how local customers find you online. No credit card required.
-      Claim This Listing Free →
-    
-    
-      ⚠️ Unclaimed Listing
-      🔧 Plumbing Services
-      {city} Plumbing Masters
-      📍 {city}, {abbr}
-      ★★★★½4.7(67 reviews)
-      Is this your plumbing company in {city}? Claim this free listing and connect with customers searching for plumbers in {city}, {state} right now.
-      Claim This Listing Free →
-    
-    
-      ⚠️ Unclaimed Listing
-      🍽️ Restaurants
-      {city} Local Restaurant
-      📍 {city}, {abbr}
-      ★★★★★4.9(203 reviews)
-      Own a restaurant in {city}? Get found by hungry locals searching online. Claim your free listing and start showing up where your customers are looking.
-      Claim This Listing Free →
+      Own a business in {city}?
+      Claim your free listing and get found by local customers searching right now.
+      Claim Your Free Listing →
+
     
   
   
@@ -1222,7 +1335,8 @@ footer{{background:var(--navy2);border-top:1px solid var(--border);padding:36px 
       <!-- SERVICETITAN AFFILIATE SECTION -->
       <section style="background:#1a1a2e;padding:48px 5%;text-align:center;border-top:3px solid #ff6b35">
         <div style="max-width:800px;margin:0 auto">
-          <p style="color:#ff6b35;font-size:0.75em;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:12px">Recommended for Home Service Businesses</p>
+          ''' + render_business_list(businesses or [], city, state) + '''
+<p style="color:#ff6b35;font-size:0.75em;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:12px">Recommended for Home Service Businesses</p>
           <h3 style="color:#ffffff;font-size:1.6em;margin-bottom:12px;font-weight:700">Run Your Service Business Like a Pro</h3>
           <p style="color:rgba(255,255,255,0.7);font-size:0.95em;line-height:1.7;max-width:600px;margin:0 auto 24px">ServiceTitan is the #1 software platform for HVAC, plumbing, electrical, and other home service businesses. Scheduling, dispatching, invoicing, and customer management — all in one place.</p>
           <a href="https://join.servicetitan.com/mzWepOS" target="_blank" rel="noopener" style="display:inline-block;background:#ff6b35;color:#ffffff;padding:14px 36px;border-radius:6px;text-decoration:none;font-weight:700;font-size:0.95em">Learn More About ServiceTitan →</a>
@@ -1333,7 +1447,11 @@ def main():
         return
     
     # Build next batch
-    batch = unbuilt[:CITIES_PER_DAY]
+    if os.environ.get('REBUILD') == '1':
+        batch = [c for c in ALL_US_CITIES if make_file_slug(c[0], c[2]) in existing_slugs]
+        print(f"  REBUILD MODE: regenerating {len(batch)} existing city pages")
+    else:
+        batch = unbuilt[:CITIES_PER_DAY]
     built_count = 0
     
     for city_data in batch:
@@ -1343,7 +1461,10 @@ def main():
         filepath = os.path.join(WORK_DIR, 'cities', filename)
         
         try:
-            html = build_page(city, state, abbr, region, county, tier, lat, lng)
+            biz = fetch_local_businesses(lat, lng)
+            time.sleep(2)   # Overpass is a free shared service — do not hammer it
+            print(f"    {city}, {abbr}: {len(biz)} local businesses")
+            html = build_page(city, state, abbr, region, county, tier, lat, lng, biz)
             with open(filepath, 'w', encoding='utf-8') as f:
                 f.write(html)
             built_count += 1
@@ -1351,7 +1472,7 @@ def main():
         except Exception as e:
             print(f"  ✗ {city}, {state}: {e}")
     
-    total_pages = len(existing_slugs) + built_count
+    total_pages = len(existing_slugs) if os.environ.get('REBUILD') == '1' else len(existing_slugs) + built_count
     sitemap_count = update_sitemap()
     git_push(built_count, total_pages)
     
