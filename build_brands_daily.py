@@ -380,6 +380,8 @@ BRANDS = {
     },
     'solarpro': {
         'repo': 'dominionsoundmusic-create/dominionsolarpro-site',
+        'retired_folders': ['solar-generator', 'portable-power-station', 'portable-solar-panels', 'rv-solar-generator', 'camping-solar-generator', 'home-backup-solar', 'off-grid-solar-generator', 'portable-solar-generator', 'jackery-affiliate', 'jackery-explorer', 'jackery-power-station', 'best-jackery-deals', 'best-portable-power-station', 'solar-generator-reviews', 'solar-generator-sale', 'emergency-power-station', 'solar-power-station'],
+        'redirect_map': {'solar-generator': 'solar-generators', 'portable-power-station': 'portable-power-stations', 'portable-solar-panels': 'solar-panels', 'rv-solar-generator': 'solar-generator-for-rv', 'camping-solar-generator': 'solar-generator-for-camping', 'home-backup-solar': 'solar-generator-for-home-backup', 'off-grid-solar-generator': 'off-grid-solar-power', 'portable-solar-generator': 'portable-solar-power', 'jackery-affiliate': 'jackery-solar-generator', 'jackery-explorer': 'jackery-solar-generator', 'jackery-power-station': 'jackery-solar-generator', 'best-jackery-deals': 'best-solar-generator', 'best-portable-power-station': 'best-solar-generator', 'solar-generator-reviews': 'best-solar-generator', 'solar-generator-sale': 'best-solar-generator', 'emergency-power-station': 'solar-generator-for-home-backup', 'solar-power-station': 'portable-power-stations'},
         'work_dir': '/opt/render/project/src/dominionsolarpro-site',
         'domain': 'dominionsolarpro.com',
         'name': 'Dominion Solar Pro',
@@ -2172,10 +2174,12 @@ def write_redirects(brand_key):
     if not retired:
         return
     core = brand["service_folders"][0][0]
+    rmap = brand.get("redirect_map") or {}
     lines = ["# retired URL structures -> current service pages", ""]
     for folder in retired:
-        lines.append(f"/{folder}/*  /{core}/:splat  301")
-        lines.append(f"/{folder}/  /{core}/  301")
+        target = rmap.get(folder, core)
+        lines.append(f"/{folder}/*  /{target}/:splat  301")
+        lines.append(f"/{folder}/  /{target}/  301")
     with open(os.path.join(brand["work_dir"], "_redirects"), "w", encoding="utf-8") as f:
         f.write("\n".join(lines) + "\n")
     print(f"  wrote _redirects ({len(retired)} retired paths) for {brand['name']}")
