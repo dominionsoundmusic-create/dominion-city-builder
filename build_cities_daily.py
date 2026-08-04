@@ -1001,7 +1001,15 @@ def fetch_local_businesses(lat, lng, limit=24):
             if r.status_code != 200:
                 last_err = f"{url.split('/')[2]} returned {r.status_code}"
                 continue
-            elements = r.json().get("elements", [])
+            body = r.json()
+            elements = body.get("elements", [])
+            if not elements:
+                remark = body.get("remark") or body.get("osm3s", {}).get("note", "")
+                snippet = r.text[:220].replace("\n", " ")
+                print(f"    OSM {url.split('/')[2]}: HTTP {r.status_code}, {len(r.content)} bytes, 0 elements")
+                if remark:
+                    print(f"       remark: {remark[:200]}")
+                print(f"       raw: {snippet}")
             _LIVE_MIRROR["url"] = url
             break
         except Exception as e:
@@ -1039,6 +1047,20 @@ def fetch_local_businesses(lat, lng, limit=24):
 
     out.sort(key=lambda b: (b["address"] == "", b["name"]))
     return out
+
+
+def overpass_selftest():
+    """Query Times Square once at startup. If that comes back empty the query
+    is wrong, not the city — and we know it in five seconds, not five hundred."""
+    print("  Overpass self-test (Times Square, NYC)...")
+    print("  mirrors:", ", ".join(m.split("/")[2] for m in OVERPASS_MIRRORS))
+    biz = fetch_local_businesses(40.7580, -73.9855, limit=10)
+    if biz:
+        print(f"  Overpass OK — {len(biz)} businesses, e.g. {biz[0]['name']}")
+    else:
+        print("  !! Overpass returned nothing for Times Square — the query is the problem,")
+        print("     not the cities. Pages will build without listings.")
+    return bool(biz)
 
 
 def render_business_list(businesses, city, state):
@@ -1512,6 +1534,8 @@ def main():
     if not ensure_repo():
         print("Aborting: no working copy of the target repo.")
         return
+
+    overpass_selftest()
     
     os.makedirs(os.path.join(WORK_DIR, 'cities'), exist_ok=True)
     
