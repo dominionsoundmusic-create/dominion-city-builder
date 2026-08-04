@@ -2203,7 +2203,20 @@ def update_sitemap(brand_key):
         xml += '  <url><loc>' + p + '</loc><lastmod>' + today + '</lastmod>'
         xml += '<changefreq>weekly</changefreq><priority>' + priority + '</priority></url>\n'
     xml += '</urlset>\n'
-    with open(os.path.join(brand["work_dir"], "sitemap.xml"), 'w', encoding='utf-8') as f:
+
+    # Only rewrite the sitemap if the URL set actually changed. Rewriting it
+    # every night just to bump <lastmod> forces a commit, which forces a
+    # Netlify deploy, which burns credits on brands that built nothing new.
+    path = os.path.join(brand["work_dir"], "sitemap.xml")
+    try:
+        existing = open(path, encoding='utf-8').read()
+        old_urls = set(re.findall(r'<loc>([^<]+)</loc>', existing))
+        if old_urls == set(pages):
+            return len(pages)
+    except FileNotFoundError:
+        pass
+
+    with open(path, 'w', encoding='utf-8') as f:
         f.write(xml)
     return len(pages)
 
