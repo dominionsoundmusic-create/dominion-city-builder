@@ -5,7 +5,7 @@ Runs daily on Render, builds 50 new city pages, pushes to GitHub
 Goal: Cover every city and town in America
 """
 
-import os, json, time, subprocess, random, glob, requests
+import os, re, json, time, subprocess, random, glob, requests
 from datetime import datetime
 
 # ============================================================
@@ -15,7 +15,7 @@ GITHUB_TOKEN = os.environ.get('GITHUB_TOKEN', '')
 GITHUB_REPO = "dominionsoundmusic-create/dominionlocalbusinessdirectory-site"
 REPO_URL = f"https://{GITHUB_TOKEN}@github.com/{GITHUB_REPO}.git"
 CITIES_PER_DAY = 100
-WORK_DIR = "/opt/render/project/src"
+WORK_DIR = "/opt/render/project/src/dominionlocalbusinessdirectory-site"
 STATE_FILE = "/opt/render/project/src/build_state.json"
 
 # ============================================================
@@ -1390,14 +1390,28 @@ def update_sitemap():
         rel = os.path.basename(f)
         pages.append(f"{base}/cities/{rel}")
     
-    xml = '\n\n'
+    # Never replace a healthy sitemap with a stub — an empty scan means something
+    # broke upstream, not that the site lost its pages.
+    _path = os.path.join(WORK_DIR, 'sitemap.xml')
+    try:
+        _old = len(re.findall(r'<loc>', open(_path, encoding='utf-8').read()))
+    except Exception:
+        _old = 0
+    if _old > 20 and len(pages) < _old * 0.5:
+        print(f"  !! sitemap guard: scan found {len(pages)} pages but the existing sitemap has {_old} — leaving it alone")
+        return _old
+
+    xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
+    xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+    today = datetime.now().strftime('%Y-%m-%d')
     for p in pages:
         depth = p.count('/')
         priority = '1.0' if p == f"{base}/" else '0.9' if depth <= 4 else '0.7'
-        xml += f'{p}weekly{priority}\n'
-    xml += ''
-    
-    with open(os.path.join(WORK_DIR, 'sitemap.xml'), 'w') as f:
+        xml += ('<url><loc>' + p + '</loc><lastmod>' + today + '</lastmod>'
+                '<changefreq>weekly</changefreq><priority>' + priority + '</priority></url>\n')
+    xml += '</urlset>\n'
+
+    with open(_path, 'w', encoding='utf-8') as f:
         f.write(xml)
     
     print(f"Sitemap updated: {len(pages)} URLs")
@@ -1420,10 +1434,32 @@ def git_push(count_built, total):
     subprocess.run(['git', 'push', REPO_URL, 'main'])
     print(f"Pushed to GitHub: +{count_built} pages, {total} total")
 
+def ensure_repo():
+    """Render checks out the BUILDER repo. The directory site is a different
+    repo and must be cloned, or the script writes pages into the wrong place
+    and tries to push the wrong history."""
+    if os.path.isdir(os.path.join(WORK_DIR, '.git')):
+        subprocess.run(['git', '-C', WORK_DIR, 'pull', '--rebase', REPO_URL, 'main'],
+                       capture_output=True, text=True)
+        return True
+    os.makedirs(os.path.dirname(WORK_DIR), exist_ok=True)
+    r = subprocess.run(['git', 'clone', REPO_URL, WORK_DIR], capture_output=True, text=True)
+    if r.returncode != 0:
+        msg = (r.stderr or '').replace(GITHUB_TOKEN or '\x00', '***')
+        print("  !! could not clone the directory repo — check GITHUB_TOKEN")
+        print("     " + msg.strip()[:300])
+        return False
+    return True
+
+
 def main():
     print(f"\n{'='*60}")
     print(f"Dominion City Builder — {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print(f"{'='*60}")
+
+    if not ensure_repo():
+        print("Aborting: no working copy of the target repo.")
+        return
     
     os.makedirs(os.path.join(WORK_DIR, 'cities'), exist_ok=True)
     
