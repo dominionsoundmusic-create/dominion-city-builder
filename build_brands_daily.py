@@ -2431,7 +2431,9 @@ def git_push(brand_key, count_built, total):
     subprocess.run(['git','config','user.name','Dominion Builder'])
     subprocess.run(['git', 'pull', '--rebase', repo_url, 'main'], capture_output=True, text=True)
     subprocess.run(['git','add','-A'])
-    result = subprocess.run(['git','commit','-m',f'Daily build {today}: +{count_built} cities ({total} total) — {brand["name"]}'], capture_output=True, text=True)
+    msg = (f'Daily build {today}: +{count_built} cities ({total} total) — {brand["name"]}'
+           if count_built else f'Cleanup {today}: removed retired pages — {brand["name"]}')
+    result = subprocess.run(['git','commit','-m',msg], capture_output=True, text=True)
     if 'nothing to commit' in result.stdout:
         print(f"  {brand['name']}: nothing new")
         return
@@ -2451,10 +2453,11 @@ def build_brand(brand_key):
         repo_url = f'https://{GITHUB_TOKEN}@github.com/{brand["repo"]}.git'
         subprocess.run(['git', 'clone', repo_url, brand['work_dir']])
     builder = PAGE_BUILDERS[brand_key]
+    purged = 0
     if os.environ.get('PURGE') == '1':
-        purge_stale_folders(brand_key)
-        purge_out_of_area(brand_key)
-        purge_excluded_states(brand_key)
+        purged += purge_stale_folders(brand_key)
+        purged += purge_out_of_area(brand_key)
+        purged += purge_excluded_states(brand_key)
     brand_cities = cities_for_brand(brand_key)
     existing = get_existing_slugs(brand_key)
     seen = set()
@@ -2469,11 +2472,19 @@ def build_brand(brand_key):
         batch = [cd for cd in brand_cities if make_slug(cd[0], cd[2]) in existing]
         print(f"  REBUILD MODE: regenerating {len(batch)} existing cities")
         if not batch:
-            print(f"  {brand['name']}: nothing to regenerate")
+            if purged:
+                print(f"  {brand['name']}: nothing to regenerate, but pushing {purged} deletions")
+                update_sitemap(brand_key); write_redirects(brand_key); git_push(brand_key, 0, 0)
+            else:
+                print(f"  {brand['name']}: nothing to regenerate")
             return 0
     else:
         if not unbuilt:
-            print(f"  {brand['name']}: ALL CITIES COMPLETE ✅")
+            if purged:
+                print(f"  {brand['name']}: all cities built — pushing {purged} purged pages")
+                update_sitemap(brand_key); write_redirects(brand_key); git_push(brand_key, 0, 0)
+            else:
+                print(f"  {brand['name']}: ALL CITIES COMPLETE ✅")
             return 0
         batch = unbuilt[:CITIES_PER_DAY]
     built = 0
