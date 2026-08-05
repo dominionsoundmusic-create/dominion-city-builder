@@ -132,6 +132,7 @@ BRANDS = {
     },
     "hardmoney": {
         "repo": "dominionsoundmusic-create/dominion-hard-money",
+        "excluded_states": ['NV', 'UT', 'SD', 'VT'],
         "retired_folders": ["texas"],
         "work_dir": "/opt/render/project/src/dominion-hard-money",
         "domain": "dominionhardmoney.com",
@@ -1436,6 +1437,10 @@ STATE_INFO = {
 def get_state_info(abbr):
     return STATE_INFO.get(abbr, {'emoji':'📍','fact':f'A great state for local business growth'})
 
+# Hard money borrower leads go to Maurice by email via his own Render backend.
+# Deliberately NOT GoHighLevel — this is a separate business from the agency.
+HARDMONEY_WEBHOOK = "https://dominion-demo-backend.onrender.com/hard-money-lead"
+
 SCRIPTURE_BAR = ('<div style="background:#0a0a12;color:#c9a84c;padding:7px 22px;'
                  'font-family:system-ui,sans-serif;font-size:12px;font-weight:700;'
                  'letter-spacing:.08em;border-bottom:1px solid rgba(201,168,76,.25)">John 3:16</div>')
@@ -1610,11 +1615,16 @@ def build_solarpro_page(city, state, abbr, region, county, lat, lng, folder_slug
     html += '<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
     html += '<title>' + title + '</title>'
     html += '<meta name="description" content="' + desc + '">'
-    html += '<link rel="canonical" href="https://dominionsolarpro.com/cities/' + folder_slug + '/' + slug + '.html">'
+    html += '<link rel="canonical" href="https://dominionsolarpro.com/' + folder_slug + '/' + slug + '.html">'
     html += '<style>body{font-family:sans-serif;margin:0;background:#f8fafc;color:#1a2332}header{background:#1a2332;color:#fff;padding:16px 24px;display:flex;align-items:center;gap:12px}header h1{font-size:1.2em;margin:0}.hero{background:linear-gradient(135deg,#1a2332,#2d4a6e);color:#fff;padding:48px 24px;text-align:center}.hero h2{font-size:2em;margin-bottom:12px;color:#f59e0b}.hero p{max-width:640px;margin:0 auto 24px;opacity:0.85;line-height:1.7}.btn{background:#f59e0b;color:#1a2332;padding:14px 32px;border-radius:6px;text-decoration:none;font-weight:700;font-size:1em;display:inline-block}.section{padding:48px 24px;max-width:900px;margin:0 auto}.section h3{color:#1a2332;font-size:1.4em;border-bottom:3px solid #f59e0b;padding-bottom:8px;margin-bottom:20px}.city-intro{background:#fff;border-left:4px solid #f59e0b;padding:24px;border-radius:4px;margin-bottom:32px;line-height:1.8;color:#334155}.kw-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:32px}.kw-card{background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:16px;border-left:4px solid #f59e0b}.kw-card h4{margin:0 0 6px;color:#1a2332;font-size:0.95em}.kw-card p{margin:0;font-size:0.82em;color:#64748b;line-height:1.5}footer{background:#1a2332;color:rgba(255,255,255,0.6);padding:24px;text-align:center;font-size:0.82em}</style>'
     html += '</head><body>'
     html += SCRIPTURE_BAR
-    html += '<header><span style="font-size:1.8em">☀️</span><h1>Dominion Solar Pro | ' + folder_name + ' in ' + city + ', ' + state + '</h1></header>'
+    html += '<header><a href="https://dominionsolarpro.com/" style="color:#fff;text-decoration:none;font-weight:700"><span style="font-size:1.3em">☀️</span> Dominion Solar Pro</a>'
+    html += '<nav style="margin-left:auto;display:flex;gap:14px;flex-wrap:wrap">'
+    for _fs, _fn in BRANDS['solarpro']['service_folders'][:5]:
+        html += '<a href="https://dominionsolarpro.com/' + _fs + '/' + slug + '.html" style="color:rgba(255,255,255,.8);text-decoration:none;font-size:.85em">' + _fn + '</a>'
+    html += '</nav></header>'
+    html += '<h1 style="max-width:1100px;margin:28px auto 0;padding:0 24px">' + folder_name + ' in ' + city + ', ' + state + '</h1>'
     html += '<div class="hero"><h2>Best ' + folder_name + ' near ' + city + ', ' + state + '</h2>'
     html += '<p>Jackery solar generators, portable power stations, and solar panels — perfect for ' + city + ' residents, campers, RV travelers, and off-grid homesteaders across ' + region + '. Free shipping nationwide.</p>'
     html += '<a href="https://www.jackery.com?aff=1363" class="btn" target="_blank">Shop Solar Generators on Jackery.com →</a></div>'
@@ -1633,6 +1643,16 @@ def build_solarpro_page(city, state, abbr, region, county, lat, lng, folder_slug
     html += '<div class="kw-card"><h4>Solar Panels ' + city + '</h4><p>Foldable, lightweight solar panels that charge any Jackery station from the sun.</p></div>'
     html += '<div class="kw-card"><h4>Best Solar Generator ' + state + '</h4><p>Top-rated solar generators for ' + state + ' — camping, RV, home backup, and off-grid.</p></div>'
     html += '</div>'
+    html += '<section style="max-width:1100px;margin:44px auto 0;padding:0 24px">'
+    html += '<h2 style="font-size:1.3em;border-bottom:2px solid #f5a623;padding-bottom:8px">More for ' + city + '</h2>'
+    html += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:18px">'
+    for _fs, _fn in BRANDS['solarpro']['service_folders']:
+        if _fs == folder_slug:
+            continue
+        html += '<a href="https://dominionsolarpro.com/' + _fs + '/' + slug + '.html" style="display:block;background:#fff;border:1px solid #e2e8f0;border-left:3px solid #f5a623;border-radius:8px;padding:14px;text-decoration:none;color:#1a2332">'
+        html += '<strong>' + _fn + ' in ' + city + '</strong></a>'
+    html += '</div></section>'
+    html += '<p style="text-align:center;margin-top:28px"><a href="https://dominionsolarpro.com/" style="color:#1a2332">← All Dominion Solar Pro guides</a></p>'
     html += '<p style="text-align:center;margin-top:32px"><a href="https://www.jackery.com?aff=1363" class="btn" target="_blank">Shop All Jackery Solar Products →</a></p>'
     html += '<p style="text-align:center;margin-top:16px;font-size:0.8em;color:#94a3b8">Affiliate Disclosure: Dominion Solar Pro is a Jackery authorized affiliate. We may earn a commission on purchases at no extra cost to you.</p>'
     html += '</div>'
@@ -1659,8 +1679,9 @@ def build_hardmoney_page(city, state, abbr, region, county, lat, lng, folder_slu
     intro = (city + " sits in " + county + ", " + state + ". Investors working this market run into the same wall "
         "everyone else does — a conventional lender wants two years of returns, a full appraisal cycle, and thirty to "
         "forty-five days before anyone sees a dollar. Distressed deals do not wait that long. "
-        "Dominion Hard Money lends against the asset instead of the borrower's tax returns, which is why a "
-        + city + " deal can close in days. We fund purchases, rehabs, and refinances across " + state
+        "Dominion Hard Money is a private money brokerage. We place your deal with private lenders who "
+        "underwrite the asset instead of the borrower's tax returns, which is why a "
+        + city + " deal can close in days. We arrange financing for purchases, rehabs, and refinances across " + state
         + ", from single-family flips to small multifamily and rental portfolios. Loans start at "
         + brand["starting_price"] + ". Terms depend on the property, the exit, and the numbers — not on how long you have been in business.")
 
@@ -1707,7 +1728,31 @@ def build_hardmoney_page(city, state, abbr, region, county, lat, lng, folder_slu
         ".callout a{color:" + accent + ";font-weight:700}"
         "footer{background:" + primary + ";color:rgba(255,255,255,.6);padding:26px 22px;text-align:center;"
         "font-size:.8em;font-family:system-ui,sans-serif}footer a{color:rgba(255,255,255,.8)}"
-        "@media(max-width:560px){.hero h1{font-size:1.5em}.btn-o{margin:10px 0 0;display:block}}")
+        "@media(max-width:560px){.hero h1{font-size:1.5em}.btn-o{margin:10px 0 0;display:block}}"
+        ".apply{background:#fff;border:1px solid #d9d2c4;border-top:4px solid " + primary + ";"
+        "border-radius:10px;padding:34px 32px;margin:44px 0;font-family:system-ui,sans-serif}"
+        ".apply h2{font-family:Georgia,serif;font-size:1.5em}"
+        ".apply-sub{color:#5d564a;font-size:.94em;margin:8px 0 22px}"
+        ".f-head{font-family:Georgia,serif;font-size:1.02em;color:" + primary + ";border-bottom:1px solid #e6e0d3;padding-bottom:7px;margin:26px 0 4px}"
+        ".f-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}"
+        ".apply label{display:block;font-size:.72em;font-weight:700;letter-spacing:.06em;"
+        "text-transform:uppercase;color:#6b6455;margin:14px 0 5px}"
+        ".apply input,.apply select,.apply textarea{width:100%;padding:12px 13px;border:1.5px solid #d9d2c4;"
+        "border-radius:7px;font:inherit;font-size:.95em;background:#fdfcfa;color:#16202e}"
+        ".apply input:focus,.apply select:focus,.apply textarea:focus{outline:0;border-color:" + primary + "}"
+        ".apply input[aria-invalid=true]{border-color:#c0392b}"
+        ".apply textarea{min-height:92px;resize:vertical}"
+        ".apply .err{display:block;color:#c0392b;font-size:.8em;font-weight:600;margin-top:4px}"
+        ".consent{display:flex!important;gap:11px;align-items:flex-start;margin-top:20px;background:#faf7f1;"
+        "border:1px solid #e6e0d3;border-radius:8px;padding:14px 16px;text-transform:none!important;"
+        "letter-spacing:0!important;font-size:.85em!important;font-weight:400!important;color:#4a4437!important}"
+        ".consent input{width:19px!important;height:19px;flex:0 0 auto;margin-top:2px}"
+        ".apply-btn{display:block;width:100%;text-align:center;margin-top:20px;border:0;cursor:pointer;font-size:1em}"
+        ".apply-note{font-size:.8em;color:#6b6455;margin-top:14px;text-align:center}"
+        ".apply-done{display:none;text-align:center;padding:30px 10px}"
+        ".apply-done.on{display:block}.apply-done h3{font-family:Georgia,serif;font-size:1.4em;color:" + primary + "}"
+        ".apply-done p{color:#5d564a;font-size:.94em;margin-top:8px}"
+        "@media(max-width:640px){.f-row{grid-template-columns:1fr}.apply{padding:26px 20px}}")
 
     html = '<!DOCTYPE html><html lang="en"><head>'
     html += '<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
@@ -1762,6 +1807,83 @@ def build_hardmoney_page(city, state, abbr, region, county, lat, lng, folder_slu
     html += '<div class="card"><h3>Bridge financing</h3><p>Short-term capital while a longer-term loan is arranged.</p></div>'
     html += '</div>'
 
+    # ── BORROWER VETTING ────────────────────────────────────────────────
+    # Fields taken from the Capital Syndicate Borrower Vetting Worksheet
+    # (Module 4B) plus the 5 Basic Musts and 3 Must-Nots from Module 4C.
+    # Entity and occupancy are first because they are instant disqualifiers.
+    html += '<div class="apply" id="apply">'
+    html += '<h2 style="margin-top:0">Get your deal reviewed</h2>'
+    html += '<p class="apply-sub">Answer these and we will tell you whether it is fundable, on what terms, '
+    html += 'and how fast it could close. Investment property only &mdash; we do not lend on a home you will live in.</p>'
+    html += '<form id="dealForm" novalidate>'
+
+    html += '<div class="f-head">About you</div>'
+    html += '<div class="f-row">'
+    html += '<div><label for="fname">Name</label><input id="fname" type="text" autocomplete="name"></div>'
+    html += '<div><label for="fphone">Phone</label><input id="fphone" type="tel" autocomplete="tel"></div>'
+    html += '</div>'
+    html += '<div class="f-row">'
+    html += '<div><label for="femail">Email</label><input id="femail" type="email" autocomplete="email"></div>'
+    html += '<div><label for="fentity">Buying in an entity?</label><select id="fentity">'
+    html += '<option value="">Choose one</option><option>Yes &mdash; LLC or corporation</option>'
+    html += '<option>Not yet, but I can set one up</option><option>No &mdash; personal name only</option>'
+    html += '</select></div></div>'
+    html += '<div class="f-row">'
+    html += '<div><label for="fcredit">Credit score range</label><select id="fcredit">'
+    html += '<option value="">Choose one</option><option>720+</option><option>680&ndash;719</option>'
+    html += '<option>650&ndash;679</option><option>600&ndash;649</option><option>Under 600</option>'
+    html += '<option>Not sure</option></select></div>'
+    html += '<div><label for="fexp">Deals completed</label><select id="fexp">'
+    html += '<option value="">Choose one</option><option>This is my first</option><option>1&ndash;3</option>'
+    html += '<option>4&ndash;9</option><option>10 or more</option></select></div>'
+    html += '</div>'
+
+    html += '<div class="f-head">The property</div>'
+    html += '<div class="f-row">'
+    html += '<div><label for="faddr">Property address or city</label><input id="faddr" type="text" value="' + city + ', ' + abbr + '"></div>'
+    html += '<div><label for="fpurpose">Purchase or refinance?</label><select id="fpurpose">'
+    html += '<option value="">Choose one</option><option>Purchase</option><option>Refinance</option>'
+    html += '<option>Cash-out refinance</option></select></div>'
+    html += '</div>'
+    html += '<div class="f-row">'
+    html += '<div><label for="ftype">What are you doing with it?</label><select id="ftype">'
+    html += '<option>Fix and flip &mdash; sell it</option><option>Fix and keep &mdash; rent it</option>'
+    html += '<option>Bridge &mdash; short-term while I arrange other financing</option>'
+    html += '<option>DSCR rental loan</option><option>Not sure yet</option></select></div>'
+    html += '<div><label for="foccupy">Will you live in it?</label><select id="foccupy">'
+    html += '<option value="">Choose one</option><option>No &mdash; investment property</option>'
+    html += '<option>Yes</option></select></div>'
+    html += '</div>'
+
+    html += '<div class="f-head">The numbers</div>'
+    html += '<div class="f-row">'
+    html += '<div><label for="fprice">Purchase price</label><input id="fprice" type="text" placeholder="$"></div>'
+    html += '<div><label for="fasis">Current as-is value</label><input id="fasis" type="text" placeholder="$"></div>'
+    html += '</div>'
+    html += '<div class="f-row">'
+    html += '<div><label for="frehab">Rehab budget</label><input id="frehab" type="text" placeholder="$"></div>'
+    html += '<div><label for="farv">Value after repair (ARV)</label><input id="farv" type="text" placeholder="$"></div>'
+    html += '</div>'
+    html += '<div class="f-row">'
+    html += '<div><label for="famt">Loan amount needed</label><input id="famt" type="text" placeholder="$"></div>'
+    html += '<div><label for="fdown">Cash you are putting in</label><input id="fdown" type="text" placeholder="$ or none"></div>'
+    html += '</div>'
+    html += '<label for="fexit">Exit strategy &mdash; how does the loan get paid back?</label>'
+    html += '<textarea id="fexit" placeholder="Selling in six months, refinancing into a rental loan, timeline, and anything else we should know."></textarea>'
+
+    html += '<label class="consent"><input type="checkbox" id="fsms">'
+    html += '<span>Text me about this deal. By checking this box I agree to receive text messages from Dominion Hard Money '
+    html += 'about my loan enquiry and its status. Message frequency varies. Message and data rates may apply. '
+    html += 'Reply STOP to opt out or HELP for help. Optional &mdash; not required to submit.</span></label>'
+    html += '<button class="btn apply-btn" type="submit" id="fbtn">Send my deal &rarr;</button>'
+    html += '<p class="apply-note">Prefer to talk? Call <a href="' + tel + '">' + phone + '</a>. '
+    html += 'Business-purpose loans on non-owner-occupied property only. Submitting this form is not an application '
+    html += 'or a commitment to lend.</p>'
+    html += '</form>'
+    html += '<div class="apply-done" id="dealDone"><h3>Got it.</h3>'
+    html += '<p>We will run the numbers and come back to you. If it is time-sensitive, call ' + phone + '.</p></div>'
+    html += '</div>'
+
     html += '<div class="callout"><strong>Working a deal in ' + city + '?</strong><br>'
     html += 'Call <a href="' + tel + '">' + phone + '</a> and we will tell you in one conversation whether it is fundable.</div>'
     html += '<p style="font-size:.78em;color:#6b6455;margin-top:26px;font-family:system-ui,sans-serif">'
@@ -1769,6 +1891,41 @@ def build_hardmoney_page(city, state, abbr, region, county, lat, lng, folder_slu
     html += 'Not a commitment to lend. All loans subject to underwriting, property review, and approval. '
     html += 'Terms vary by property, borrower experience, and exit strategy.</p>'
     html += '</div>'
+
+    # form handler — emails Maurice directly, never GoHighLevel
+    html += '<script>(function(){'
+    html += 'var W="' + HARDMONEY_WEBHOOK + '";'
+    html += 'var f=document.getElementById("dealForm"),d=document.getElementById("dealDone"),b=document.getElementById("fbtn");'
+    html += 'function g(i){return (document.getElementById(i)||{}).value||"";}'
+    html += 'function clr(e){e.removeAttribute("aria-invalid");var x=document.getElementById("e-"+e.id);if(x)x.remove();}'
+    html += 'function bad(e,m){clr(e);e.setAttribute("aria-invalid","true");var s=document.createElement("span");'
+    html += 's.className="err";s.id="e-"+e.id;s.textContent=m;e.insertAdjacentElement("afterend",s);}'
+    html += 'document.addEventListener("input",function(e){if(e.target.matches("input,textarea"))clr(e.target);});'
+    html += 'document.addEventListener("change",function(e){if(e.target.matches("select"))clr(e.target);});'
+    html += 'f.addEventListener("submit",function(ev){ev.preventDefault();'
+    html += 'var n=document.getElementById("fname"),p=document.getElementById("fphone"),'
+    html += 'm=document.getElementById("femail"),x=document.getElementById("fexit"),'
+    html += 'oc=document.getElementById("foccupy");'
+    html += '[n,p,m,x,oc].forEach(clr);var ok=true;'
+    html += 'if(!n.value.trim()){bad(n,"Your name");ok=false;}'
+    html += 'if(p.value.replace(/\\D/g,"").length<10){bad(p,"A 10-digit phone number");ok=false;}'
+    html += 'if(!/^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$/.test(m.value.trim())){bad(m,"A valid email");ok=false;}'
+    html += 'if(!oc.value){bad(oc,"Please answer this one");ok=false;}'
+    html += 'if(!x.value.trim()){bad(x,"How does the loan get paid back?");ok=false;}'
+    html += 'if(!ok)return;b.disabled=true;b.textContent="Sending...";'
+    html += 'var pl={name:n.value.trim(),phone:p.value.trim(),email:m.value.trim(),'
+    html += 'entity:g("fentity"),credit:g("fcredit"),experience:g("fexp"),'
+    html += 'property:g("faddr"),purpose:g("fpurpose"),loan_type:g("ftype"),owner_occupied:g("foccupy"),'
+    html += 'purchase_price:g("fprice"),as_is_value:g("fasis"),rehab:g("frehab"),arv:g("farv"),'
+    html += 'loan_amount:g("famt"),cash_in:g("fdown"),exit_strategy:x.value.trim(),'
+    html += 'sms_consent:document.getElementById("fsms").checked,'
+    html += 'consent_timestamp:new Date().toISOString(),'
+    html += 'source_city:"' + city + ', ' + abbr + '",source_state:"' + state + '",source_url:location.href};'
+    html += 'function done(){f.style.display="none";d.classList.add("on");}'
+    html += 'if(!W){done();return;}'
+    html += 'fetch(W,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(pl)})'
+    html += '.then(done).catch(function(){b.disabled=false;b.textContent="Send my deal \\u2192";'
+    html += 'alert("Could not send that. Please call ' + phone + '.");});});})();</script>'
 
     html += '<footer>&copy; 2026 Dominion Hard Money &middot; Serving ' + city + ', ' + county + ', ' + state
     html += ' and investors nationwide &middot; <a href="' + base + '/">Home</a><br>'
@@ -1935,11 +2092,13 @@ METRO_EXTRA_CITIES = [
 
 
 def cities_for_brand(brand_key):
-    """Cities this brand is allowed to build. Metro brands are limited to their radius."""
+    """Cities this brand is allowed to build. Metro brands are limited to their
+    radius; any brand can also exclude states it cannot legally serve."""
     brand = BRANDS[brand_key]
+    blocked = set(brand.get("excluded_states") or [])
     c = brand.get("metro_center")
     if not c:
-        return list(ALL_US_CITIES)
+        return [cd for cd in ALL_US_CITIES if cd[2] not in blocked]
     rad = brand.get("metro_radius", 60)
     states = brand.get("metro_states")  # optional: restrict brand to these state abbrs
     pool, seen, out = list(ALL_US_CITIES) + list(METRO_EXTRA_CITIES), set(), []
@@ -1948,6 +2107,8 @@ def cities_for_brand(brand_key):
         if key in seen:
             continue
         if states and cd[2] not in states:
+            continue
+        if cd[2] in blocked:
             continue
         if _miles(c[0], c[1], cd[5], cd[6]) <= rad:
             seen.add(key); out.append(cd)
