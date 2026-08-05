@@ -2319,6 +2319,30 @@ def purge_out_of_area(brand_key):
     return removed
 
 
+def purge_excluded_states(brand_key):
+    """Delete pages for states the brand cannot legally serve.
+
+    Hard money is the case this exists for: the site's own states page says we
+    cannot originate loans or pay broker fees in NV, UT, SD or VT, while pages
+    in those states were still advertising loans. Contradicting your own
+    disclosure is the kind of thing a lender's compliance review picks up.
+    """
+    brand = BRANDS[brand_key]
+    blocked = [st.lower() for st in (brand.get("excluded_states") or [])]
+    if not blocked:
+        return 0
+    removed = 0
+    for folder_slug, _ in brand["service_folders"]:
+        for f in glob.glob(os.path.join(brand["work_dir"], folder_slug, "*.html")):
+            stem = os.path.basename(f).replace('.html', '')
+            if stem.rsplit('-', 1)[-1] in blocked:
+                os.remove(f); removed += 1
+    if removed:
+        print(f"  PURGE: removed {removed} pages in excluded states "
+              f"({', '.join(st.upper() for st in blocked)}) from {brand['name']}")
+    return removed
+
+
 def get_existing_slugs(brand_key):
     brand = BRANDS[brand_key]
     existing = set()
@@ -2332,15 +2356,22 @@ def write_redirects(brand_key):
     """301 retired folder URLs to the brand's primary service folder."""
     brand = BRANDS[brand_key]
     retired = brand.get("retired_folders") or []
-    if not retired:
+    extra_state_lines = []
+    if not retired and not (brand.get("excluded_states") or []):
         return
     core = brand["service_folders"][0][0]
     rmap = brand.get("redirect_map") or {}
+    # pages pulled for state ineligibility go to the states page, which explains why
+    for st in (brand.get("excluded_states") or []):
+        for fs, _ in brand["service_folders"]:
+            extra_state_lines.append(f"/{fs}/*-{st.lower()}.html  /states.html  301")
     lines = ["# retired URL structures -> current service pages", ""]
     for folder in retired:
         target = rmap.get(folder, core)
         lines.append(f"/{folder}/*  /{target}/:splat  301")
         lines.append(f"/{folder}/  /{target}/  301")
+    if extra_state_lines:
+        lines += ["", "# states this brand cannot serve -> availability page"] + extra_state_lines
     with open(os.path.join(brand["work_dir"], "_redirects"), "w", encoding="utf-8") as f:
         f.write("\n".join(lines) + "\n")
     print(f"  wrote _redirects ({len(retired)} retired paths) for {brand['name']}")
@@ -2414,6 +2445,7 @@ def build_brand(brand_key):
     if os.environ.get('PURGE') == '1':
         purge_stale_folders(brand_key)
         purge_out_of_area(brand_key)
+        purge_excluded_states(brand_key)
     brand_cities = cities_for_brand(brand_key)
     existing = get_existing_slugs(brand_key)
     seen = set()
