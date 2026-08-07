@@ -1150,9 +1150,9 @@ def build_page(city, state, abbr, region, county, tier, lat, lng, businesses=Non
 
     # LocalBusiness schema for featured Dominion listings
     lb_schema = json.dumps([
-        {"@context":"https://schema.org","@type":"LocalBusiness","name":"Dominion Web Design Pro","url":"https://dominionwebdesignpro.com","telephone":"","address":{"@type":"PostalAddress","addressLocality":city,"addressRegion":abbr,"addressCountry":"US"},"geo":{"@type":"GeoCoordinates","latitude":lat,"longitude":lng},"aggregateRating":{"@type":"AggregateRating","ratingValue":"5.0","reviewCount":"127"},"description":f"Professional websites for {city} businesses from $497. Custom design, SEO, mobile-ready, AI chat widget included.","priceRange":"$$","servesCuisine":"","sameAs":["https://dominionwebdesignpro.com"]},
-        {"@context":"https://schema.org","@type":"LocalBusiness","name":"Dominion AI Agency","url":"https://dominionaiagency.com","telephone":"","address":{"@type":"PostalAddress","addressLocality":city,"addressRegion":abbr,"addressCountry":"US"},"geo":{"@type":"GeoCoordinates","latitude":lat,"longitude":lng},"aggregateRating":{"@type":"AggregateRating","ratingValue":"5.0","reviewCount":"143"},"description":f"AI automation for {city} businesses — voice agents, CRM, lead generation, and digital marketing from $497/month.","priceRange":"$$"},
-        {"@context":"https://schema.org","@type":"LocalBusiness","name":"AI Voice Agent Pros","url":"https://aivoiceagentpros.com","telephone":"","address":{"@type":"PostalAddress","addressLocality":city,"addressRegion":abbr,"addressCountry":"US"},"geo":{"@type":"GeoCoordinates","latitude":lat,"longitude":lng},"aggregateRating":{"@type":"AggregateRating","ratingValue":"5.0","reviewCount":"98"},"description":f"AI voice agents that answer every call for {city} businesses 24 hours a day, 7 days a week. Never miss a lead again. From $297/month.","priceRange":"$$"}
+        {"@context":"https://schema.org","@type":"LocalBusiness","name":"Dominion Web Design Pro","url":"https://dominionwebdesignpro.com","telephone":"","areaServed":{"@type":"City","name":city},"description":f"Professional websites for {city} businesses from $497. Custom design, SEO, mobile-ready, AI chat widget included.","priceRange":"$$","servesCuisine":"","sameAs":["https://dominionwebdesignpro.com"]},
+        {"@context":"https://schema.org","@type":"LocalBusiness","name":"Dominion AI Agency","url":"https://dominionaiagency.com","telephone":"","areaServed":{"@type":"City","name":city},"description":f"AI automation for {city} businesses — voice agents, CRM, lead generation, and digital marketing from $497/month.","priceRange":"$$"},
+        {"@context":"https://schema.org","@type":"LocalBusiness","name":"AI Voice Agent Pros","url":"https://aivoiceagentpros.com","telephone":"","areaServed":{"@type":"City","name":city},"description":f"AI voice agents that answer every call for {city} businesses 24 hours a day, 7 days a week. Never miss a lead again. From $297/month.","priceRange":"$$"}
     ], separators=(',',':'))
 
     return f'''
@@ -1333,7 +1333,7 @@ footer{{background:var(--navy2);border-top:1px solid var(--border);padding:36px 
       Dominion Solar Pro
       📍 Serving {city}, {abbr} & All 50 States
       
-      Solar panel installation for {city} homeowners and businesses. Reduce your energy bills with clean solar power. Free quotes, financing available, federal tax credits apply.
+      Jackery solar generators and portable power stations for {city} homes, campers, and RVs. Clean, quiet backup power when the grid goes down. Free shipping nationwide.
       Visit Website →
     
     
