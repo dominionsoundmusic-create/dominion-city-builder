@@ -161,7 +161,7 @@ BRANDS = {
         "metro_center": (29.7604, -95.3698),
         "metro_radius": 60,
         "work_dir": "/opt/render/project/src/houston-powerwashing-pro",
-        "domain": "houstonpowerwashingpro.com",
+        "domain": "houston-powerwashing-pro.netlify.app",
         "name": "Houston Power Washing Pro",
         "tagline": "Professional Power Washing in Houston TX",
         "cta": "Get a Free Quote",
@@ -185,7 +185,7 @@ BRANDS = {
         "metro_center": (29.7604, -95.3698),
         "metro_radius": 60,
         "work_dir": "/opt/render/project/src/houston-hvac-pro",
-        "domain": "houstonairandheating.com",
+        "domain": "stirring-gumdrop-4e30a6.netlify.app",
         "name": "Houston HVAC Pro",
         "tagline": "AC Repair and HVAC Service in Houston TX",
         "cta": "Call for Same-Day Service",
@@ -209,7 +209,7 @@ BRANDS = {
         "metro_center": (29.7604, -95.3698),
         "metro_radius": 60,
         "work_dir": "/opt/render/project/src/houston-roofing-pro",
-        "domain": "houstonexpertroofers.com",
+        "domain": "delicate-bavarois-59069c.netlify.app",
         "name": "Houston Roofing Pro",
         "tagline": "Roof Repair and Replacement in Houston TX",
         "cta": "Get Free Roof Inspection",
@@ -2514,7 +2514,15 @@ def main():
     print(f"Dominion Brand Builder — {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print(f"{'='*60}")
     total_built = 0
+    only = [b.strip() for b in os.environ.get('ONLY_BRANDS', '').split(',') if b.strip()]
+    if only:
+        unknown = [b for b in only if b not in BRANDS]
+        if unknown:
+            print(f"  !! unknown brand key(s) in ONLY_BRANDS: {', '.join(unknown)}")
+        print(f"  ONLY_BRANDS set — restricting this run to: {', '.join(only)}")
     for brand_key in BRANDS:
+        if only and brand_key not in only:
+            continue
         print(f"\n▶ Building {BRANDS[brand_key]['name']}...")
         count = build_brand(brand_key)
         total_built += count
