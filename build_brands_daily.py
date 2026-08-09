@@ -158,10 +158,11 @@ BRANDS = {
     },
     "houstonwash": {
         "repo": "dominionsoundmusic-create/houston-powerwashing-pro",
+        "hero_image": "/images/pw-hero.jpg",
         "metro_center": (29.7604, -95.3698),
         "metro_radius": 60,
         "work_dir": "/opt/render/project/src/houston-powerwashing-pro",
-        "domain": "houston-powerwashing-pro.netlify.app",
+        "domain": "houstonpowerwashingpro.com",
         "name": "Houston Power Washing Pro",
         "tagline": "Professional Power Washing in Houston TX",
         "cta": "Get a Free Quote",
@@ -185,7 +186,7 @@ BRANDS = {
         "metro_center": (29.7604, -95.3698),
         "metro_radius": 60,
         "work_dir": "/opt/render/project/src/houston-hvac-pro",
-        "domain": "stirring-gumdrop-4e30a6.netlify.app",
+        "domain": "houstonairandheating.com",
         "name": "Houston HVAC Pro",
         "tagline": "AC Repair and HVAC Service in Houston TX",
         "cta": "Call for Same-Day Service",
@@ -206,10 +207,11 @@ BRANDS = {
     },
     "houstonroofing": {
         "repo": "dominionsoundmusic-create/houston-roofing-pro",
+        "hero_image": "/images/roof-01-hero.jpg",
         "metro_center": (29.7604, -95.3698),
         "metro_radius": 60,
         "work_dir": "/opt/render/project/src/houston-roofing-pro",
-        "domain": "delicate-bavarois-59069c.netlify.app",
+        "domain": "houstonexpertroofers.com",
         "name": "Houston Roofing Pro",
         "tagline": "Roof Repair and Replacement in Houston TX",
         "cta": "Get Free Roof Inspection",
@@ -230,6 +232,7 @@ BRANDS = {
     },
     "dallaswash": {
         "repo": "dominionsoundmusic-create/dallas-powerwashing-pro",
+        "hero_image": "/images/pw-hero.jpg",
         "metro_center": (32.7767, -96.797),
         "metro_radius": 60,
         "work_dir": "/opt/render/project/src/dallas-powerwashing-pro",
@@ -278,6 +281,7 @@ BRANDS = {
     },
     "dallasroofing": {
         "repo": "dominionsoundmusic-create/dallas-roofing-pro",
+        "hero_image": "/images/roof-01-hero.jpg",
         "metro_center": (32.7767, -96.797),
         "metro_radius": 60,
         "work_dir": "/opt/render/project/src/dallas-roofing-pro",
@@ -1515,6 +1519,22 @@ def build_leadpro_page(brand_key, city, state, abbr, region, county, lat, lng, f
         + '{"@type":"ListItem","position":2,"name":"' + folder_name + '","item":"' + base + '/' + folder_slug + '/"},'
         + '{"@type":"ListItem","position":3,"name":"' + city.replace('"', "'") + ', ' + abbr + '","item":"' + canonical + '"}]}')
 
+    # Hero: show the photo at full strength with a scrim over it for text contrast.
+    # Never fade the photo itself -- that is what washed out looks like.
+    _hero_img = brand.get('hero_image')
+    if _hero_img:
+        _p = primary.lstrip('#')
+        _r, _g, _b = int(_p[0:2], 16), int(_p[2:4], 16), int(_p[4:6], 16)
+        _v = lambda a: 'rgba(%d,%d,%d,%s)' % (_r, _g, _b, a)
+        hero_css = ('.hero{position:relative;overflow:hidden;background:' + primary + ';'
+            'color:#fff;padding:52px 22px;text-align:center}'
+            ".hero::before{content:'';position:absolute;inset:0;z-index:1;background:"
+            'linear-gradient(180deg,' + _v('.62') + ' 0%,' + _v('.76') + ' 55%,' + _v('.92') + ' 100%),'
+            "url('" + _hero_img + "') center/cover no-repeat;opacity:1}")
+    else:
+        hero_css = ('.hero{background:linear-gradient(135deg,' + primary + ',#000);'
+            'color:#fff;padding:52px 22px;text-align:center}')
+
     css = ('*{box-sizing:border-box}body{font-family:system-ui,-apple-system,Segoe UI,sans-serif;margin:0;'
         'background:' + bg + ';color:#1a2332;line-height:1.6}'
         'a{color:inherit}header{background:' + primary + ';color:#fff;padding:14px 22px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}'
@@ -1522,7 +1542,8 @@ def build_leadpro_page(brand_key, city, state, abbr, region, county, lat, lng, f
         'header nav{margin-left:auto;display:flex;gap:16px;flex-wrap:wrap}'
         'header nav a{color:rgba(255,255,255,.85);text-decoration:none;font-size:.86em}'
         'header nav a:hover{color:' + accent + '}'
-        '.hero{background:linear-gradient(135deg,' + primary + ',#000);color:#fff;padding:52px 22px;text-align:center}'
+        + hero_css +
+        '.hero h1,.hero p,.hero .btn,.hero .btn-outline{position:relative;z-index:2}'
         '.hero h1{font-size:1.9em;margin:0 0 10px;line-height:1.2}'
         '.hero p{max-width:640px;margin:0 auto 22px;opacity:.88}'
         '.btn{background:' + accent + ';color:' + primary + ';padding:14px 30px;border-radius:6px;text-decoration:none;'
