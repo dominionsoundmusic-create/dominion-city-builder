@@ -104,7 +104,9 @@ BRANDS = {
     },
     "webdesign": {
         "repo": "dominionsoundmusic-create/dominionwebdesignpro-site",
-        "retired_folders": ['website-design', 'custom-website-design', 'small-business-website', 'local-business-website', 'professional-website-design', 'affordable-web-design', 'business-website-design', 'seo-web-design', 'mobile-website-design', 'ecommerce-website-design', 'ai-website-design', 'website-designer', 'website-redesign', 'wordpress-web-design'],
+        "retired_folders": ['website-design', 'custom-website-design', 'local-business-website', 'affordable-web-design', 'business-website-design', 'mobile-website-design', 'ai-website-design', 'website-designer', 'website-redesign', 'wordpress-web-design'],  # NOTE: small-business-website, seo-web-design,
+        # ecommerce-website-design and professional-website-design were removed from this list
+        # on Aug 10 2026 — they are the top pages by impressions in Search Console and PURGE would delete them.
         "work_dir": f"{BASE_DIR}/webdesign",
         "domain": "dominionwebdesignpro.com",
         "color": "#1D4ED8",
