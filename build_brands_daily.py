@@ -2437,6 +2437,16 @@ def update_sitemap(brand_key):
     for folder_slug, _ in brand["service_folders"]:
         for f in sorted(glob.glob(os.path.join(brand["work_dir"], folder_slug, "*.html"))):
             pages.append(f"{base}/{folder_slug}/{os.path.basename(f)}")
+    # Blog posts are written by the separate blog cron. Without this the city
+    # builder rewrites sitemap.xml from service folders alone and silently drops
+    # every blog URL, re-orphaning posts the blog fix had just swept in.
+    blog_dir = brand.get("blog_path", "blog")
+    for f in sorted(glob.glob(os.path.join(brand["work_dir"], blog_dir, "*.html"))):
+        name = os.path.basename(f)
+        if name == "index.html":
+            pages.append(f"{base}/{blog_dir}/")
+        else:
+            pages.append(f"{base}/{blog_dir}/{name}")
     today = datetime.now().strftime('%Y-%m-%d')
     xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
     xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
