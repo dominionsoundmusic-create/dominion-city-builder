@@ -104,9 +104,10 @@ BRANDS = {
     },
     "webdesign": {
         "repo": "dominionsoundmusic-create/dominionwebdesignpro-site",
-        "retired_folders": ['website-design', 'custom-website-design', 'local-business-website', 'affordable-web-design', 'business-website-design', 'mobile-website-design', 'ai-website-design', 'website-designer', 'website-redesign', 'wordpress-web-design'],  # NOTE: small-business-website, seo-web-design,
-        # ecommerce-website-design and professional-website-design were removed from this list
-        # on Aug 10 2026 — they are the top pages by impressions in Search Console and PURGE would delete them.
+        "retired_folders": ['website-design', 'custom-website-design', 'local-business-website', 'affordable-web-design', 'business-website-design', 'mobile-website-design', 'ai-website-design', 'website-designer', 'website-redesign', 'wordpress-web-design', 'lead-generation-website'],  # NOTE: small-business-website, seo-web-design, ecommerce-website-design and
+        # professional-website-design are the TOP PAGES by impressions in Search Console.
+        # Aug 16 2026: promoted back to active service_folders so the builder maintains and
+        # internally links them. lead-generation-website retired — near-zero search volume.
         "work_dir": f"{BASE_DIR}/webdesign",
         "domain": "dominionwebdesignpro.com",
         "color": "#1D4ED8",
@@ -124,8 +125,11 @@ BRANDS = {
         "pitch": "professional custom website built first — you only pay when you love it, starting at $497 with SEO and mobile design included",
         "favicon": "/favicon.svg",
         "service_folders": [
+            ("small-business-website", "Small Business Websites"),
             ("web-design", "Web Design"),
-            ("lead-generation-website", "Lead Generation Websites"),
+            ("seo-web-design", "SEO Web Design"),
+            ("professional-website-design", "Professional Website Design"),
+            ("ecommerce-website-design", "Ecommerce Website Design"),
             ("contractor-website-design", "Contractor Web Design"),
             ("restaurant-website-design", "Restaurant Web Design"),
             ("medical-website-design", "Medical Web Design"),
@@ -691,6 +695,20 @@ ALL_US_CITIES = [
     ('Lakeland', 'Florida', 'FL', 'Central Florida', 'Polk County', 28.0381, -81.9392),
     ('Erie', 'Pennsylvania', 'PA', 'Northwest Pennsylvania', 'Erie County', 42.126, -80.086),
     ('Tyler', 'Texas', 'TX', 'East Texas', 'Smith County', 32.3254, -95.2922),
+    ('Kilgore', 'Texas', 'TX', 'East Texas', 'Gregg County', 32.3857, -94.8755),
+    ('Gilmer', 'Texas', 'TX', 'East Texas', 'Upshur County', 32.7287, -94.9424),
+    ('Big Sandy', 'Texas', 'TX', 'East Texas', 'Upshur County', 32.5843, -95.1080),
+    ('Henderson', 'Texas', 'TX', 'East Texas', 'Rusk County', 32.1532, -94.7994),
+    ('Marshall', 'Texas', 'TX', 'East Texas', 'Harrison County', 32.5449, -94.3674),
+    ('Carthage', 'Texas', 'TX', 'East Texas', 'Panola County', 32.1571, -94.3374),
+    ('Center', 'Texas', 'TX', 'East Texas', 'Shelby County', 31.7960, -94.1791),
+    ('Nacogdoches', 'Texas', 'TX', 'East Texas', 'Nacogdoches County', 31.6035, -94.6555),
+    ('Jasper', 'Texas', 'TX', 'East Texas', 'Jasper County', 30.9199, -94.0055),
+    ('Livingston', 'Texas', 'TX', 'East Texas', 'Polk County', 30.7107, -94.9330),
+    ('Mineola', 'Texas', 'TX', 'East Texas', 'Wood County', 32.6632, -95.4883),
+    ('Athens', 'Texas', 'TX', 'East Texas', 'Henderson County', 32.2049, -95.8555),
+    ('Palestine', 'Texas', 'TX', 'East Texas', 'Anderson County', 31.7621, -95.6308),
+    ('Jacksonville', 'Texas', 'TX', 'East Texas', 'Cherokee County', 31.9635, -95.2705),
     ('Pearland', 'Texas', 'TX', 'Southeast Texas', 'Brazoria County', 29.5617, -95.2721),
     ('College Station', 'Texas', 'TX', 'Central Texas', 'Brazos County', 30.6045, -96.3123),
     ('Kenosha', 'Wisconsin', 'WI', 'Fox Valley', 'Kenosha County', 42.6052, -87.8299),
@@ -2159,7 +2177,7 @@ def build_national_page(brand_key, city, state, abbr, region, county, lat, lng, 
     phone = brand["phone"]
     tel = "tel:+1" + "".join(ch for ch in phone if ch.isdigit())
 
-    title = folder_name + " in " + city + ", " + state + " | " + brand["name"]
+    title = city + " " + folder_name + " | " + brand["name"]
     desc = (brand["pitch"] + " Serving businesses in " + city + ", " + state
             + " and across " + county + ". From " + brand["starting_price"] + ".")
     canonical = base + "/" + folder_slug + "/" + slug + ".html"
@@ -2239,7 +2257,7 @@ def build_national_page(brand_key, city, state, abbr, region, county, lat, lng, 
     html += '<a href="' + tel + '">' + phone + '</a></nav></header>'
 
     html += '<div class="hero"><div class="eyebrow">' + city + ', ' + abbr + '</div>'
-    html += '<h1>' + folder_name + ' in ' + city + ', ' + state + '</h1>'
+    html += '<h1>' + city + ' ' + folder_name + '</h1>'
     html += '<p>' + brand["tagline"] + ' ' + brand["pitch"] + '</p>'
     html += '<a class="btn" href="' + tel + '">' + brand["cta"] + '</a>'
     html += '<a class="btn btn-o" href="' + base + '/">See How It Works</a></div>'
