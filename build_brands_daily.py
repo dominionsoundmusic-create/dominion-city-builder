@@ -115,7 +115,18 @@ BRANDS = {
     },
     "webdesign": {
         "repo": "dominionsoundmusic-create/dominionwebdesignpro-site",
-        "retired_folders": ['website-design', 'custom-website-design', 'local-business-website', 'affordable-web-design', 'business-website-design', 'mobile-website-design', 'ai-website-design', 'website-designer', 'website-redesign', 'wordpress-web-design', 'lead-generation-website'],  # NOTE: small-business-website, seo-web-design, ecommerce-website-design and
+        "retired_folders": ['website-design', 'custom-website-design', 'local-business-website', 'affordable-web-design', 'business-website-design', 'mobile-website-design', 'ai-website-design', 'website-designer', 'website-redesign', 'wordpress-web-design', 'lead-generation-website'],        # Aug 17 2026: the four fastest-growing Texas towns that are NOT in the
+        # shared pool. Census Vintage 2025: Celina +24.6% (already in the pool),
+        # Fulshear +21%, then Princeton, Melissa and Anna. Web Design Pro only —
+        # it sells nationally to new businesses, whereas a Jackery affiliate page
+        # on Solar does not care where the reader lives.
+        "extra_cities": [
+            ('Princeton', 'Texas', 'TX', 'North Texas', 'Collin County', 33.1801, -96.4980),
+            ('Melissa', 'Texas', 'TX', 'North Texas', 'Collin County', 33.2857, -96.5728),
+            ('Anna', 'Texas', 'TX', 'North Texas', 'Collin County', 33.3495, -96.5486),
+            ('Fulshear', 'Texas', 'TX', 'Greater Houston', 'Fort Bend County', 29.6936, -95.8919),
+        ],
+  # NOTE: small-business-website, seo-web-design, ecommerce-website-design and
         # professional-website-design are the TOP PAGES by impressions in Search Console.
         # Aug 16 2026: promoted back to active service_folders so the builder maintains and
         # internally links them. lead-generation-website retired — near-zero search volume.
@@ -2177,12 +2188,25 @@ def cities_for_brand(brand_key):
     radius; any brand can also exclude states it cannot legally serve."""
     brand = BRANDS[brand_key]
     blocked = set(brand.get("excluded_states") or [])
+    # Per-brand additions. ALL_US_CITIES is SHARED by every national brand, so a
+    # city added there is built by all six — that is how 14 East Texas towns
+    # rippled into Solar, Hard Money and the rest on Aug 16 when only Web Design
+    # Pro needed them. Put brand-specific cities here instead.
+    extra = list(brand.get("extra_cities") or [])
     c = brand.get("metro_center")
     if not c:
-        return [cd for cd in ALL_US_CITIES if cd[2] not in blocked]
+        out, seen = [], set()
+        for cd in list(ALL_US_CITIES) + extra:
+            if cd[2] in blocked:
+                continue
+            key = make_slug(cd[0], cd[2])
+            if key in seen:
+                continue
+            seen.add(key); out.append(cd)
+        return out
     rad = brand.get("metro_radius", 60)
     states = brand.get("metro_states")  # optional: restrict brand to these state abbrs
-    pool, seen, out = list(ALL_US_CITIES) + list(METRO_EXTRA_CITIES), set(), []
+    pool, seen, out = list(ALL_US_CITIES) + list(METRO_EXTRA_CITIES) + extra, set(), []
     for cd in pool:
         key = make_slug(cd[0], cd[2])
         if key in seen:
