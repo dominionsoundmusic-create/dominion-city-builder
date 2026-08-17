@@ -1682,7 +1682,14 @@ def build_solarpro_page(city, state, abbr, region, county, lat, lng, folder_slug
     for _fs, _fn in BRANDS['solarpro']['service_folders'][:5]:
         html += '<a href="https://dominionsolarpro.com/' + _fs + '/' + slug + '.html" style="color:rgba(255,255,255,.8);text-decoration:none;font-size:.85em">' + _fn + '</a>'
     html += '</nav></header>'
-    html += '<h1 style="max-width:1100px;margin:28px auto 0;padding:0 24px">' + folder_name + ' in ' + city + ', ' + state + '</h1>'
+    # Breadcrumb back to the folder hub. Without it the hub links down to the
+    # city pages but nothing links back up, so crawl equity only flows one way.
+    html += ('<nav style="max-width:1100px;margin:20px auto 0;padding:0 24px;font-size:.82em;color:#64748b">'
+             '<a href="https://dominionsolarpro.com/" style="color:#475569;text-decoration:none">Home</a>'
+             ' &rsaquo; <a href="https://dominionsolarpro.com/' + folder_slug + '/" '
+             'style="color:#475569;text-decoration:none">' + folder_name + '</a>'
+             ' &rsaquo; <span>' + city + ', ' + abbr + '</span></nav>')
+    html += '<h1 style="max-width:1100px;margin:12px auto 0;padding:0 24px">' + folder_name + ' in ' + city + ', ' + state + '</h1>'
     html += '<div class="hero"><h2>Best ' + folder_name + ' near ' + city + ', ' + state + '</h2>'
     html += '<p>Jackery solar generators, portable power stations, and solar panels — perfect for ' + city + ' residents, campers, RV travelers, and off-grid homesteaders across ' + region + '. Free shipping nationwide.</p>'
     html += '<a href="https://www.jackery.com?aff=1363" class="btn" target="_blank">Shop Solar Generators on Jackery.com →</a></div>'
@@ -2531,6 +2538,99 @@ def build_service_hub(brand_key, folder_slug, folder_name):
     return h
 
 
+def build_solar_hub(folder_slug, folder_name):
+    """Light-themed hub page for Dominion Solar Pro.
+
+    Solar uses its own page builder and a LIGHT palette (#f8fafc paper, #1a2332
+    navy, #f59e0b amber), so the shared dark build_service_hub would look broken
+    dropped onto it. Same job, same structure, matched to this brand's own look.
+    """
+    brand = BRANDS["solarpro"]
+    c = brand["colors"]
+    primary, accent, paper = c["primary"], c["accent"], c["bg"]
+    base = "https://" + brand["domain"]
+    canonical = base + "/" + folder_slug + "/"
+
+    cities = cities_for_brand("solarpro")
+    by_state = {}
+    for city, state, abbr, region, county, lat, lng in cities:
+        by_state.setdefault((state, abbr), []).append((city, make_slug(city, abbr)))
+    for k in by_state:
+        by_state[k].sort()
+
+    title = folder_name + " by City | " + brand["name"]
+    desc = (folder_name + " from " + brand["name"] + " — Jackery portable power in "
+            + str(len(cities)) + " cities across " + str(len(by_state)) + " states.")
+
+    schema = ('{"@context":"https://schema.org","@type":"CollectionPage","name":"' + folder_name
+              + '","url":"' + canonical + '","description":"' + desc.replace('"', "'") + '"}')
+    crumbs = ('{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":['
+        '{"@type":"ListItem","position":1,"name":"Home","item":"' + base + '/"},'
+        '{"@type":"ListItem","position":2,"name":"' + folder_name + '","item":"' + canonical + '"}]}')
+
+    css = ("*{box-sizing:border-box}body{font-family:system-ui,-apple-system,Segoe UI,sans-serif;margin:0;"
+        "background:" + paper + ";color:#1a2332;line-height:1.65}a{color:inherit}"
+        "header{background:" + primary + ";color:#fff;padding:16px 24px;display:flex;"
+        "align-items:center;gap:12px;flex-wrap:wrap}"
+        "header .logo{font-weight:800;text-decoration:none;color:#fff}"
+        "header nav{margin-left:auto;display:flex;gap:15px;flex-wrap:wrap}"
+        "header nav a{color:rgba(255,255,255,.82);text-decoration:none;font-size:.84em}"
+        "header nav a:hover{color:" + accent + "}"
+        ".wrap{padding:clamp(22px,5.5vw,140px);padding-top:46px;padding-bottom:60px}"
+        "h1{font-size:2em;margin:0 0 10px;color:" + primary + "}"
+        ".lede{color:#475569;max-width:70ch;margin:0 0 24px}"
+        ".btn{display:inline-block;background:" + accent + ";color:" + primary + ";text-decoration:none;"
+        "font-weight:800;padding:13px 28px;border-radius:6px;margin-bottom:32px}"
+        ".sib{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:36px}"
+        ".sib a{background:#fff;border:1px solid #e2e8f0;border-radius:100px;padding:7px 15px;"
+        "font-size:.79em;text-decoration:none;color:#475569}"
+        ".sib a:hover{border-color:" + accent + ";color:" + primary + "}"
+        ".sib a.on{background:" + accent + ";color:" + primary + ";border-color:" + accent + ";font-weight:700}"
+        "h2{font-size:1em;color:" + primary + ";margin:28px 0 8px;border-bottom:2px solid " + accent + ";"
+        "padding-bottom:5px;display:inline-block}"
+        ".cities{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:3px 18px}"
+        ".cities a{color:#475569;text-decoration:none;font-size:.87em;padding:3px 0;display:block}"
+        ".cities a:hover{color:" + primary + ";text-decoration:underline}"
+        "footer{background:" + primary + ";color:rgba(255,255,255,.6);padding:26px 24px;"
+        "text-align:center;font-size:.82em}footer a{color:rgba(255,255,255,.85)}")
+
+    h = '<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">'
+    h += '<meta name="viewport" content="width=device-width,initial-scale=1">'
+    h += "<title>" + title + "</title>"
+    h += '<meta name="description" content="' + desc.replace('"', "'") + '">'
+    h += '<link rel="canonical" href="' + canonical + '">'
+    h += '<script type="application/ld+json">' + schema + '</script>'
+    h += '<script type="application/ld+json">' + crumbs + '</script>'
+    h += "<style>" + css + "</style></head><body>"
+
+    h += '<header><a class="logo" href="' + base + '/">' + brand["favicon"] + " " + brand["name"] + "</a><nav>"
+    for fs, fn_ in brand["service_folders"][:5]:
+        h += '<a href="' + base + "/" + fs + '/">' + fn_ + "</a>"
+    h += "</nav></header>"
+
+    h += '<div class="wrap"><h1>' + folder_name + " by City</h1>"
+    h += '<p class="lede">' + brand["tagline"] + " — delivered anywhere in the country. "
+    h += "Pick your city for local guidance on sizing, run time and what fits your setup. "
+    h += brand["starting_price"] + '.</p>'
+    h += '<a class="btn" href="' + base + '/">' + brand["cta"] + "</a>"
+
+    h += '<div class="sib">'
+    for fs, fn_ in brand["service_folders"]:
+        cls = ' class="on"' if fs == folder_slug else ""
+        h += "<a" + cls + ' href="' + base + "/" + fs + '/">' + fn_ + "</a>"
+    h += "</div>"
+
+    for (state, abbr), rows in sorted(by_state.items()):
+        h += "<h2>" + state + '</h2><div class="cities">'
+        for city, slug in rows:
+            h += '<a href="' + base + "/" + folder_slug + "/" + slug + '.html">' + city + ", " + abbr + "</a>"
+        h += "</div>"
+
+    h += "</div><footer>&copy; 2026 " + brand["name"] + ' &middot; <a href="' + base + '/">Home</a>'
+    h += " &middot; Affiliate links to Jackery</footer></body></html>"
+    return h
+
+
 def write_service_hubs(brand_key):
     """Writes /<folder>/index.html for every service folder of a brand."""
     brand = BRANDS[brand_key]
@@ -2538,8 +2638,11 @@ def write_service_hubs(brand_key):
     for fs, fn in brand["service_folders"]:
         d = os.path.join(brand["work_dir"], fs)
         os.makedirs(d, exist_ok=True)
+        # Solar has its own light palette and its own page builder, so it gets a
+        # matching light hub rather than the shared dark one.
+        html = build_solar_hub(fs, fn) if brand_key == "solarpro" else build_service_hub(brand_key, fs, fn)
         with open(os.path.join(d, "index.html"), "w", encoding="utf-8") as f:
-            f.write(build_service_hub(brand_key, fs, fn))
+            f.write(html)
         written += 1
     print(f"  wrote {written} service hub page(s) for {brand['name']}")
     return written
