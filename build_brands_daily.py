@@ -1614,6 +1614,13 @@ def build_leadpro_page(brand_key, city, state, abbr, region, county, lat, lng, f
         html += '<a href="' + base + '/' + fs + '/' + slug + '.html">' + fn + '</a>'
     html += '<a href="' + tel + '">' + phone + '</a></nav></header>'
 
+    # Breadcrumb back to the folder hub — the hub links down to every city,
+    # this is the link back up so equity flows both ways.
+    html += ('<nav style="padding:14px 22px 0;font-size:.8em;color:rgba(255,255,255,.62)">'
+             '<a href="' + base + '/" style="color:rgba(255,255,255,.8);text-decoration:none">Home</a>'
+             ' &rsaquo; <a href="' + base + '/' + folder_slug + '/" '
+             'style="color:rgba(255,255,255,.8);text-decoration:none">' + folder_name + '</a>'
+             ' &rsaquo; <span>' + city + ', ' + abbr + '</span></nav>')
     html += '<div class="hero"><h1>' + folder_name + ' in ' + city + ', ' + state + '</h1>'
     html += '<p>' + brand["pitch"] + ' Serving ' + city + ' and all of ' + county + '. Work starting at ' + brand["starting_price"] + '.</p>'
     html += '<a class="btn" href="' + tel + '">' + brand["cta"] + ' — ' + phone + '</a>'
@@ -1840,6 +1847,12 @@ def build_hardmoney_page(city, state, abbr, region, county, lat, lng, folder_slu
         html += '<a href="' + base + '/' + fs + '/' + slug + '.html">' + fn + '</a>'
     html += '<a href="' + tel + '">' + phone + '</a>' + HM_LANG_HTML + '</nav></header>'
 
+    # Breadcrumb back to the loan-program hub.
+    html += ('<nav style="padding:14px 22px 0;font-size:.8em;color:rgba(255,255,255,.6)">'
+             '<a href="' + base + '/" style="color:rgba(255,255,255,.8);text-decoration:none">Home</a>'
+             ' &rsaquo; <a href="' + base + '/' + folder_slug + '/" '
+             'style="color:rgba(255,255,255,.8);text-decoration:none">' + folder_name + '</a>'
+             ' &rsaquo; <span>' + city + ', ' + abbr + '</span></nav>')
     html += '<div class="hero"><div class="kicker">' + city + ', ' + state + '</div>'
     html += '<h1>' + folder_name + ' in ' + city + ', ' + state + '</h1>'
     html += '<p>' + brand["pitch"] + ' Asset-based lending for investors in ' + city
@@ -2538,20 +2551,21 @@ def build_service_hub(brand_key, folder_slug, folder_name):
     return h
 
 
-def build_solar_hub(folder_slug, folder_name):
-    """Light-themed hub page for Dominion Solar Pro.
+def build_light_hub(brand_key, folder_slug, folder_name):
+    """Hub page for any brand with a LIGHT palette.
 
-    Solar uses its own page builder and a LIGHT palette (#f8fafc paper, #1a2332
-    navy, #f59e0b amber), so the shared dark build_service_hub would look broken
-    dropped onto it. Same job, same structure, matched to this brand's own look.
+    Solar, the six Lead Pro trades, the three pool sites and Hard Money all use
+    their own page builders and light backgrounds, each with its own primary and
+    accent. The shared dark build_service_hub would look broken dropped onto any
+    of them, so this reads the brand's own colours instead.
     """
-    brand = BRANDS["solarpro"]
+    brand = BRANDS[brand_key]
     c = brand["colors"]
     primary, accent, paper = c["primary"], c["accent"], c["bg"]
     base = "https://" + brand["domain"]
     canonical = base + "/" + folder_slug + "/"
 
-    cities = cities_for_brand("solarpro")
+    cities = cities_for_brand(brand_key)
     by_state = {}
     for city, state, abbr, region, county, lat, lng in cities:
         by_state.setdefault((state, abbr), []).append((city, make_slug(city, abbr)))
@@ -2559,8 +2573,8 @@ def build_solar_hub(folder_slug, folder_name):
         by_state[k].sort()
 
     title = folder_name + " by City | " + brand["name"]
-    desc = (folder_name + " from " + brand["name"] + " — Jackery portable power in "
-            + str(len(cities)) + " cities across " + str(len(by_state)) + " states.")
+    desc = (folder_name + " from " + brand["name"] + " in " + str(len(cities))
+            + " cities across " + str(len(by_state)) + " states.")
 
     schema = ('{"@context":"https://schema.org","@type":"CollectionPage","name":"' + folder_name
               + '","url":"' + canonical + '","description":"' + desc.replace('"', "'") + '"}')
@@ -2609,10 +2623,12 @@ def build_solar_hub(folder_slug, folder_name):
     h += "</nav></header>"
 
     h += '<div class="wrap"><h1>' + folder_name + " by City</h1>"
-    h += '<p class="lede">' + brand["tagline"] + " — delivered anywhere in the country. "
-    h += "Pick your city for local guidance on sizing, run time and what fits your setup. "
-    h += brand["starting_price"] + '.</p>'
-    h += '<a class="btn" href="' + base + '/">' + brand["cta"] + "</a>"
+    h += '<p class="lede">' + brand.get("tagline", brand["name"]) + ". "
+    h += "Pick your city below to see what we cover locally"
+    if brand.get("starting_price"):
+        h += " and what it costs — " + brand["starting_price"]
+    h += '.</p>'
+    h += '<a class="btn" href="' + base + '/">' + brand.get("cta", "Get a Quote") + "</a>"
 
     h += '<div class="sib">'
     for fs, fn_ in brand["service_folders"]:
@@ -2627,8 +2643,15 @@ def build_solar_hub(folder_slug, folder_name):
         h += "</div>"
 
     h += "</div><footer>&copy; 2026 " + brand["name"] + ' &middot; <a href="' + base + '/">Home</a>'
-    h += " &middot; Affiliate links to Jackery</footer></body></html>"
+    if brand_key == "solarpro":
+        h += " &middot; Affiliate links to Jackery"
+    elif brand.get("phone_display"):
+        h += ' &middot; <a href="tel:+1' + "".join(ch for ch in brand.get("phone","") if ch.isdigit()) + '">' + brand["phone_display"] + "</a>"
+    h += "</footer></body></html>"
     return h
+
+
+DARK_HUB_BRANDS = {"webdesign", "aivoice", "reviewpro", "aiagency"}
 
 
 def write_service_hubs(brand_key):
@@ -2640,7 +2663,11 @@ def write_service_hubs(brand_key):
         os.makedirs(d, exist_ok=True)
         # Solar has its own light palette and its own page builder, so it gets a
         # matching light hub rather than the shared dark one.
-        html = build_solar_hub(fs, fn) if brand_key == "solarpro" else build_service_hub(brand_key, fs, fn)
+        # Dark national brands use the shared hub; every other brand has a light
+        # palette and its own page builder, so it gets a light hub in its colours.
+        html = (build_service_hub(brand_key, fs, fn)
+                if brand_key in DARK_HUB_BRANDS
+                else build_light_hub(brand_key, fs, fn))
         with open(os.path.join(d, "index.html"), "w", encoding="utf-8") as f:
             f.write(html)
         written += 1
