@@ -2259,8 +2259,13 @@ def build_national_page(brand_key, city, state, abbr, region, county, lat, lng, 
     html += '<div class="hero"><div class="eyebrow">' + city + ', ' + abbr + '</div>'
     html += '<h1>' + city + ' ' + folder_name + '</h1>'
     html += '<p>' + brand["tagline"] + ' ' + brand["pitch"] + '</p>'
-    html += '<a class="btn" href="' + tel + '">' + brand["cta"] + '</a>'
-    html += '<a class="btn btn-o" href="' + base + '/">See How It Works</a></div>'
+    # CTA must go to the demo tool, not tel: — a tel: link is inert on desktop,
+    # so this button was dead for every desktop visitor. cta_url in the brand
+    # config is a page-relative anchor (#pricing) that only exists on the
+    # homepage, so it is not usable from a city page either.
+    cta_href = base + brand.get("cta_page", "/demo.html")
+    html += '<a class="btn" href="' + cta_href + '">' + brand["cta"] + '</a>'
+    html += '<a class="btn btn-o" href="' + tel + '">Call ' + phone + '</a></div>'
 
     html += '<div class="wrap">'
     html += '<h2>' + folder_name + ' for ' + city + ' Businesses</h2>'
