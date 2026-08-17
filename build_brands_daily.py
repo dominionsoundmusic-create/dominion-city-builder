@@ -2213,6 +2213,8 @@ def build_national_page(brand_key, city, state, abbr, region, county, lat, lng, 
         ".eyebrow{display:inline-block;border:1px solid " + border + ";color:" + light + ";font-size:.72em;"
         "letter-spacing:.16em;text-transform:uppercase;padding:6px 14px;border-radius:100px;margin-bottom:16px}"
         ".hero h1{font-size:2.05em;margin:0 0 12px;line-height:1.16;color:#fff}"
+        ".crumb{font-size:.8em;color:#8a8aa2;margin:0 0 22px}"
+        ".crumb a{color:#9a9ab4;text-decoration:none}.crumb a:hover{color:#fff}"
         ".hero p{max-width:640px;margin:0 auto 24px;color:#a9a9c2}"
         ".btn{display:inline-block;background:" + accent + ";color:#fff;padding:14px 30px;border-radius:8px;"
         "text-decoration:none;font-weight:700}"
@@ -2268,6 +2270,12 @@ def build_national_page(brand_key, city, state, abbr, region, county, lat, lng, 
     html += '<a class="btn btn-o" href="' + tel + '">Call ' + phone + '</a></div>'
 
     html += '<div class="wrap">'
+    # Visible breadcrumb back to the folder hub. The BreadcrumbList schema
+    # already asserted this link; now the page actually carries it, which is
+    # what lets crawl equity flow between the hub and its city pages.
+    html += ('<nav class="crumb"><a href="' + base + '/">Home</a> &rsaquo; '
+             '<a href="' + base + '/' + folder_slug + '/">' + folder_name + '</a>'
+             ' &rsaquo; <span>' + city + ', ' + abbr + '</span></nav>')
     html += '<h2>' + folder_name + ' for ' + city + ' Businesses</h2>'
     html += '<div class="intro">' + intro + '</div>'
 
@@ -2407,6 +2415,198 @@ def get_existing_slugs(brand_key):
         existing.add(os.path.basename(f).replace('.html',''))
     return existing
 
+def build_service_hub(brand_key, folder_slug, folder_name):
+    """One index page per service folder, listing every city in that folder.
+
+    Why this exists: the city pages had NO inbound internal link. Each city page's
+    nav links to the SAME city in sibling folders, and service-areas.html linked
+    about 40 cities in one folder only — so on webdesign roughly 8,400 of 8,775
+    pages were reachable from the sitemap and nothing else. That is a large part
+    of why so much sits in "Discovered - currently not indexed": Google found the
+    URLs but nothing on the site vouched for them.
+    """
+    brand = BRANDS[brand_key]
+    base = "https://" + brand["domain"]
+    canonical = base + "/" + folder_slug + "/"
+    phone = brand.get("phone_display", "")
+    tel = "tel:+1" + "".join(ch for ch in brand.get("phone", "") if ch.isdigit())
+    accent = brand.get("accent", "#4f7cff")
+    bg, bg2 = brand.get("bg", "#0b0d13"), brand.get("bg2", "#12151f")
+    border = brand.get("border", "#232838")
+
+    cities = cities_for_brand(brand_key)
+    by_state = {}
+    for city, state, abbr, region, county, lat, lng in cities:
+        by_state.setdefault((state, abbr), []).append((city, make_slug(city, abbr)))
+    for k in by_state:
+        by_state[k].sort()
+
+    title = folder_name + " by City | " + brand["name"]
+    desc = (folder_name + " from " + brand["name"] + " in " + str(len(cities))
+            + " cities across " + str(len(by_state)) + " states. " + brand.get("pitch", "")[:90])
+
+    items = []
+    for i, ((state, abbr), rows) in enumerate(sorted(by_state.items()), 1):
+        items.append('{"@type":"ListItem","position":%d,"name":"%s"}' % (i, state))
+    schema = ('{"@context":"https://schema.org","@type":"CollectionPage","name":"'
+        + folder_name + '","url":"' + canonical + '","description":"'
+        + desc.replace('"', "'") + '"}')
+    crumbs = ('{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":['
+        '{"@type":"ListItem","position":1,"name":"Home","item":"' + base + '/"},'
+        '{"@type":"ListItem","position":2,"name":"' + folder_name + '","item":"' + canonical + '"}]}')
+
+    css = ("*{box-sizing:border-box}body{font-family:system-ui,-apple-system,Segoe UI,sans-serif;margin:0;"
+        "background:" + bg + ";color:#e7e7f0;line-height:1.65}a{color:inherit}"
+        "header{background:" + bg2 + ";border-bottom:1px solid " + border + ";padding:14px 22px;"
+        "display:flex;align-items:center;gap:12px;flex-wrap:wrap}"
+        "header .logo{font-weight:800;text-decoration:none;color:#fff;font-size:1.02em}"
+        "header nav{margin-left:auto;display:flex;gap:16px;flex-wrap:wrap}"
+        "header nav a{color:#9a9ab4;text-decoration:none;font-size:.84em}header nav a:hover{color:" + accent + "}"
+        ".wrap{padding:clamp(22px,5.5vw,140px);padding-top:52px;padding-bottom:60px}"
+        ".hero h1{font-size:2.05em;margin:0 0 10px;line-height:1.16;color:#fff}"
+        ".lede{color:#9a9ab4;max-width:70ch;margin:0 0 26px}"
+        ".btn{display:inline-block;background:" + accent + ";color:#fff;text-decoration:none;"
+        "font-weight:700;padding:13px 26px;border-radius:9px;margin-bottom:34px}"
+        ".sib{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:38px}"
+        ".sib a{border:1px solid " + border + ";border-radius:100px;padding:7px 15px;font-size:.8em;"
+        "text-decoration:none;color:#9a9ab4}.sib a:hover{color:#fff;border-color:" + accent + "}"
+        ".sib a.on{background:" + accent + ";color:#fff;border-color:" + accent + "}"
+        "h2{font-size:1.02em;color:" + accent + ";margin:30px 0 10px;letter-spacing:.02em}"
+        ".cities{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:4px 18px}"
+        ".cities a{color:#c9c9d8;text-decoration:none;font-size:.87em;padding:3px 0;display:block}"
+        ".cities a:hover{color:#fff;text-decoration:underline}"
+        "footer{background:" + bg2 + ";color:#8a8aa2;padding:26px 22px;text-align:center;font-size:.8em;"
+        "border-top:1px solid " + border + "}footer a{color:#c9c9d8}")
+
+    h = "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\">"
+    h += '<meta name="viewport" content="width=device-width,initial-scale=1">'
+    h += "<title>" + title + "</title>"
+    h += '<meta name="description" content="' + desc.replace('"', "'") + '">'
+    h += '<link rel="canonical" href="' + canonical + '">'
+    h += '<link rel="icon" href="' + base + '/favicon.svg">'
+    h += '<script type="application/ld+json">' + schema + '</script>'
+    h += '<script type="application/ld+json">' + crumbs + '</script>'
+    h += "<style>" + css + "</style></head><body>"
+
+    h += '<header><a class="logo" href="' + base + '/">' + brand.get("favicon", "") + " " + brand["name"] + "</a><nav>"
+    for fs, fn in brand["service_folders"][:5]:
+        h += '<a href="' + base + "/" + fs + '/">' + fn + "</a>"
+    if phone:
+        h += '<a href="' + tel + '">' + phone + "</a>"
+    h += "</nav></header>"
+
+    h += '<div class="wrap"><div class="hero"><h1>' + folder_name + " by City</h1>"
+    h += '<p class="lede">' + brand["name"] + " provides " + folder_name.lower() + " to businesses in "
+    h += str(len(cities)) + " cities across " + str(len(by_state)) + " states. "
+    h += "Pick your city below to see local pricing and what is included.</p>"
+    h += '<a class="btn" href="' + base + brand.get("cta_page", "/demo.html") + '">' + brand.get("cta", "Get Started") + "</a></div>"
+
+    h += '<div class="sib">'
+    for fs, fn in brand["service_folders"]:
+        cls = ' class="on"' if fs == folder_slug else ""
+        h += "<a" + cls + ' href="' + base + "/" + fs + '/">' + fn + "</a>"
+    h += "</div>"
+
+    for (state, abbr), rows in sorted(by_state.items()):
+        h += "<h2>" + state + "</h2><div class=\"cities\">"
+        for city, slug in rows:
+            h += '<a href="' + base + "/" + folder_slug + "/" + slug + '.html">' + city + ", " + abbr + "</a>"
+        h += "</div>"
+
+    h += "</div><footer>&copy; 2026 " + brand["name"] + ' &middot; <a href="' + base + '/">Home</a>'
+    if phone:
+        h += ' &middot; <a href="' + tel + '">' + phone + "</a>"
+    h += "</footer></body></html>"
+    return h
+
+
+def write_service_hubs(brand_key):
+    """Writes /<folder>/index.html for every service folder of a brand."""
+    brand = BRANDS[brand_key]
+    written = 0
+    for fs, fn in brand["service_folders"]:
+        d = os.path.join(brand["work_dir"], fs)
+        os.makedirs(d, exist_ok=True)
+        with open(os.path.join(d, "index.html"), "w", encoding="utf-8") as f:
+            f.write(build_service_hub(brand_key, fs, fn))
+        written += 1
+    print(f"  wrote {written} service hub page(s) for {brand['name']}")
+    return written
+
+
+def rebuild_blog_index(brand_key):
+    """Rebuilds <blog>/index.html listing every post newest-first.
+
+    The blog generator writes the post HTML and nothing else, so posts are
+    orphaned: not in the blog index, not in the sitemap, not linked from
+    anywhere. Rebuilding from whatever is actually on disk means older orphans
+    get swept up retroactively, not just today's post.
+    """
+    brand = BRANDS[brand_key]
+    blog_dir = brand.get("blog_path", "blog")
+    d = os.path.join(brand["work_dir"], blog_dir)
+    if not os.path.isdir(d):
+        return 0
+    base = "https://" + brand["domain"]
+    accent = brand.get("accent", "#4f7cff")
+    bg, bg2 = brand.get("bg", "#0b0d13"), brand.get("bg2", "#12151f")
+    border = brand.get("border", "#232838")
+
+    posts = []
+    for f in glob.glob(os.path.join(d, "*.html")):
+        name = os.path.basename(f)
+        if name == "index.html":
+            continue
+        try:
+            head = open(f, encoding="utf-8", errors="replace").read(4000)
+        except Exception:
+            continue
+        mt = re.search(r"<title>(.*?)</title>", head, re.S)
+        title = mt.group(1).split("|")[0].strip() if mt else name[:-5].replace("-", " ").title()
+        md = re.search(r'name="description" content="([^"]*)"', head)
+        blurb = md.group(1) if md else ""
+        # slug tail is a millisecond timestamp; use it to order newest-first
+        mstamp = re.search(r"-(\d{10,})\.html$", name)
+        stamp = int(mstamp.group(1)) if mstamp else 0
+        posts.append((stamp, name, title, blurb))
+    posts.sort(reverse=True)
+
+    css = ("*{box-sizing:border-box}body{font-family:system-ui,-apple-system,Segoe UI,sans-serif;"
+        "margin:0;background:" + bg + ";color:#e7e7f0;line-height:1.65}a{color:inherit}"
+        "header{background:" + bg2 + ";border-bottom:1px solid " + border + ";padding:14px 22px;"
+        "display:flex;align-items:center;gap:12px;flex-wrap:wrap}"
+        "header .logo{font-weight:800;text-decoration:none;color:#fff}"
+        ".wrap{padding:clamp(22px,5.5vw,140px);padding-top:52px;padding-bottom:60px}"
+        "h1{font-size:2.05em;margin:0 0 10px;color:#fff}"
+        ".lede{color:#9a9ab4;max-width:70ch;margin:0 0 34px}"
+        ".post{border-top:1px solid " + border + ";padding:20px 0}"
+        ".post a{font-size:1.08em;font-weight:700;color:#fff;text-decoration:none}"
+        ".post a:hover{color:" + accent + "}.post p{color:#9a9ab4;margin:6px 0 0;font-size:.9em}"
+        "footer{background:" + bg2 + ";color:#8a8aa2;padding:26px 22px;text-align:center;"
+        "font-size:.8em;border-top:1px solid " + border + "}footer a{color:#c9c9d8}")
+
+    h = '<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">'
+    h += '<meta name="viewport" content="width=device-width,initial-scale=1">'
+    h += "<title>Blog | " + brand["name"] + "</title>"
+    h += '<meta name="description" content="Guides and updates from ' + brand["name"] + '.">'
+    h += '<link rel="canonical" href="' + base + "/" + blog_dir + '/">'
+    h += '<link rel="icon" href="' + base + '/favicon.svg">'
+    h += "<style>" + css + "</style></head><body>"
+    h += '<header><a class="logo" href="' + base + '/">' + brand.get("favicon", "") + " " + brand["name"] + "</a></header>"
+    h += '<div class="wrap"><h1>Blog</h1>'
+    h += '<p class="lede">Practical guides on getting found locally, from ' + brand["name"] + ".</p>"
+    for _, name, title, blurb in posts:
+        h += '<div class="post"><a href="' + base + "/" + blog_dir + "/" + name + '">' + title + "</a>"
+        if blurb:
+            h += "<p>" + blurb[:160] + "</p>"
+        h += "</div>"
+    h += '</div><footer>&copy; 2026 ' + brand["name"] + ' &middot; <a href="' + base + '/">Home</a></footer>'
+    h += "</body></html>"
+    open(os.path.join(d, "index.html"), "w", encoding="utf-8").write(h)
+    print(f"  rebuilt blog index with {len(posts)} post(s) for {brand['name']}")
+    return len(posts)
+
+
 def write_redirects(brand_key):
     """301 retired folder URLs to the brand's primary service folder."""
     brand = BRANDS[brand_key]
@@ -2440,7 +2640,13 @@ def update_sitemap(brand_key):
         if os.path.exists(os.path.join(brand["work_dir"], extra)):
             pages.append(f"{base}/{extra}")
     for folder_slug, _ in brand["service_folders"]:
+        # Hub first: /<folder>/ is the index page that links every city page in
+        # this folder. Without it those city pages have no inbound internal link.
+        if os.path.exists(os.path.join(brand["work_dir"], folder_slug, "index.html")):
+            pages.append(f"{base}/{folder_slug}/")
         for f in sorted(glob.glob(os.path.join(brand["work_dir"], folder_slug, "*.html"))):
+            if os.path.basename(f) == "index.html":
+                continue
             pages.append(f"{base}/{folder_slug}/{os.path.basename(f)}")
     # Blog posts are written by the separate blog cron. Without this the city
     # builder rewrites sitemap.xml from service folders alone and silently drops
@@ -2530,7 +2736,7 @@ def build_brand(brand_key):
         if not batch:
             if purged:
                 print(f"  {brand['name']}: nothing to regenerate, but pushing {purged} deletions")
-                update_sitemap(brand_key); write_redirects(brand_key); git_push(brand_key, 0, 0)
+                write_service_hubs(brand_key); rebuild_blog_index(brand_key); update_sitemap(brand_key); write_redirects(brand_key); git_push(brand_key, 0, 0)
             else:
                 print(f"  {brand['name']}: nothing to regenerate")
             return 0
@@ -2538,7 +2744,7 @@ def build_brand(brand_key):
         if not unbuilt:
             if purged:
                 print(f"  {brand['name']}: all cities built — pushing {purged} purged pages")
-                update_sitemap(brand_key); write_redirects(brand_key); git_push(brand_key, 0, 0)
+                write_service_hubs(brand_key); rebuild_blog_index(brand_key); update_sitemap(brand_key); write_redirects(brand_key); git_push(brand_key, 0, 0)
             else:
                 print(f"  {brand['name']}: ALL CITIES COMPLETE ✅")
             return 0
@@ -2560,6 +2766,8 @@ def build_brand(brand_key):
         built += 1
         print(f"    ✓ {city}, {state}")
     total = len(existing) if os.environ.get('REBUILD') == '1' else len(existing) + built
+    write_service_hubs(brand_key)
+    rebuild_blog_index(brand_key)
     write_redirects(brand_key)
     sitemap_count = update_sitemap(brand_key)
     git_push(brand_key, built, total)
