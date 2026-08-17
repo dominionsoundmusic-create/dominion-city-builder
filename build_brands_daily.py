@@ -37,8 +37,19 @@ BRANDS = {
         "starting_price": "$297/month",
         "pitch": "24/7 AI receptionist that answers every call, qualifies leads, and books appointments automatically",
         "favicon": "/favicon.svg",
+        # Aug 17 2026: three folders ADDED from verified Google Trends demand
+        # (US, past 12 months): answering service 33, AI receptionist 18,
+        # virtual receptionist 9, AI answering service 5. Modifiers were all
+        # dead and only "medical" had a real vertical signal (38 vs legal 7,
+        # dental ~2, hvac ~1). NOTHING removed — this property had no Search
+        # Console data until today, and cutting folders blind is exactly how
+        # the webdesign purge deleted its own top pages. Retire the dead ones
+        # once ~28 days of data exists.
         "service_folders": [
+            ("answering-service", "Answering Service"),
             ("ai-receptionist", "AI Receptionist"),
+            ("virtual-receptionist", "Virtual Receptionist"),
+            ("medical-answering-service", "Medical Answering Service"),
             ("ai-answering-service", "AI Answering Service"),
             ("ai-appointment-booking", "AI Appointment Booking"),
             ("ai-lead-qualification", "AI Lead Qualification"),
