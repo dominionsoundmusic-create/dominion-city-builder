@@ -146,6 +146,23 @@ BRANDS = {
         "starting_price": "$497",
         "pitch": "professional custom website built first — you only pay when you love it, starting at $497 with SEO and mobile design included",
         "favicon": "/favicon.svg",
+        # Aug 22 2026: before folders existed this site used flat URLs, in two
+        # earlier shapes: /cities/<keyword>-<city>-<st>.html and later
+        # /<keyword>-<city>-<st>. Google still crawls 113 of them and gets a 404.
+        # Maps each retired flat keyword to the folder that now owns that intent.
+        "legacy_flat": {
+            "web-design-services":        "web-design",
+            "website-design":             "professional-website-design",
+            "affordable-website-design":  "small-business-website",
+            "local-web-design":           "small-business-website",
+            "professional-website-design":"professional-website-design",
+            "small-business-website":     "small-business-website",
+        },
+        "legacy_pages": {
+            "/custom-website-design": "/professional-website-design/",
+            "/terms-and-conditions":  "/",
+            "/WebDesign-yaih":        "/",
+        },
         "service_folders": [
             ("small-business-website", "Small Business Websites"),
             ("web-design", "Web Design"),
@@ -2776,8 +2793,11 @@ def write_redirects(brand_key):
     """301 retired folder URLs to the brand's primary service folder."""
     brand = BRANDS[brand_key]
     retired = brand.get("retired_folders") or []
+    legacy_flat = brand.get("legacy_flat") or {}
+    legacy_pages = brand.get("legacy_pages") or {}
     extra_state_lines = []
-    if not retired and not (brand.get("excluded_states") or []):
+    if not retired and not legacy_flat and not legacy_pages \
+       and not (brand.get("excluded_states") or []):
         return
     core = brand["service_folders"][0][0]
     rmap = brand.get("redirect_map") or {}
@@ -2790,11 +2810,32 @@ def write_redirects(brand_key):
         target = rmap.get(folder, core)
         lines.append(f"/{folder}/*  /{target}/:splat  301")
         lines.append(f"/{folder}/  /{target}/  301")
+    # Bare folder name with no trailing slash, e.g. /web-design -> /web-design/
+    for fs, _ in brand["service_folders"]:
+        lines.append(f"/{fs}  /{fs}/  301")
+
+    if legacy_flat:
+        lines += ["", "# flat URLs from before service folders existed."
+                      " The splat carries city-st.html straight through."]
+        # longest keyword first: /professional-website-design-* must be tested
+        # before any shorter key that could prefix-match the same path
+        for kw in sorted(legacy_flat, key=len, reverse=True):
+            target = legacy_flat[kw]
+            lines.append(f"/cities/{kw}-*  /{target}/:splat  301")
+            lines.append(f"/{kw}-*  /{target}/:splat  301")
+        lines.append("/cities/*  /  301")
+
+    if legacy_pages:
+        lines += ["", "# one-off pages that no longer exist"]
+        for src_path, dest in legacy_pages.items():
+            lines.append(f"{src_path}  {dest}  301")
+
     if extra_state_lines:
         lines += ["", "# states this brand cannot serve -> availability page"] + extra_state_lines
     with open(os.path.join(brand["work_dir"], "_redirects"), "w", encoding="utf-8") as f:
         f.write("\n".join(lines) + "\n")
-    print(f"  wrote _redirects ({len(retired)} retired paths) for {brand['name']}")
+    print(f"  wrote _redirects ({len(retired)} retired folders, "
+          f"{len(legacy_flat)} legacy keywords, {len(legacy_pages)} pages) for {brand['name']}")
 
 
 def update_sitemap(brand_key):
