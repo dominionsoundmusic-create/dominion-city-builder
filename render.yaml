@@ -4,7 +4,7 @@ services:
     runtime: python
     schedule: "0 6 * * *"   # 6 AM UTC daily
     buildCommand: pip install requests
-    startCommand: python build_cities_daily.py
+    startCommand: python build_brands_daily.py
     rootDir: .
     envVars:
       - key: PYTHONUNBUFFERED
