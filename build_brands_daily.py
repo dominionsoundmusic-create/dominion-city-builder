@@ -2419,6 +2419,28 @@ PAGE_BUILDERS = {
 }
 
 
+HANDWRITTEN_MARK = "dwdp:handwritten"
+
+
+def is_handwritten(filepath):
+    """True if this page was hand-written and must never be regenerated or purged.
+
+    Pages carrying the HANDWRITTEN_MARK comment were researched and written by
+    hand, not produced from a template. A REBUILD=1 or PURGE=1 run would
+    otherwise silently replace or delete them, which has no undo short of
+    digging the file out of git history. Read errors fail CLOSED (treated as
+    hand-written) so a transient problem never costs us the page.
+    """
+    try:
+        with open(filepath, "r", encoding="utf-8", errors="replace") as fh:
+            return HANDWRITTEN_MARK in fh.read(4000)
+    except FileNotFoundError:
+        return False
+    except Exception as e:
+        print(f"    !! could not read {filepath} ({e}) — treating as hand-written, not touching it")
+        return True
+
+
 def purge_stale_folders(brand_key):
     """Remove ONLY folders explicitly listed as retired for this brand.
 
@@ -2448,6 +2470,9 @@ def purge_out_of_area(brand_key):
     for folder_slug, _ in brand["service_folders"]:
         for f in glob.glob(os.path.join(brand["work_dir"], folder_slug, "*.html")):
             if os.path.basename(f).replace('.html','') not in allowed:
+                if is_handwritten(f):
+                    print(f"  PURGE: keeping hand-written {f}")
+                    continue
                 os.remove(f); removed += 1
     if removed:
         print(f"  PURGE: removed {removed} out-of-area pages from {brand['name']}")
@@ -2963,6 +2988,9 @@ def build_brand(brand_key):
             folder_path = os.path.join(brand["work_dir"], folder_slug)
             os.makedirs(folder_path, exist_ok=True)
             filepath = os.path.join(folder_path, f"{slug}.html")
+            if is_handwritten(filepath):
+                print(f"    ~ skipped {city} {folder_slug}: hand-written page, left alone")
+                continue
             try:
                 html = builder(city, state, abbr, region, county, lat, lng, folder_slug, folder_name)
                 with open(filepath, 'w', encoding='utf-8') as f:
