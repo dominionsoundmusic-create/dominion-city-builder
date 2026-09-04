@@ -3007,6 +3007,14 @@ def build_brand(brand_key):
     git_push(brand_key, built, total)
     return built
 
+# Brands whose generated city pages have been RETIRED. The nightly run still
+# clones the repo but builds nothing for them. Without this, deleting the
+# generated pages simply means the next 6 AM run rebuilds every one of them.
+# hardmoney retired Sep 4 2026: its 7,601 city pages measured 92% duplicate
+# and are being replaced by hand-written pillar pages.
+RETIRED_BRANDS = {"hardmoney"}
+
+
 def main():
     print(f"\n{'='*60}")
     print(f"Dominion Brand Builder — {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
@@ -3019,6 +3027,9 @@ def main():
             print(f"  !! unknown brand key(s) in ONLY_BRANDS: {', '.join(unknown)}")
         print(f"  ONLY_BRANDS set — restricting this run to: {', '.join(only)}")
     for brand_key in BRANDS:
+        if brand_key in RETIRED_BRANDS:
+            print(f"\n⏭ Skipping {BRANDS[brand_key]['name']} — city pages retired")
+            continue
         if only and brand_key not in only:
             continue
         print(f"\n▶ Building {BRANDS[brand_key]['name']}...")
