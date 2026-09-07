@@ -1,0 +1,51 @@
+name: Health check
+
+on:
+  schedule:
+    - cron: '0 11 * * *'   # 11:00 UTC daily = 6am CDT / 5am CST, before Maurice's session
+  workflow_dispatch:        # lets it be run on demand from the Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out main (for the script)
+        uses: actions/checkout@v4
+
+      - name: Run the health check
+        id: run
+        run: python healthcheck.py | tee /tmp/summary.txt
+
+      - name: Publish results to the healthcheck branch
+        run: |
+          set -e
+          git config user.name  "dominion-healthcheck"
+          git config user.email "actions@github.com"
+          # keep a copy of the fresh results, then move onto the results branch
+          cp -r healthcheck /tmp/hc-out
+          git fetch origin healthcheck || true
+          if git rev-parse --verify origin/healthcheck >/dev/null 2>&1; then
+            git checkout -B healthcheck origin/healthcheck
+          else
+            git checkout --orphan healthcheck
+            git rm -rf . >/dev/null 2>&1 || true
+          fi
+          mkdir -p healthcheck
+          cp /tmp/hc-out/latest.json healthcheck/latest.json
+          # history.log accumulates on the branch; append rather than overwrite
+          tail -n 1 /tmp/hc-out/history.log >> healthcheck/history.log
+          git add healthcheck
+          git commit -m "health check $(date -u +%Y-%m-%dT%H:%M:%SZ)" || echo "no change"
+          git push origin healthcheck
+
+      - name: Fail the run if any site is down
+        run: |
+          if grep -q "fail=0" /tmp/summary.txt; then
+            echo "all sites reachable"
+          else
+            echo "::warning::one or more sites failed the health check"
+            cat /tmp/summary.txt
+          fi
