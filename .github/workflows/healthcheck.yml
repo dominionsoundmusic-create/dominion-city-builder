@@ -26,6 +26,7 @@ jobs:
           git config user.email "actions@github.com"
           # keep a copy of the fresh results, then move onto the results branch
           cp -r healthcheck /tmp/hc-out
+          rm -rf healthcheck
           git fetch origin healthcheck || true
           if git rev-parse --verify origin/healthcheck >/dev/null 2>&1; then
             git checkout -B healthcheck origin/healthcheck
@@ -46,6 +47,7 @@ jobs:
           if grep -q "fail=0" /tmp/summary.txt; then
             echo "all sites reachable"
           else
-            echo "::warning::one or more sites failed the health check"
+            echo "::error::one or more sites failed the health check"
             cat /tmp/summary.txt
+            exit 1
           fi
