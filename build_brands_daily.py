@@ -3012,7 +3012,7 @@ def build_brand(brand_key):
 # generated pages simply means the next 6 AM run rebuilds every one of them.
 # hardmoney retired Sep 4 2026: its 7,601 city pages measured 92% duplicate
 # and are being replaced by hand-written pillar pages.
-RETIRED_BRANDS = {"hardmoney"}
+RETIRED_BRANDS = {"hardmoney", "phoenixpool", "tucsonpool", "yumapool", "solarpro"}
 
 
 def main():
