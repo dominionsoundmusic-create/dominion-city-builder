@@ -1,5 +1,5 @@
 {
-  "run_at": "2026-09-25T15:45:33+00:00",
+  "run_at": "2026-09-26T14:55:03+00:00",
   "checked": 19,
   "fail": 0,
   "warn": 0,
@@ -10,11 +10,11 @@
       "url": "https://aivoiceagentpros.com/",
       "status": 200,
       "final_url": "https://aivoiceagentpros.com/",
-      "ms": 427,
-      "bytes": 20467,
+      "ms": 284,
+      "bytes": 20586,
       "expected_text": "AI Voice Agent Pros",
       "text_found": true,
-      "ssl_days_left": 62,
+      "ssl_days_left": 61,
       "verdict": "OK",
       "problems": []
     },
@@ -23,9 +23,9 @@
       "url": "https://dallasairandheating.com/",
       "status": 200,
       "final_url": "https://dallasairandheating.com/",
-      "ms": 573,
-      "bytes": 15025,
-      "ssl_days_left": 35,
+      "ms": 477,
+      "bytes": 18332,
+      "ssl_days_left": 34,
       "verdict": "OK",
       "problems": []
     },
@@ -34,9 +34,9 @@
       "url": "https://dallaspowerwashingpro.com/",
       "status": 200,
       "final_url": "https://dallaspowerwashingpro.com/",
-      "ms": 552,
-      "bytes": 23162,
-      "ssl_days_left": 35,
+      "ms": 377,
+      "bytes": 28139,
+      "ssl_days_left": 34,
       "verdict": "OK",
       "problems": []
     },
@@ -45,9 +45,9 @@
       "url": "https://dfwexpertroofers.com/",
       "status": 200,
       "final_url": "https://dfwexpertroofers.com/",
-      "ms": 609,
-      "bytes": 24749,
-      "ssl_days_left": 35,
+      "ms": 798,
+      "bytes": 29885,
+      "ssl_days_left": 34,
       "verdict": "OK",
       "problems": []
     },
@@ -56,11 +56,11 @@
       "url": "https://dominionaiagency.com/",
       "status": 200,
       "final_url": "https://dominionaiagency.com/",
-      "ms": 579,
-      "bytes": 20055,
+      "ms": 443,
+      "bytes": 20174,
       "expected_text": "Dominion AI Agency",
       "text_found": true,
-      "ssl_days_left": 75,
+      "ssl_days_left": 74,
       "verdict": "OK",
       "problems": []
     },
@@ -69,11 +69,11 @@
       "url": "https://dominionhardmoney.com/",
       "status": 200,
       "final_url": "https://dominionhardmoney.com/",
-      "ms": 366,
-      "bytes": 22574,
+      "ms": 532,
+      "bytes": 22739,
       "expected_text": "Dominion Hard Money",
       "text_found": true,
-      "ssl_days_left": 84,
+      "ssl_days_left": 83,
       "verdict": "OK",
       "problems": []
     },
@@ -82,9 +82,9 @@
       "url": "https://dominionlocalbusinessdirectory.com/",
       "status": 200,
       "final_url": "https://dominionlocalbusinessdirectory.com/",
-      "ms": 721,
-      "bytes": 43786,
-      "ssl_days_left": 80,
+      "ms": 533,
+      "bytes": 43750,
+      "ssl_days_left": 79,
       "verdict": "OK",
       "problems": []
     },
@@ -93,11 +93,11 @@
       "url": "https://dominionreviewpro.com/",
       "status": 200,
       "final_url": "https://dominionreviewpro.com/",
-      "ms": 531,
-      "bytes": 31032,
+      "ms": 708,
+      "bytes": 31132,
       "expected_text": "Dominion Review Pro",
       "text_found": true,
-      "ssl_days_left": 80,
+      "ssl_days_left": 79,
       "verdict": "OK",
       "problems": []
     },
@@ -106,11 +106,11 @@
       "url": "https://dominionsolarpro.com/",
       "status": 200,
       "final_url": "https://dominionsolarpro.com/",
-      "ms": 427,
+      "ms": 314,
       "bytes": 30113,
       "expected_text": "Dominion Solar Pro",
       "text_found": true,
-      "ssl_days_left": 63,
+      "ssl_days_left": 62,
       "verdict": "OK",
       "problems": []
     },
@@ -119,9 +119,9 @@
       "url": "https://dominionsoundmusic.com/",
       "status": 200,
       "final_url": "https://dominionsoundmusic.com/",
-      "ms": 595,
+      "ms": 828,
       "bytes": 37119,
-      "ssl_days_left": 48,
+      "ssl_days_left": 47,
       "verdict": "OK",
       "problems": []
     },
@@ -130,11 +130,11 @@
       "url": "https://dominionwebdesignpro.com/",
       "status": 200,
       "final_url": "https://dominionwebdesignpro.com/",
-      "ms": 426,
-      "bytes": 31511,
+      "ms": 265,
+      "bytes": 31611,
       "expected_text": "Dominion Web Design Pro",
       "text_found": true,
-      "ssl_days_left": 55,
+      "ssl_days_left": 54,
       "verdict": "OK",
       "problems": []
     },
@@ -143,11 +143,11 @@
       "url": "https://gracewoodworkkilgore.com/",
       "status": 200,
       "final_url": "https://gracewoodworkkilgore.com/",
-      "ms": 684,
-      "bytes": 37508,
+      "ms": 908,
+      "bytes": 40335,
       "expected_text": "Grace Woodwork",
       "text_found": true,
-      "ssl_days_left": 46,
+      "ssl_days_left": 45,
       "verdict": "OK",
       "problems": []
     },
@@ -156,9 +156,9 @@
       "url": "https://houstonairandheating.com/",
       "status": 200,
       "final_url": "https://houstonairandheating.com/",
-      "ms": 1060,
-      "bytes": 23036,
-      "ssl_days_left": 42,
+      "ms": 590,
+      "bytes": 27468,
+      "ssl_days_left": 41,
       "verdict": "OK",
       "problems": []
     },
@@ -167,9 +167,9 @@
       "url": "https://houstonexpertroofers.com/",
       "status": 200,
       "final_url": "https://houstonexpertroofers.com/",
-      "ms": 560,
-      "bytes": 22124,
-      "ssl_days_left": 42,
+      "ms": 643,
+      "bytes": 29264,
+      "ssl_days_left": 41,
       "verdict": "OK",
       "problems": []
     },
@@ -178,9 +178,9 @@
       "url": "https://houstonpowerwashingpro.com/",
       "status": 200,
       "final_url": "https://houstonpowerwashingpro.com/",
-      "ms": 435,
-      "bytes": 24081,
-      "ssl_days_left": 42,
+      "ms": 849,
+      "bytes": 30856,
+      "ssl_days_left": 41,
       "verdict": "OK",
       "problems": []
     },
@@ -189,9 +189,9 @@
       "url": "https://kidstorybooks.com/",
       "status": 200,
       "final_url": "https://kidstorybooks.com/",
-      "ms": 727,
-      "bytes": 114848,
-      "ssl_days_left": 47,
+      "ms": 408,
+      "bytes": 114974,
+      "ssl_days_left": 46,
       "verdict": "OK",
       "problems": []
     },
@@ -200,9 +200,9 @@
       "url": "https://phoenixpoolcleaningpro.com/",
       "status": 200,
       "final_url": "https://phoenixpoolcleaningpro.com/",
-      "ms": 860,
-      "bytes": 19010,
-      "ssl_days_left": 45,
+      "ms": 821,
+      "bytes": 22524,
+      "ssl_days_left": 44,
       "verdict": "OK",
       "problems": []
     },
@@ -211,9 +211,9 @@
       "url": "https://tucsonpoolcleaningpro.com/",
       "status": 200,
       "final_url": "https://tucsonpoolcleaningpro.com/",
-      "ms": 902,
-      "bytes": 17742,
-      "ssl_days_left": 45,
+      "ms": 757,
+      "bytes": 21262,
+      "ssl_days_left": 44,
       "verdict": "OK",
       "problems": []
     },
@@ -222,11 +222,164 @@
       "url": "https://yumapoolcleaningpro.com/",
       "status": 200,
       "final_url": "https://yumapoolcleaningpro.com/",
-      "ms": 886,
-      "bytes": 25927,
-      "ssl_days_left": 45,
+      "ms": 828,
+      "bytes": 29132,
+      "ssl_days_left": 44,
       "verdict": "OK",
       "problems": []
     }
-  ]
+  ],
+  "page_audit": {
+    "houston-roofing-pro": {
+      "domain": "houstonexpertroofers.com",
+      "kind": "lead",
+      "fail": 0,
+      "warn": 0,
+      "counts": {}
+    },
+    "houston-hvac-pro": {
+      "domain": "houstonairandheating.com",
+      "kind": "lead",
+      "fail": 0,
+      "warn": 0,
+      "counts": {}
+    },
+    "houston-powerwashing-pro": {
+      "domain": "houstonpowerwashingpro.com",
+      "kind": "lead",
+      "fail": 0,
+      "warn": 0,
+      "counts": {}
+    },
+    "dallas-roofing-pro": {
+      "domain": "dfwexpertroofers.com",
+      "kind": "lead",
+      "fail": 0,
+      "warn": 0,
+      "counts": {}
+    },
+    "dallas-hvac-pro": {
+      "domain": "dallasairandheating.com",
+      "kind": "lead",
+      "fail": 0,
+      "warn": 0,
+      "counts": {}
+    },
+    "dallas-powerwashing-pro": {
+      "domain": "dallaspowerwashingpro.com",
+      "kind": "lead",
+      "fail": 0,
+      "warn": 0,
+      "counts": {}
+    },
+    "phoenix-pool-cleaning-pro": {
+      "domain": "phoenixpoolcleaningpro.com",
+      "kind": "lead",
+      "fail": 0,
+      "warn": 0,
+      "counts": {}
+    },
+    "tucson-pool-cleaning-pro": {
+      "domain": "tucsonpoolcleaningpro.com",
+      "kind": "lead",
+      "fail": 0,
+      "warn": 0,
+      "counts": {}
+    },
+    "arizona-pool-cleaning-pro": {
+      "domain": "yumapoolcleaningpro.com",
+      "kind": "lead",
+      "fail": 0,
+      "warn": 0,
+      "counts": {}
+    },
+    "dominionwebdesignpro-site": {
+      "domain": "dominionwebdesignpro.com",
+      "kind": "dominion",
+      "fail": 15,
+      "warn": 57,
+      "counts": {
+        "no Espanol button": 25,
+        "British spelling": 3,
+        "placeholder or code text": 15,
+        "orphan page": 1
+      }
+    },
+    "aivoiceagentpros-site": {
+      "domain": "aivoiceagentpros.com",
+      "kind": "dominion",
+      "fail": 24,
+      "warn": 25,
+      "counts": {
+        "broken internal link": 11,
+        "no Espanol button": 25,
+        "placeholder or code text": 13
+      }
+    },
+    "dominionreviewpro-site": {
+      "domain": "dominionreviewpro.com",
+      "kind": "dominion",
+      "fail": 16,
+      "warn": 20,
+      "counts": {
+        "no Espanol button": 20,
+        "broken internal link": 6,
+        "placeholder or code text": 10
+      }
+    },
+    "dominionaiagency-site": {
+      "domain": "dominionaiagency.com",
+      "kind": "dominion",
+      "fail": 19,
+      "warn": 32,
+      "counts": {
+        "no Espanol button": 25,
+        "broken internal link": 7,
+        "placeholder or code text": 12,
+        "British spelling": 3
+      }
+    },
+    "dominion-hard-money": {
+      "domain": "dominionhardmoney.com",
+      "kind": "dominion",
+      "fail": 0,
+      "warn": 68,
+      "counts": {
+        "no Espanol button": 25,
+        "British spelling": 25,
+        "orphan page": 7
+      }
+    },
+    "dominionlocalbusinessdirectory-site": {
+      "domain": "dominionlocalbusinessdirectory.com",
+      "kind": "dominion",
+      "fail": 177,
+      "warn": 21,
+      "counts": {
+        "no Espanol button": 18,
+        "broken internal link": 25,
+        "placeholder or code text": 10,
+        "orphan page": 3
+      }
+    },
+    "kidstorybooks-site": {
+      "domain": "kidstorybooks.com",
+      "kind": "dominion",
+      "fail": 14,
+      "warn": 18,
+      "counts": {
+        "broken internal link": 2,
+        "British spelling": 4,
+        "no Espanol button": 14,
+        "placeholder or code text": 12
+      }
+    },
+    "grace-woodwork-site": {
+      "domain": "gracewoodworkkilgore.com",
+      "kind": "client",
+      "fail": 0,
+      "warn": 0,
+      "counts": {}
+    }
+  }
 }
