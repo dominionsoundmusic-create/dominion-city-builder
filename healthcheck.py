@@ -106,6 +106,17 @@ def main():
     }
     import os
     os.makedirs("healthcheck", exist_ok=True)
+    # Sep 25 2026 - page-level audit of every site repo (site_audit.py), folded into
+    # latest.json so it reaches the healthcheck branch without a workflow change.
+    # It never affects the uptime verdict above.
+    try:
+        import subprocess
+        subprocess.run([sys.executable, "site_audit.py"], capture_output=True, text=True, timeout=1500)
+        with open("healthcheck/site_audit.json") as af:
+            audit = json.load(af)
+        out["page_audit"] = {repo: {k: v for k, v in d.items() if k != "issues"} | {"counts": {k: len(v) for k, v in d.get("issues", {}).items()}} for repo, d in audit.items()}
+    except Exception as e:
+        out["page_audit"] = {"error": str(e)}
     with open("healthcheck/latest.json", "w") as f:
         json.dump(out, f, indent=2)
     line = "%s  checked=%d ok=%d warn=%d fail=%d%s\n" % (
@@ -117,6 +128,10 @@ def main():
     for r in results:
         if r["problems"]:
             print("  %-6s %-36s %s" % (r["verdict"], r["domain"], "; ".join(r["problems"])))
+    pa = out.get("page_audit", {})
+    if isinstance(pa, dict) and "error" not in pa:
+        bad = [r for r, d in pa.items() if d.get("fail")]
+        print("page audit: %d repos read, %d with problems%s" % (len(pa), len(bad), (": " + ", ".join(bad)) if bad else ""))
     return 0
 
 
