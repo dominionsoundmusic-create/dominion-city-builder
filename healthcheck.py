@@ -31,6 +31,7 @@ SITES = {
     "phoenixpoolcleaningpro.com":       "",
     "tucsonpoolcleaningpro.com":        "",
     "yumapoolcleaningpro.com":          "",
+    "austinacservice.com":              "Austin AC Service",
 }
 
 TIMEOUT = 20
