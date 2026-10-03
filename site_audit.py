@@ -25,6 +25,12 @@ SITES = {
     "dominionlocalbusinessdirectory-site": "dominion", "kidstorybooks-site": "dominion",
     "grace-woodwork-site": "client",
 }
+# repo -> (branch, folder) for sites whose LIVE pages are not on the default branch's root.
+# houstonpowerwashingpro.com: Playbook 2.0 rebuild; Netlify publishes dist/ from the build
+# branch since Oct 1 2026. Scanning main read the old pre-rebuild site (~3,900 false issues).
+SOURCE = {
+    "houston-powerwashing-pro": ("build", "dist"),
+}
 FAIL = {"broken internal link", "missing image file", "placeholder or code text", "canonical on wrong domain",
         "sitemap URL with no page", "company claim on a lead site", "contractor voice on a lead site"}
 BRIT = ["colour", "mould", "programme", "centre", "apologise", "neighbour", "realise", "recognised", "tyre",
@@ -93,8 +99,11 @@ def main():
     out, bad = {}, 0
     for repo, kind in SITES.items():
         root = f"{work}/{repo}"
+        branch, folder = SOURCE.get(repo, (None, ""))
         if not local:
-            subprocess.run(["git", "clone", "-q", "--depth", "1", f"https://github.com/{OWNER}/{repo}.git", root], check=False)
+            cmd = ["git", "clone", "-q", "--depth", "1"] + (["-b", branch] if branch else [])
+            subprocess.run(cmd + [f"https://github.com/{OWNER}/{repo}.git", root], check=False)
+        if folder: root = f"{root}/{folder}"
         if not os.path.isdir(root): out[repo] = {"error": "could not read repo"}; bad += 1; continue
         dom, iss = audit(root, kind)
         fails = sum(len(v) for k, v in iss.items() if k in FAIL); warns = sum(len(v) for k, v in iss.items() if k not in FAIL)
