@@ -32,6 +32,9 @@ SITES = {
     "tucsonpoolcleaningpro.com":        "",
     "yumapoolcleaningpro.com":          "",
     "austinacservice.com":              "Austin AC Service",
+    "treeserviceorlandofl.com":         "Tree Service Orlando FL",
+    "treeserviceshoustontx.com":        "Tree Service Houston TX",
+    "treeservicestampafl.com":          "Tree Service Tampa FL",
 }
 
 TIMEOUT = 20
