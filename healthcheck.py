@@ -35,6 +35,8 @@ SITES = {
     "treeserviceorlandofl.com":         "Tree Service Orlando FL",
     "treeserviceshoustontx.com":        "Tree Service Houston TX",
     "treeservicestampafl.com":          "Tree Service Tampa FL",
+    "waterdamageprohouston.com":        "Water Damage Pro Houston",
+    "waterdamageprodallas.com":         "Water Damage Pro Dallas",
 }
 
 TIMEOUT = 20
