@@ -32,7 +32,13 @@ SOURCE = {
     "houston-powerwashing-pro": ("build", "dist"),
 }
 FAIL = {"broken internal link", "missing image file", "placeholder or code text", "canonical on wrong domain",
+        "hidden from Google (noindex)", "missing page title",
         "sitemap URL with no page", "company claim on a lead site", "contractor voice on a lead site"}
+TITLE_MAX = 60      # Google cuts titles off past about 60 characters
+MIN_WORDS = 300     # visible words, header and footer included; Ubersuggest flags thin pages
+# Pages that are meant to stay out of Google (thank-you pages, intake forms, tools and demos).
+UTILITY = ("forms/", "thanks", "thank-you", "intake", "shop-upload", "write.html", "demo", "compare", "site-check",
+           "/tools", "tools/", "privacy", "terms")
 BRIT = ["colour", "mould", "programme", "centre", "apologise", "neighbour", "realise", "recognised", "tyre",
         "favour", "behaviour", "organise", "catalogue"]
 PLACEHOLDERS = ["```", "lorem ipsum", "todo:", "fixme", "{{", "[city]", "[brand]", "555-01"]
@@ -44,7 +50,8 @@ def vis(t):
     return html.unescape(re.sub(r"\s+", " ", re.sub("<[^>]+>", " ", t)))
 
 def audit(root, kind):
-    files = glob.glob(f"{root}/**/*.html", recursive=True)
+    files = [f for f in glob.glob(f"{root}/**/*.html", recursive=True)
+             if not os.path.relpath(f, root).startswith(("src/", "docs/", "templates/", "node_modules/", "scripts/"))]
     idx = open(f"{root}/index.html", errors="ignore").read() if os.path.exists(f"{root}/index.html") else ""
     m = re.search(r'rel="canonical" href="https?://(?:www\.)?([^/"]+)', idx); dom = m.group(1) if m else ""
     issues = collections.defaultdict(list); inbound = collections.Counter()
@@ -79,6 +86,17 @@ def audit(root, kind):
         for w in BRIT:
             if re.search(r"\b" + w, vl): issues["British spelling"].append(f"{rel}: {w}")
         if not noindex and 'id="gt-bar"' not in t and "google_translate_element" not in t: issues["no Espanol button"].append(rel)
+        # Oct 16 2026 - the three findings Ubersuggest caught on dominionwebdesignpro.com before we did.
+        utility = rel == "404.html" or any(x in rel for x in UTILITY)
+        if noindex and not utility: issues["hidden from Google (noindex)"].append(rel)
+        if not noindex and not utility:
+            tm = re.search(r"<title[^>]*>(.*?)</title>", t, re.S | re.I)
+            title = html.unescape(re.sub(r"\s+", " ", tm.group(1)).strip()) if tm else ""
+            if not title: issues["missing page title"].append(rel)
+            elif len(title) > TITLE_MAX: issues["page title too long"].append(f"{rel}: {len(title)} characters")
+            if not any(x in rel for x in ("privacy", "terms")):
+                words = len(v.split())
+                if words < MIN_WORDS: issues["low word count"].append(f"{rel}: {words} words")
         if kind == "lead" and not any(x in rel for x in ("privacy", "terms")):
             if re.search(r"licensed (and|&) insured", vl) and "?" not in v[max(0, vl.find("licensed")-80):vl.find("licensed")+60]:
                 issues["company claim on a lead site"].append(rel)
@@ -103,6 +121,18 @@ def main():
         if not local:
             cmd = ["git", "clone", "-q", "--depth", "1"] + (["-b", branch] if branch else [])
             subprocess.run(cmd + [f"https://github.com/{OWNER}/{repo}.git", root], check=False)
+        if not folder and not local:
+            # Oct 16 2026 - Playbook 2.0 sites publish built pages from dist/. Reading the repo root
+            # scanned source templates and produced thousands of false problems. Use dist/ when it
+            # exists; if the default branch has none, try the build branch.
+            if not os.path.isfile(f"{root}/dist/index.html"):
+                alt = root + "-build"
+                subprocess.run(["git", "clone", "-q", "--depth", "1", "-b", "build",
+                                f"https://github.com/{OWNER}/{repo}.git", alt], check=False, capture_output=True)
+                if os.path.isfile(f"{alt}/dist/index.html"): root = alt
+            if os.path.isfile(f"{root}/dist/index.html"): folder = "dist"
+        elif not folder and os.path.isfile(f"{root}/dist/index.html"):
+            folder = "dist"
         if folder: root = f"{root}/{folder}"
         if not os.path.isdir(root): out[repo] = {"error": "could not read repo"}; bad += 1; continue
         dom, iss = audit(root, kind)
