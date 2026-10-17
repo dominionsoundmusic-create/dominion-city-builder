@@ -69,6 +69,7 @@ def audit(root, kind):
     for p in files:
         rel = os.path.relpath(p, root); t = open(p, errors="ignore").read()
         if "<body" not in t.lower(): continue
+        t = re.sub(r"<!--.*?-->", "", t, flags=re.S)  # planned images and notes inside comments are not on the page
         noindex = "noindex" in t[:4000].lower()
         cm = re.search(r'rel="canonical" href="([^"]+)"', t)
         if cm and dom and dom.lower() not in cm.group(1).lower(): issues["canonical on wrong domain"].append(f"{rel} -> {cm.group(1)}")
