@@ -37,6 +37,10 @@ SITES = {
     "treeservicestampafl.com":          "Tree Service Tampa FL",
     "waterdamageprohouston.com":        "Water Damage Pro Houston",
     "waterdamageprodallas.com":         "Water Damage Pro Dallas",
+    "dominionteeco.com":                "",
+    "dominionpoolpros.com":             "",
+    "everypromiseofgod.com":            "",
+    "dominionwaterdamage.com":          "",
 }
 
 TIMEOUT = 20
