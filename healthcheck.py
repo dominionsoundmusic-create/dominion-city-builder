@@ -42,6 +42,7 @@ SITES = {
     "everypromiseofgod.com":            "",
     "dominionwaterdamage.com":          "",
     "70namesofgod.com":                 "70 Names of God",
+    "meettheholyspirit.com":            "Meet the Holy Spirit",
 }
 
 TIMEOUT = 20
