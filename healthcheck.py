@@ -44,6 +44,7 @@ SITES = {
     "70namesofgod.com":                 "70 Names of God",
     "meettheholyspirit.com":            "Meet the Holy Spirit",
     "thehundredfoldbook.com":           "The Hundredfold",
+    "dominionbookco.com":               "Dominion Book Co",
 }
 
 TIMEOUT = 20
